@@ -119,7 +119,6 @@ int getListLength(List *pList)
 void displayList(List *pList)
 {
 	int			i;
-	ListNode	*node;
 
 	i = 0;
 	if (pList)
@@ -127,9 +126,7 @@ void displayList(List *pList)
 		printf("vurrent element count : %d\n", pList->currentElementCount);
 		while (i < pList->currentElementCount)
 		{
-			node = getElement(pList, i);
-			if (node)
-				printf("link[%d] : %d\n", i, node->data);
+			printf("link[%d] : %d\n", i, getElement(pList, i)->data);
 			i++;
 		}
 	}
