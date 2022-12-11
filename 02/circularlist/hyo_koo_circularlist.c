@@ -6,7 +6,7 @@
 /*   By: hyojocho <hyojocho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 19:23:54 by hyojocho          #+#    #+#             */
-/*   Updated: 2022/12/11 15:25:06 by hyojocho         ###   ########.fr       */
+/*   Updated: 2022/12/11 16:48:08 by hyojocho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ int	addElement(List *pList, int position, ListNode node)
 	{
 		if (pList->currentElementCount == 0)
 		{
-		pList->pLink = new_node;
-		new_node->pLink = new_node;
+			pList->pLink = new_node;
+			new_node->pLink = new_node;
 		}
 		else
 		{
@@ -89,4 +89,64 @@ void	displayList(List *pList)
 
 int removeElement(List *pList, int position)
 {
+	ListNode	*tmp;
+	
+	if (position < 0 || position > pList->currentElementCount)
+		return (FALSE);
+	if (position == 0)
+	{
+		if (pList->currentElementCount == 1)
+		{
+			free(pList->pLink);
+			pList->pLink = NULL;
+		}
+		else
+		{
+			tmp = pList->pLink;
+			while (tmp->pLink != pList->pLink)
+				tmp = tmp->pLink;
+			tmp->pLink = pList->pLink->pLink;
+			free(pList->pLink);
+			pList->pLink = tmp->pLink;
+		}
+	}
+	else
+	{
+		tmp = pList->pLink;
+		while (position - 1 > 0)
+		{
+			tmp = tmp->pLink;
+			position--;
+		}
+		tmp->pLink = tmp->pLink->pLink;
+		free(tmp->pLink);
+	}
+	pList->currentElementCount--;
+	return (TRUE);
+}
+
+ListNode *getElement(List *pList, int position)
+{
+	ListNode	*tmp;
+
+	tmp = pList->pLink;
+	while (position > 0)
+	{
+		tmp = tmp->pLink;
+		position--;
+	}
+	return (tmp);
+}
+
+int getListLength(List *pList)
+{
+	return (pList->currentElementCount);
+}
+
+void clearList(List *pList)
+{
+	while (pList->currentElementCount > 0)
+	{
+		removeElement(pList, 0);
+	}
 }

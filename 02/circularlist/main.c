@@ -6,11 +6,11 @@ int main() {
     List *pList = createList();
     ListNode node;
     if (pList!=NULL){
-        // node.data = 5;
-        // addElement(pList, 0, node);
-        // displayList(pList);
+        node.data = 5;
+        addElement(pList, 0, node);
+        displayList(pList);
 
-        // removeElement(pList, 0);
+        removeElement(pList, 0);
 
         node.data = 3;
         addElement(pList, 1, node);
@@ -37,19 +37,19 @@ int main() {
 
         displayList(pList);
 
-        // removeElement(pList, 0);
+        removeElement(pList, 0);
+		printf("getElement : %d\n", getElement(pList, 0)->data);
+        displayList(pList);
 
-        // displayList(pList);
+        removeElement(pList, 3);
 
-        // removeElement(pList, 3);
+        displayList(pList);
 
-        // displayList(pList);
+        clearList(pList);
 
-        // clearList(pList);
+        displayList(pList);
 
-        // displayList(pList);
-
-        // deleteList(pList);
+        deleteList(pList);
     }
     return 0;
 }
