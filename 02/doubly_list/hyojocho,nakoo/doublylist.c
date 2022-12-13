@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ours_doubly.c                                      :+:      :+:    :+:   */
+/*   doublylist.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyojocho <hyojocho@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nakoo <nakoo@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 16:23:46 by hyojocho          #+#    #+#             */
-/*   Updated: 2022/12/12 17:39:17 by hyojocho         ###   ########.fr       */
+/*   Updated: 2022/12/13 20:11:42 by nakoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doublylist.h"
 
-List *createLink()
+List	*createLink()
 {
 	List	*pList;
 	
@@ -25,7 +25,7 @@ List *createLink()
 	return (pList);
 }
 
-int addElement(List *pList, int position, ListNode node)
+int	addElement(List *pList, int position, ListNode node)
 {
 	ListNode	*newNode;
 	ListNode	*prevNode;
@@ -35,7 +35,7 @@ int addElement(List *pList, int position, ListNode node)
 	newNode = (ListNode *)malloc(sizeof(ListNode));
 	if (!newNode)
 		return (FALSE);
-	newNode->data = node.data;
+	*newNode = node;
 	prevNode = &pList->headerNode;
 	while (position > 0)
 	{
@@ -50,29 +50,29 @@ int addElement(List *pList, int position, ListNode node)
 	return (TRUE);
 }
 
-void displayList(List *pList)
+void	displayList(List *pList)
 {
 	int			count;
-	ListNode	*tmp;
+	ListNode	*curNode;
 
 	count = pList->currentElementCount;
-	tmp = pList->headerNode.pRightLink;
+	curNode = pList->headerNode.pRightLink;
 	printf("displayList\n");
 	while(count > 0)
 	{
-		printf("%d ", tmp->data);
-		tmp = tmp->pRightLink;
+		printf("%d ", curNode->data);
+		curNode = curNode->pRightLink;
 		count--;
 	}
 	printf("\n");
 }
 
-int removeElement(List *pList, int position)
+int	removeElement(List *pList, int position)
 {
 	ListNode	*prevNode;
 	ListNode	*delNode;
 	
-	if (position < 0 || position > pList->currentElementCount)
+	if (position < 0 || position >= pList->currentElementCount)
 		return (FALSE);
 	prevNode = &pList->headerNode;
 	while (position > 0)
@@ -88,19 +88,19 @@ int removeElement(List *pList, int position)
 	return (TRUE);
 }
 
-ListNode *getElement(List *pList, int position)
+ListNode	*getElement(List *pList, int position)
 {
-	ListNode	*tmp;
+	ListNode	*curNode;
 	
-	if (position < 0 || position > pList->currentElementCount)
+	if (position < 0 || position >= pList->currentElementCount)
 	return (FALSE);
-	tmp = pList->headerNode.pRightLink;
+	curNode = pList->headerNode.pRightLink;
 	while (position > 0)
 	{
-		tmp = tmp->pRightLink;
+		curNode = curNode->pRightLink;
 		position--;
 	}
-	return (tmp);
+	return (curNode);
 }
 
 int	getListLength(List *pList)
@@ -110,14 +110,22 @@ int	getListLength(List *pList)
 
 void	clearList(List *pList)
 {
-	while (pList->currentElementCount > 0)
+	ListNode	*curNode, *delNode;
+
+	if (pList->headerNode.pRightLink == NULL)
+		return ;
+	curNode = pList->headerNode.pRightLink;
+	while (curNode->pRightLink != &pList->headerNode)
 	{
-		removeElement(pList, 0);
+		delNode = curNode;
+		curNode = curNode->pRightLink;
+		free(delNode);
 	}
+	memset(pList, 0, sizeof(List));
 }
 
 void	deleteList(List *pList)
 {
+	clearList(pList);
 	free(pList);
-	pList = NULL;
 }
