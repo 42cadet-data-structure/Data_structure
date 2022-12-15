@@ -17,20 +17,21 @@ int main() {
     node.data = 'b';
 
     push(pStack, node);
+	deleteStack(pStack);
+	
     node.data = 'c';
+    push(pStack, node);
+	printf("%c\n", peek(pStack)->data);
+    node.data = 'u';
+    push(pStack, node);
+
+    printf("%c\n", pop(pStack)->data);
+    printf("%c\n", pop(pStack)->data);
+    printf("%c\n", pop(pStack)->data);
+
 
     push(pStack, node);
-    node.data = 'd';
+	printf("%c\n", peek(pStack)->data);
 
-    push(pStack, node);
-
-    printf("%c ", pop(pStack)->data);
-    printf("%c ", pop(pStack)->data);
-    printf("%c ", pop(pStack)->data);
-
-    deleteStack(pStack);
-
-	push(pStack, node);
-	printf("%c ", pop(pStack)->data);
     return 0;
 }
