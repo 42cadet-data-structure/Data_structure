@@ -4,7 +4,6 @@
 
 #ifndef LINKED_STACK_LINKEDSTACK_H
 #define LINKED_STACK_LINKEDSTACK_H
-#include <stdlib.h>
 
 #define TRUE 1
 #define FALSE 0
@@ -23,7 +22,7 @@ Stack *createStack();
 
 int push(Stack *pStack, StackNode node);
 
-StackNode *pop(Stack *pStack);
+void pop(Stack *pStack);
 
 StackNode *peek(Stack *pStack);
 

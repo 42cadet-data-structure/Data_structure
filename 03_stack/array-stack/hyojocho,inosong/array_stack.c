@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   array_stack_ours.c                                 :+:      :+:    :+:   */
+/*   array_stack.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyojocho <hyojocho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 13:08:50 by hyojocho          #+#    #+#             */
-/*   Updated: 2022/12/15 14:10:52 by hyojocho         ###   ########.fr       */
+/*   Updated: 2022/12/15 14:46:34 by hyojocho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,15 +57,15 @@ StackNode *peek(Stack *pStack)
 int isStackFull(Stack *pStack)
 {
 	if (pStack->currentElementCount < pStack->maxElementCount)
-		return (0);
-	return (1);
+		return (FALSE);
+	return (TRUE);
 }
 
 int isStackEmpty(Stack *pStack)
 {
 	if (pStack->currentElementCount == 0)
-		return (1);
-	return (0);
+		return (TRUE);
+	return (FALSE);
 }
 
 void deleteStack(Stack *pStack)
