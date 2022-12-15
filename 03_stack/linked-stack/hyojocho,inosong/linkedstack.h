@@ -4,6 +4,7 @@
 
 #ifndef LINKED_STACK_LINKEDSTACK_H
 #define LINKED_STACK_LINKEDSTACK_H
+#include <stdlib.h>
 
 #define TRUE 1
 #define FALSE 0

@@ -22,6 +22,7 @@ int main() {
         printf("%c ", peek(pStack)->data);
         printf("%c ", pop(pStack)->data);
         deleteStack(pStack);
+		//  printf("%c ", peek(pStack)->data);
     }
     return 0;
 }
