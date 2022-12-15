@@ -22,7 +22,7 @@ Stack *createStack();
 
 int push(Stack *pStack, StackNode node);
 
-StackNode *pop(Stack *pStack);
+void pop(Stack *pStack);
 
 StackNode *peek(Stack *pStack);
 
