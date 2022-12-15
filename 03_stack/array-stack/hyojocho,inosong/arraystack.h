@@ -4,6 +4,9 @@
 
 #ifndef ARRAY_STACK_ARRAYSTACK_H
 #define ARRAY_STACK_ARRAYSTACK_H
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
 
 #define TRUE        1
 #define FALSE        0
