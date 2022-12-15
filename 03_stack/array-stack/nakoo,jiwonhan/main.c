@@ -14,13 +14,12 @@ int main() {
     printf("%c ", pop(pStack)->data);
 
     node.data = 'b';
-
     push(pStack, node);
+
     node.data = 'c';
-
     push(pStack, node);
-    node.data = 'd';
 
+    node.data = 'd';
     push(pStack, node);
 
     printf("%c ", pop(pStack)->data);
