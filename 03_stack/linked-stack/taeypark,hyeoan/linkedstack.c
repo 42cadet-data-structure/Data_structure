@@ -59,4 +59,17 @@ int isEmptyStack(Stack *pStack)
 
 void deleteStack(Stack *pStack)
 {
+    StackNode *pNode;
+    StackNode *delNode;
+
+    pNode = pStack->pTopElement;
+    while (pNode != NULL)
+    {
+        delNode = pNode;
+        pNode = pNode->pLink;
+        free(delNode);
+    }
+    pStack->pTopElement = NULL;
+	pStack->currentElementCount = 0;
+    free(pStack);
 }
