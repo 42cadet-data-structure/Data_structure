@@ -4,7 +4,8 @@
 
 #ifndef STACK_MAP_MAPUTIL_H
 #define STACK_MAP_MAPUTIL_H
-
+#include "mapdef.h"
+#include "mapstack.h"
 
 void findPath(int mazeArray[HEIGHT][WIDTH],
               MapPosition startPos,
