@@ -1,113 +1,98 @@
-//
-// Created by sanguk on 08/08/2017.
-//
+#include <stdio.h>
+#include <stdlib.h>
 
 #include "mapdef.h"
 #include "mapstack.h"
 #include "maputil.h"
-#include <stdio.h>
-#include <stdlib.h>
+
+void printMaze(int mazeArray[HEIGHT][WIDTH])
+{
+	char pos_char[] = {' ', '*', '.'};
+
+	for (int i=0;i<HEIGHT;i++)
+	{
+		for (int j = 0;j<WIDTH;j++)
+			printf("%c", pos_char[mazeArray[i][j]]);
+		printf("\n");
+	}
+}
+
+int pushMapPosition(Stack *pStack, MapPosition data)
+{
+	StackNode newNode;
+	newNode.data = data;
+	newNode.data.direction = VISIT;
+
+	return (push(pStack, newNode));
+}
+
+void showPath(Stack *pStack, int mazeArray[HEIGHT][WIDTH])
+{
+	StackNode *tmp;
+	int	visitedMaze[HEIGHT][WIDTH];
+
+	for (int i = 0; i < HEIGHT; i++)
+		for (int j = 0; j < WIDTH; j++)
+			visitedMaze[i][j] = mazeArray[i][j];
+	tmp = pStack->pTopElement;
+	while (tmp)
+	{
+		if (tmp == pStack->pTopElement)
+			printf("[%d %d] ", tmp->data.y, tmp->data.x);
+		else
+			printf("<- [%d %d] ",tmp->data.y, tmp->data.x);
+		visitedMaze[tmp->data.y][tmp->data.x] = VISIT;
+		tmp = tmp->pLink;
+	}
+	printf("\n");
+	printMaze(visitedMaze);
+}
+
+static void	init_vals(vals *vals, MapPosition startPos, MapPosition endPos)
+{
+	vals->valid_path = FALSE;
+	vals->startPos = startPos;
+	vals->endPos = endPos;
+	for(int i=0;i<HEIGHT;i++)
+		for(int j=0;j<WIDTH;j++)
+			vals->visited[i][j] = 0;
+}
+
+static int	dfs(int mazeArray[HEIGHT][WIDTH], vals *vals, Stack *pStack, MapPosition nowPos)
+{
+	MapPosition	nextPos;
+	
+	vals->visited[nowPos.y][nowPos.x] = VISITED;
+	if (vals->valid_path == FALSE)
+	{
+		if (!pushMapPosition(pStack, nowPos))
+			exit(0);
+	}
+	if (nowPos.y == vals->endPos.y && nowPos.x == vals->endPos.x)
+	{
+		vals->valid_path = TRUE;
+		return (TRUE);
+	}
+	for (int i = 0; i < 4; i++)
+	{
+		nextPos.x = nowPos.x + DIRECTION_OFFSETS[i][1];
+		nextPos.y = nowPos.y + DIRECTION_OFFSETS[i][0];
+		if (nextPos.x < 0 || nextPos.x > WIDTH || nextPos.y < 0 || nextPos.y > HEIGHT)
+			continue;
+		if (vals->visited[nextPos.y][nextPos.x] == NOT_VISITED && mazeArray[nextPos.y][nextPos.x] != WALL)
+			dfs(mazeArray, vals, pStack, nextPos);
+	}
+	return (FALSE);
+}
 
 void findPath(int mazeArray[HEIGHT][WIDTH],
               MapPosition startPos,
-              MapPosition endPos,
-              Stack *pStack) {
-    StackNode *pNode = NULL;
-    int isEmpty = FALSE, isFound = FALSE, i = 0;
-    int markArray[HEIGHT][WIDTH] = {0,};
-    if (pStack == NULL) return;
-    MapPosition newPosition = startPos;
-    newPosition.direction = 0;
-    pushMapPosition(pStack, newPosition);
-    while (isEmpty == FALSE && isFound == FALSE) {
-        pNode = pop(pStack);
-        if (pNode == NULL) break;
-        int x = pNode->data.x;
-        int y = pNode->data.y;
-        int direction = pNode->data.direction;
-        while (isFound == FALSE && direction < NUM_DIRECTIONS) {
-            int newX = x + DIRECTION_OFFSETS[direction][0];
-            int newY = y + DIRECTION_OFFSETS[direction][1];
-            if (newX >= 0 && newX < WIDTH && newY >= 0 && newY < HEIGHT && markArray[newY][newX] == NOT_VISIT &&
-                mazeArray[newY][newX] == NOT_VISIT){
-                MapPosition newPosition;
-                newPosition.x = x;
-                newPosition.y = y;
-                newPosition.direction = direction + 1;
-                pushMapPosition(pStack, newPosition);
-                markArray[y][x] = VISIT;
-
-                x = newX;
-                y = newY;
-                direction = 0;
-
-                if (newX  == endPos.x && newY == endPos.y){
-                    isFound = TRUE;
-                    newPosition.x = newX;
-                    newPosition.y = newY;
-                    newPosition.direction = 0;
-                    pushMapPosition(pStack, newPosition);
-                    markArray[newY][newX] = VISIT;
-                }
-            } else{
-                direction++;
-            }
-        }
-        free(pNode);
-        isEmpty = isStackEmpty(pStack);
-    }
-}
-
-int pushMapPosition(Stack *pStack, MapPosition data) {
-    StackNode node = {0,};
-    if (pStack == NULL) return FALSE;
-    node.data = data;
-    return push(pStack, node);
-}
-
-void showPath(Stack *pStack, int mazeArray[HEIGHT][WIDTH]) {
-    StackNode *pNode = NULL;
-    int resultArray[HEIGHT][WIDTH] = {0,};
-    int isEmpty = FALSE;
-
-    int i, j;
-    for(i = 0; i < HEIGHT; i++) {
-        for(j = 0; j < WIDTH; j++) {
-            resultArray[i][j] = mazeArray[i][j];
-        }
-    }
-    i = 0;
-    while(isEmpty == FALSE) {
-        pNode = pop(pStack);
-        if (pNode != NULL) {
-            int x = pNode->data.x;
-            int y = pNode->data.y;
-            resultArray[y][x] = VISIT;
-            if (i > 0) {
-                printf("<-");
-            }
-            printf("(%d,%d) ", x, y);
-            i++;
-            free(pNode);
-        }
-        isEmpty = isStackEmpty(pStack);
-    }
-    printf("\n");
-    printMaze(resultArray);
-}
-
-void printMaze(int mazeArray[HEIGHT][WIDTH]) {
-    int i, j;
-    for (i = 0; i < HEIGHT; i++) {
-        for (j = 0; j < WIDTH; j++) {
-            if (mazeArray[i][j] == WALL) {
-                printf("*");
-            } else if (mazeArray[i][j] == VISIT) {
-                printf(".");
-            } else {
-                printf(" ");
-            }
-        }
-        printf("\n");
-    }
+              MapPosition endPos, 
+			  Stack *pStack)
+{
+	vals	vals;
+	init_vals(&vals ,startPos, endPos);
+	dfs(mazeArray, &vals, pStack, startPos);
+	if (vals.valid_path == FALSE)
+		clearStack(pStack);
 }

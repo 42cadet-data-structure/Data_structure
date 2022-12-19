@@ -10,7 +10,7 @@
 
 #define NUM_DIRECTIONS 4
 
-// offset: x, y
+// offset: y, x
 static int DIRECTION_OFFSETS[NUM_DIRECTIONS][2] = {
         {0,  -1},
         {1,  0},

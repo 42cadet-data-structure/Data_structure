@@ -1,60 +1,102 @@
-//
-// Created by sanguk on 08/08/2017.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   linkedstack.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nakoo <nakoo@student.42seoul.kr>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/12/15 14:05:26 by jiwonhan          #+#    #+#             */
+/*   Updated: 2022/12/19 16:41:19 by nakoo            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include "mapdef.h"
-#include "mapstack.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "mapstack.h"
 
-Stack *createStack(){
-    Stack *pStack = (Stack *)malloc(sizeof(Stack));
-    if (pStack == NULL) return NULL;
-    memset(pStack, 0, sizeof(Stack));
-    return pStack;
+Stack *createStack()
+{
+	Stack	*stack = (Stack *)malloc(sizeof(Stack));
+	if (!stack)
+		return (NULL);
+	memset(stack, 0, sizeof(Stack));
+	return (stack);
 }
 
-int push(Stack *pStack, StackNode element){
-    if (pStack == NULL) return FALSE;
-    StackNode *pNode = (StackNode*)malloc(sizeof(StackNode));
-    if (pNode == NULL) return FALSE;
-    *pNode = element;
-    pNode->pLink = pStack->pTopElement;
-    pStack->pTopElement = pNode;
-    pStack->currentElementCount++;
-    return TRUE;
+int push(Stack *pStack, StackNode element)
+{
+	StackNode	*pNode;
+
+	if (!pStack)
+		return (FALSE);
+	pNode = (StackNode *)malloc(sizeof(StackNode));
+	if (!pNode)
+		return (FALSE);
+	*pNode = element;
+	pNode->pLink = pStack->pTopElement;
+	pStack->pTopElement = pNode;
+	pStack->currentElementCount++;
+	return (TRUE);
 }
 
-StackNode *pop(Stack *pStack){
-    StackNode *pNode = NULL;
-    if (pStack == NULL) return NULL;
-    if (isStackEmpty(pStack) == TRUE) return NULL;
-    pNode = pStack->pTopElement;
-    pStack->pTopElement = pNode->pLink;
-    pNode->pLink = NULL;
-    pStack->currentElementCount--;
-    return pNode;
+void	pop(Stack *pStack)
+{
+	StackNode	*delNode;
+
+	if (!pStack || pStack->currentElementCount == 0)
+		return ;
+	delNode = pStack->pTopElement;
+	pStack->pTopElement = delNode->pLink;
+	delNode->pLink = NULL;
+	free(delNode);
+	pStack->currentElementCount--;
 }
 
-StackNode *peek(Stack *pStack){
-    if (pStack == NULL) return NULL;
-    if (isStackEmpty(pStack) == TRUE) return NULL;
-    return pStack->pTopElement;
+StackNode *peek(Stack *pStack)
+{
+	if (!pStack || pStack->currentElementCount == 0)
+		return (NULL);
+	return (pStack->pTopElement);
 }
 
-void deleteStack(Stack *pStack){
-    StackNode *pNode;
-    if (pStack == NULL) return;
-    while (isStackEmpty(pStack) != NULL){
-        pNode = pop(pStack);
-        free(pNode);
-    }
-    free(pStack);
+int isEmptyStack(Stack *pStack)
+{
+	if (!pStack)
+		return (FALSE);
+	return (!pStack->currentElementCount);
 }
 
-int isStackEmpty(Stack *pStack){
-    if (pStack == NULL) return FALSE;
-    if (pStack->currentElementCount == 0) return TRUE;
-    return FALSE;
+void deleteStack(Stack *pStack)
+{
+	StackNode	*delNode;
+	StackNode	*prevNode;
+
+	if (!pStack)
+		return ;
+	delNode = pStack->pTopElement;
+	while (delNode != NULL)
+	{
+		prevNode = delNode;
+		delNode = delNode->pLink;
+		free(prevNode);
+	}
+	free(pStack);
+}
+
+void	clearStack(Stack *pStack)
+{
+	StackNode	*delNode;
+	StackNode	*prevNode;
+
+	if (!pStack)
+		return ;
+	delNode = pStack->pTopElement;
+	while (delNode != NULL)
+	{
+		prevNode = delNode;
+		delNode = delNode->pLink;
+		free(prevNode);
+	}
+	pStack->pTopElement = NULL;
 }
