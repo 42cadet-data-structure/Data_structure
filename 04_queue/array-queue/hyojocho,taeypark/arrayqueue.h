@@ -8,6 +8,9 @@
 #define TRUE 1
 #define FALSE 0
 
+#include <stdlib.h>
+#include <string.h>
+
 typedef struct QueueNodeType {
     char data;
 } QueueNode;
