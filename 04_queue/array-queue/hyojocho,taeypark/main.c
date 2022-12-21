@@ -1,7 +1,13 @@
 #include "arrayqueue.h"
 #include <stdio.h>
 
+void	leaks(void)
+{
+	system("leaks a.out");
+}
+
 int main() {
+	atexit(leaks);
     Queue *pQueue = NULL;
     QueueNode node = {0,};
     pQueue = createQueue(5);
@@ -23,7 +29,7 @@ int main() {
         printf("%c ", dequeue(pQueue)->data);
         printf("%c ", dequeue(pQueue)->data);
         printf("%c ", dequeue(pQueue)->data);
-
+		deleteQueue(pQueue);
     }
     return 0;
 }
