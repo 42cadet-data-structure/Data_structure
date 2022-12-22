@@ -1,9 +1,9 @@
-//
-// Created by sanguk on 08/08/2017.
-//
-
 #ifndef LINKED_QUEUE_LINKEDQUEUE_H
 #define LINKED_QUEUE_LINKEDQUEUE_H
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #define TRUE 1
 #define FALSE 0

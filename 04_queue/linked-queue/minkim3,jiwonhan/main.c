@@ -33,6 +33,7 @@ int main() {
 
         printf("%c ", peek(pQueue)->data);
         printf("%c ", dequeue(pQueue)->data);
+
     }
     return 0;
 }
