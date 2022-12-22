@@ -1,9 +1,8 @@
-//
-// Created by sanguk on 08/08/2017.
-//
-
 #ifndef CIRCULAR_ARRAY_QUEUE_ARRAYQUEUE_H
 #define CIRCULAR_ARRAY_QUEUE_ARRAYQUEUE_H
+
+#include <stdio.h>
+#include <stdlib.h>
 
 #define TRUE 1
 #define FALSE 0
