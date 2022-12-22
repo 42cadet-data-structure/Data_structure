@@ -68,6 +68,8 @@ DequeNode *deleteFront(Deque *pDeque)
 	if (isDequeEmpty(pDeque) == TRUE)
 		return (NULL);
 	retnode = pDeque->pFrontNode;
+	/* 노드가 1개 남았을 때, 
+	retnode->pRLink(NULL)->pLLink를 참조할 때 발생하는 Segmentation Fault 방지 */
 	if (pDeque->currentElementCount != 1)
 		retnode->pRLink->pLLink = NULL;
 	pDeque->pFrontNode = retnode->pRLink;
@@ -83,6 +85,8 @@ DequeNode *deleteRear(Deque *pDeque)
 	if (isDequeEmpty(pDeque) == TRUE)
 		return (NULL);
 	retnode = pDeque->pRearNode;
+	/* 노드가 1개 남았을 때, 
+	retnode->pRLink(NULL)->pLLink를 참조할 때 발생하는 Segmentation Fault 방지 */
 	if (pDeque->currentElementCount != 1)
 		retnode->pLLink->pRLink = NULL;
 	pDeque->pRearNode = retnode->pLLink;
