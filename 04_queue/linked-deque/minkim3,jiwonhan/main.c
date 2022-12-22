@@ -8,6 +8,7 @@ int main() {
     if (pDeque != NULL){
         node.data = 'a';
         insertFront(pDeque, node);
+
         node.data = 'b';
         insertFront(pDeque, node);
 

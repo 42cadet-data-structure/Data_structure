@@ -1,9 +1,9 @@
-//
-// Created by sanguk on 08/08/2017.
-//
-
 #ifndef LINKED_DEQUE_LINKEDDEQUE_H
 #define LINKED_DEQUE_LINKEDDEQUE_H
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #define TRUE 1
 #define FALSE 0
