@@ -6,7 +6,7 @@
 /*   By: hyojocho <hyojocho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 13:23:42 by hyojocho          #+#    #+#             */
-/*   Updated: 2022/12/22 14:05:01 by hyojocho         ###   ########.fr       */
+/*   Updated: 2022/12/22 16:19:32 by hyojocho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ DequeNode *deleteFront(Deque *pDeque)
 	to_delete = pDeque->pFrontNode;
 	pDeque->pFrontNode = pDeque->pFrontNode->pRLink;
 	to_delete->pLLink = to_delete->pLLink = NULL;
+	if (pDeque->pFrontNode)
+		pDeque->pFrontNode->pLLink = NULL;
 	pDeque->currentElementCount--;
 	return (to_delete);
 }
@@ -83,6 +85,8 @@ DequeNode *deleteRear(Deque *pDeque)
 	to_delete = pDeque->pRearNode;
 	pDeque->pRearNode = pDeque->pRearNode->pLLink;
 	to_delete->pLLink = to_delete->pRLink = NULL;
+	if (pDeque->pRearNode)
+		pDeque->pRearNode->pRLink = NULL;
 	pDeque->currentElementCount--;
 	return (to_delete);
 }
