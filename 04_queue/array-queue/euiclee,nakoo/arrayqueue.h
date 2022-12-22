@@ -1,12 +1,12 @@
-//
-// Created by sanguk on 08/08/2017.
-//
-
 #ifndef ARRAY_QUEUE_ARRAYQUEUE_H
 #define ARRAY_QUEUE_ARRAYQUEUE_H
 
 #define TRUE 1
 #define FALSE 0
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 typedef struct QueueNodeType {
     char data;
