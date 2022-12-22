@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "linkeddeque.h"
 
 int main() {
@@ -12,6 +13,7 @@ int main() {
 
         node.data = 'x';
         insertRear(pDeque, node);
+
         node.data = 'y';
         insertRear(pDeque, node);
 
@@ -20,7 +22,6 @@ int main() {
 
         printf("%c ", peekFront(pDeque)->data);
         printf("%c ", peekRear(pDeque)->data);
-        return 0;
 
         printf("%c ", deleteFront(pDeque)->data);
         printf("%c ", deleteFront(pDeque)->data);

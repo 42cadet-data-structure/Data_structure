@@ -13,43 +13,50 @@ Deque *createDeque()
 
 int insertFront(Deque *pDeque, DequeNode element)
 {
-	DequeNode	*frontnode;
+	DequeNode	*newnode;
 
-	frontnode = (DequeNode *)malloc(sizeof(DequeNode));
-	if (!frontnode)
+	newnode = (DequeNode *)malloc(sizeof(DequeNode));
+	if (!newnode)
 		return (FALSE);
-	*frontnode = element;
-	if (isDequeEmpty(pDeque) == 1)
+	*newnode = element;
+	if (isDequeEmpty(pDeque) == TRUE)
 	{
-		pDeque->pRearNode = frontnode;
-		pDeque->pFrontNode = frontnode;
-		pDeque->pFrontNode->pLLink = NULL;
-		pDeque->pFrontNode->pRLink = NULL;
+		pDeque->pFrontNode = newnode;
+		pDeque->pRearNode = newnode;
+		newnode->pLLink = NULL;
+		newnode->pRLink = NULL;
 		pDeque->currentElementCount++;
 		return (TRUE);
 	}
-	pDeque->pFrontNode->pLLink = frontnode;
-	frontnode->pRLink = pDeque->pFrontNode;
-	frontnode->pLLink = NULL;
-	pDeque->pFrontNode = frontnode;
+	newnode->pRLink = pDeque->pFrontNode;
+	pDeque->pFrontNode->pLLink = newnode;
+	newnode->pLLink = NULL;
+	pDeque->pFrontNode = newnode;
 	pDeque->currentElementCount++;
 	return (TRUE);
 }
 
 int insertRear(Deque *pDeque, DequeNode element)
 {
-	DequeNode	*rearnode;
+	DequeNode	*newnode;
 
-	rearnode = (DequeNode *)malloc(sizeof(DequeNode));
-	if (!rearnode)
+	newnode = (DequeNode *)malloc(sizeof(DequeNode));
+	if (!newnode)
 		return (FALSE);
-	*rearnode = element;
-	pDeque->pRearNode->pRLink = rearnode;
-	rearnode->pLLink = pDeque->pRearNode;
-	rearnode->pRLink = NULL;
-	pDeque->pRearNode = rearnode;
-	if (isDequeEmpty(pDeque) == 1)
-		pDeque->pFrontNode = rearnode;
+	*newnode = element;
+	if (isDequeEmpty(pDeque) == TRUE)
+	{
+		pDeque->pFrontNode = newnode;
+		pDeque->pRearNode = newnode;
+		newnode->pLLink = NULL;
+		newnode->pRLink = NULL;
+		pDeque->currentElementCount++;
+		return (TRUE);
+	}
+	newnode->pLLink = pDeque->pRearNode;
+	pDeque->pRearNode->pRLink = newnode;
+	newnode->pRLink = NULL;
+	pDeque->pRearNode = newnode;
 	pDeque->currentElementCount++;
 	return (TRUE);
 }
@@ -58,12 +65,13 @@ DequeNode *deleteFront(Deque *pDeque)
 {
 	DequeNode	*retnode;
 
-	if (isDequeEmpty(pDeque) == 1)
+	if (isDequeEmpty(pDeque) == TRUE)
 		return (NULL);
 	retnode = pDeque->pFrontNode;
+	if (pDeque->currentElementCount != 1)
+		retnode->pRLink->pLLink = NULL;
 	pDeque->pFrontNode = retnode->pRLink;
 	retnode->pRLink = NULL;
-	pDeque->pFrontNode->pLLink = NULL;
 	pDeque->currentElementCount--;
 	return (retnode);
 }
@@ -72,26 +80,27 @@ DequeNode *deleteRear(Deque *pDeque)
 {
 	DequeNode	*retnode;
 
-	if (isDequeEmpty(pDeque) == 1)
+	if (isDequeEmpty(pDeque) == TRUE)
 		return (NULL);
 	retnode = pDeque->pRearNode;
+	if (pDeque->currentElementCount != 1)
+		retnode->pLLink->pRLink = NULL;
 	pDeque->pRearNode = retnode->pLLink;
-	retnode->pLLink = NULL;
-	pDeque->pRearNode->pRLink = NULL;
+	retnode->pRLink = NULL;
 	pDeque->currentElementCount--;
 	return (retnode);
 }
 
 DequeNode *peekFront(Deque *pDeque)
 {
-	if (isDequeEmpty(pDeque) == 1)
+	if (isDequeEmpty(pDeque) == TRUE)
 		return (NULL);
 	return (pDeque->pFrontNode);
 }
 
 DequeNode *peekRear(Deque *pDeque)
 {
-	if (isDequeEmpty(pDeque) == 1)
+	if (isDequeEmpty(pDeque) == TRUE)
 		return (NULL);
 	return (pDeque->pRearNode);
 }
