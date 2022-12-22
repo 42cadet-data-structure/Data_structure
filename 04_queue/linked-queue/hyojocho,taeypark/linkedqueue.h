@@ -7,6 +7,7 @@
 
 #define TRUE 1
 #define FALSE 0
+#include <stdlib.h>
 
 typedef struct QueueNodeType {
     char data;
