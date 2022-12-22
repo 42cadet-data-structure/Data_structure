@@ -1,5 +1,5 @@
-#ifndef ARRAY_QUEUE_ARRAYQUEUE_H
-#define ARRAY_QUEUE_ARRAYQUEUE_H
+#ifndef CIRCULAR_ARRAY_QUEUE_ARRAYQUEUE_H
+#define CIRCULAR_ARRAY_QUEUE_ARRAYQUEUE_H
 
 #define TRUE 1
 #define FALSE 0
@@ -20,9 +20,10 @@ typedef struct QueueType {
     QueueNode *pElement;
 } Queue;
 
+
 Queue *createQueue(int maxElementCount);
 
-int enqueue(Queue *pQueue, QueueNode node);
+int enqueue(Queue *pQueue, QueueNode element);
 
 QueueNode *dequeue(Queue *pQueue);
 
@@ -34,4 +35,4 @@ int isQueueFull(Queue *pQueue);
 
 int isQueueEmpty(Queue *pQueue);
 
-#endif //ARRAY_QUEUE_ARRAYQUEUE_H
+#endif //CIRCULAR_ARRAY_QUEUE_ARRAYQUEUE_H
