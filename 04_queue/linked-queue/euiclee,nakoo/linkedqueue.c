@@ -37,9 +37,6 @@ QueueNode *dequeue(Queue *pQueue)
 
 	if (isQueueEmpty(pQueue))
 		return (NULL);
-	delnode = (QueueNode *)malloc(sizeof(QueueNode));
-	if (!delnode)
-		return (NULL);
 	delnode = pQueue->pFrontNode;
 	pQueue->pFrontNode = delnode->pLink;
 	delnode->pLink = NULL;
@@ -57,6 +54,8 @@ void deleteQueue(Queue *pQueue)
 	while (pQueue->currentQueueCount)
 		free(dequeue(pQueue));
 	free(pQueue);
+	pQueue->pFrontNode = NULL;
+	pQueue->pRearNode = NULL;
 }
 
 int isQueueEmpty(Queue *pQueue)
