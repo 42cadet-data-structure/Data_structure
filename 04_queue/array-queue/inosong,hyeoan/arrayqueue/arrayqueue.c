@@ -40,7 +40,7 @@ int enqueue(Queue *pQueue, QueueNode node)
  
 int isQueueEmpty(Queue *pQueue)
 {
-	return (pQueue->currentElementCount <= 0);
+	return (pQueue->currentElementCount == 0);
 }
 
 QueueNode *dequeue(Queue *pQueue)
