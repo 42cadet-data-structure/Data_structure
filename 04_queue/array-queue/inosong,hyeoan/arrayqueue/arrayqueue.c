@@ -34,8 +34,9 @@ int enqueue(Queue *pQueue, QueueNode node)
 		pQueue->pElement[pQueue->currentElementCount] = node;
 		pQueue->currentElementCount++;
 		pQueue->rear = pQueue->currentElementCount - 1;
+		return (FALSE);
 	}
-	return (FALSE);
+	return (TRUE);
 }
  
 int isQueueEmpty(Queue *pQueue)
@@ -62,13 +63,16 @@ QueueNode *dequeue(Queue *pQueue)
 		}
 			pQueue->currentElementCount--;
 			pQueue->rear--;
+		return(ret);
 	}
-	return(ret);
+	return (NULL);
 }
 
 QueueNode *peek(Queue *pQueue)
 {
-	return (pQueue->pElement);
+	if (isQueueEmpty(pQueue) == FALSE)
+		return (pQueue->pElement);
+	return (NULL);
 }
 
 void deleteQueue(Queue *pQueue)
