@@ -6,7 +6,7 @@
 /*   By: hyojocho <hyojocho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 12:51:08 by hyojocho          #+#    #+#             */
-/*   Updated: 2022/12/27 12:09:35 by hyojocho         ###   ########.fr       */
+/*   Updated: 2022/12/27 12:51:34 by taeypark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ QueueNode *processServiceNodeEnd(int currentTime, QueueNode *pServiceNode,
 		pServiceNode->data.status = end;
 		pServiceNode->data.endTime = currentTime;
 		printSimCustomer(currentTime, pServiceNode->data);
-		(*pTotalWaitTime) += (pServiceNode->data.endTime - pServiceNode->data.startTime);
+		(*pTotalWaitTime) += (pServiceNode->data.startTime - pServiceNode->data.arrivalTime);
 		(*pServiceUserCount)++;
 		return (NULL);
 	}
@@ -92,6 +92,6 @@ void printReport(LinkedQueue *pWaitQueue,
 {
 	printf("REPORT\n");
 	printf("serviceUserCount : %d\n", serviceUserCount);
-	printf("Avg WaitTime : %lf\n", (double)totalWaitTime / pWaitQueue->currentElementCount);
+	printf("Avg WaitTime : %lf\n", (double)totalWaitTime / serviceUserCount);
 	printf("WaitQueueStatus : %d\n", pWaitQueue->currentElementCount);
 }
