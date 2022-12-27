@@ -1,6 +1,3 @@
-//
-// Created by sanguk on 11/08/2017.
-//
 
 #ifndef SIM_QUEUE_SIMDEF_H
 #define SIM_QUEUE_SIMDEF_H
