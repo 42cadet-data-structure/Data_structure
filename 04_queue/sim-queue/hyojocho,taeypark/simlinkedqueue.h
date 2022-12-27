@@ -7,6 +7,7 @@
 
 #define TRUE 1
 #define FALSE 0
+#include "simdef.h"
 
 typedef struct QueueNodeType {
     SimCustomer data;

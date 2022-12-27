@@ -2,7 +2,7 @@
 // Created by sanguk on 11/08/2017.
 //
 
-#import <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "simdef.h"

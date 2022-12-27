@@ -5,7 +5,6 @@
 #include "simutil.h"
 
 int main() {
-
     int currentTime = 0;
     int endTime = 10;
     int serviceUserCount = 0;

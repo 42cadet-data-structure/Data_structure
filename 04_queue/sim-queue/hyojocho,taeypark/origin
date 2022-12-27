@@ -1,0 +1,35 @@
+[0],도착
+[0],시작 arrivalTime : 0, waitTime : 0
+[0], WaitQueueStatus: 0
+[1],도착
+[1], WaitQueueStatus: 1
+[2],도착
+[2],도착
+[2], WaitQueueStatus: 3
+[3],도착
+[3],도착
+[3],종료 arrivalTime : 0, startTime : 0, waitTime : 0, totalTime : 3
+[3],시작 arrivalTime : 1, waitTime : 2
+[3], WaitQueueStatus: 4
+[4],도착
+[4],종료 arrivalTime : 1, startTime : 3, waitTime : 2, totalTime : 1
+[4],시작 arrivalTime : 2, waitTime : 2
+[4], WaitQueueStatus: 4
+[5],도착
+[5],종료 arrivalTime : 2, startTime : 4, waitTime : 2, totalTime : 1
+[5],시작 arrivalTime : 2, waitTime : 3
+[5], WaitQueueStatus: 4
+[6],도착
+[6], WaitQueueStatus: 5
+[7],종료 arrivalTime : 2, startTime : 5, waitTime : 3, totalTime : 2
+[7],시작 arrivalTime : 3, waitTime : 4
+[7], WaitQueueStatus: 4
+[8],도착
+[8], WaitQueueStatus: 5
+[9],종료 arrivalTime : 3, startTime : 7, waitTime : 4, totalTime : 2
+[9],시작 arrivalTime : 3, waitTime : 6
+[9], WaitQueueStatus: 4
+REPORT
+serviceUserCount : 5
+Avg WaitTime : 1.800000
+WaitQueueStatus : 4

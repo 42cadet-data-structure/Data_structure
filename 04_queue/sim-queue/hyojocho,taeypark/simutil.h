@@ -4,6 +4,8 @@
 
 #ifndef SIM_QUEUE_SIMUTIL_H
 #define SIM_QUEUE_SIMUTIL_H
+#include "simlinkedqueue.h"
+#include "simdef.h"
 
 void insertCutomer(int arrivalTime, int processTime, LinkedQueue *pQueue);
 
