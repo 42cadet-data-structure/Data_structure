@@ -1,127 +1,80 @@
-//
-// Created by sanguk on 11/08/2017.
-//
-
-#import <stdio.h>
-#include <stdlib.h>
 #include "simdef.h"
 #include "simlinkedqueue.h"
 #include "simutil.h"
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
 
+void insertCutomer(int arrivalTime, int processTime, LinkedQueue *pQueue)
+{
+	/* 도착 큐에 도착 시간과 서비스 시간 데이터를 가진 고객들을 차곡차곡 넣는다. */
+	QueueNode	newnode;
 
-void insertCutomer(int arrivalTime, int serviceTime, LinkedQueue *pQueue) {
-    SimCustomer simCustomer = {0,};
-    QueueNode node = {0,};
-    if (pQueue == NULL) return;
-    simCustomer.status = arrival;
-    simCustomer.arrivalTime = arrivalTime;
-    simCustomer.serviceTime = serviceTime;
-    simCustomer.endTime = 0;
-    simCustomer.startTime = 0;
-    node.data = simCustomer;
-    enqueueLQ(pQueue, node);
+	memset(&newnode, 0, sizeof(QueueNode));
+	newnode.data.arrivalTime = arrivalTime;
+	newnode.data.serviceTime = processTime;
+	enqueueLQ(pQueue, newnode);
 }
 
-void processArrival(int currentTime, LinkedQueue *pArrivalQueue, LinkedQueue *pWaitQueue) {
-    QueueNode *pNode = NULL;
-    int isEmpty = 0;
-    if (pArrivalQueue == NULL || pWaitQueue == NULL) return;
-    isEmpty = isLinkedQueueEmpty(pArrivalQueue);
-    while (isEmpty == FALSE) {
-        pNode = peekLQ(pArrivalQueue);
-        if (pNode->data.arrivalTime == currentTime) {
-            pNode = dequeueLQ(pArrivalQueue);
-            enqueueLQ(pWaitQueue, *pNode);
-            printSimCustomer(currentTime, pNode->data);
-            free(pNode);
-        } else {
-            break;
-        }
-        isEmpty = isLinkedQueueEmpty(pArrivalQueue);
-    }
+void processArrival(int currentTime, LinkedQueue *pArrivalQueue, LinkedQueue *pWaitQueue)
+{
+	/* 현재 시각과 도착 시각과 비교하여 도착 큐에서 dequeue하여 대기 큐에 enqueue 한다. */
+	QueueNode	*tmpnode;
+
+	while (isLinkedQueueEmpty(pArrivalQueue) == FALSE && currentTime == peekLQ(pArrivalQueue)->data.arrivalTime)
+	{
+		tmpnode = dequeueLQ(pArrivalQueue);
+		enqueueLQ(pWaitQueue, *tmpnode);
+		printSimCustomer(currentTime, tmpnode->data);
+		free(tmpnode);
+	}
 }
 
-QueueNode *processServiceNodeStart(int currentTime, LinkedQueue *pWaitQueue) {
-    QueueNode *pNode = NULL;
-    if (pWaitQueue == NULL) return NULL;
-    if (isLinkedQueueEmpty(pWaitQueue) == TRUE) return NULL;
-    pNode = dequeueLQ(pWaitQueue);
-    if (pNode->data.status == arrival) {
-        pNode->data.status = start;
-        pNode->data.startTime = currentTime;
-        printSimCustomer(currentTime, pNode->data);
-    }
-    return pNode;
+QueueNode *processServiceNodeStart(int currentTime, LinkedQueue *pWaitQueue)
+{
+	/* 새로운 고객 서비스를 시작하는 함수로 현재 서비스 중인 고객 노드가 없다면,
+	고객 대기 큐에서 dequeue하여 서비스 노드에 대입한다*/
+	pWaitQueue->pFrontNode->data.startTime = currentTime;
+	printf("[%d] - 시작 arrivalTime : %d, waitTime : %d\n",
+	currentTime, pWaitQueue->pFrontNode->data.arrivalTime, currentTime - pWaitQueue->pFrontNode->data.arrivalTime);
+	return (dequeueLQ(pWaitQueue));
 }
 
 QueueNode *processServiceNodeEnd(int currentTime, QueueNode *pServiceNode,
-                                 int *pServiceUserCount, int *pTotalWaitTime) {
-    int endTime = 0;
-    int waitTime = 0;
-    QueueNode *pReturn = NULL;
-
-    if (pServiceNode == NULL || pServiceUserCount == NULL
-        || pTotalWaitTime == NULL) {
-        return NULL;
-    }
-
-    endTime = pServiceNode->data.startTime + pServiceNode->data.serviceTime;
-    if (endTime <= currentTime) {
-        waitTime = pServiceNode->data.startTime - pServiceNode->data.arrivalTime;
-        (*pServiceUserCount)++;
-        (*pTotalWaitTime) += waitTime;
-
-        pServiceNode->data.status = end;
-        pServiceNode->data.endTime = currentTime;
-        printSimCustomer(currentTime, pServiceNode->data);
-
-        free(pServiceNode);
-        pReturn = NULL;
-    } else {
-        pReturn = pServiceNode;
-    }
-
-    return pReturn;
-
+                                 int *pServiceUserCount, int *pTotalWaitTime)
+{
+	/* 서비스 중인 고객 노드가 존재한다면, 해당 고객의 서비스 종료 시점과 비교하여 종료 시점이면 NULL을 반환한다.*/ 
+	if (currentTime == pServiceNode->data.startTime + pServiceNode->data.serviceTime)
+	{
+		(*pServiceUserCount)++;
+		pServiceNode->data.endTime = currentTime;
+		(*pTotalWaitTime) += pServiceNode->data.startTime - pServiceNode->data.arrivalTime;
+		printf("[%d] - 종료 arrivalTime : %d, startTime : %d, waitTime : %d, totalTime : %d\n",
+		currentTime, pServiceNode->data.arrivalTime, pServiceNode->data.startTime, pServiceNode->data.startTime - pServiceNode->data.arrivalTime, pServiceNode->data.serviceTime);
+		return (NULL);
+	}
+	return (pServiceNode);
 }
 
-void printSimCustomer(int currentTime, SimCustomer customer) {
-    printf("[%d],", currentTime);
+void printSimCustomer(int currentTime, SimCustomer customer)
+{
+	char	*str[3] = {"도착", "시작", "종료"};
 
-    switch (customer.status) {
-        case arrival:
-            printf("도착\n");
-            break;
-        case start:
-            printf("시작 ");
-            printf("arrivalTime : %d‚ waitTime : %d\n", customer.arrivalTime,
-                   (customer.startTime - customer.arrivalTime));
-            break;
-        case end:
-            printf("종료 ");
-            printf("arrivalTime : %d, startTime : %d, waitTime : %d, totalTime : %d\n",
-                   customer.arrivalTime, customer.startTime,
-                   customer.startTime - customer.arrivalTime,
-                   customer.endTime - customer.startTime);
-            break;
-    }
+	printf("[%d] - %s\n", currentTime, str[customer.status]);
 }
 
-void printWaitQueueStatus(int currentTime, LinkedQueue *pWaitQueue) {
-    printf("[%d],WaitQueueStatus: %d\n",
-           currentTime,
-           pWaitQueue->currentElementCount);
+void printWaitQueueStatus(int currentTime, LinkedQueue *pWaitQueue)
+{
+	printf("[%d] - WaitQueueStatus : %d\n", currentTime, pWaitQueue->currentElementCount);
 }
 
 void printReport(LinkedQueue *pWaitQueue,
                  int serviceUserCount,
-                 int totalWaitTime) {
-    printf("REPORT\n");
-    printf("serviceUserCount : %d\n", serviceUserCount);
-    if (serviceUserCount > 0) {
-        printf("Avg WaitTime : %f\n",
-               ((float) totalWaitTime / (float) serviceUserCount));
-    }
-    printf("WaitQueueStatus : %d\n",
-           pWaitQueue->currentElementCount);
+                 int totalWaitTime)
+{
+	printf("REPORT\n");
+	printf("serviceUserCount : %d\n", serviceUserCount);
+	printf("waitTime : %lf\n", (float)totalWaitTime);
+	printf("Avg WaitTime : %f\n", (float)totalWaitTime / (float)serviceUserCount);
+	printf("WaitQueueStatus : %d\n", pWaitQueue->currentElementCount);
 }
