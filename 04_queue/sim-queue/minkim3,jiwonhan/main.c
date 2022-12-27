@@ -10,7 +10,10 @@ int main() {
 	int endTime = 10;
 	int serviceUserCount = 0;
 	int totalWaitTime = 0;
+	int	maxUserCount = 0;
 
+	printf("end time? maxUserCount? \n");
+	scanf("%d %d", &endTime, &maxUserCount);
 	LinkedQueue *pArrivalQueue = NULL, *pWaitQueue = NULL;
 	QueueNode *pServiceNode1 = NULL;
 
@@ -21,7 +24,14 @@ int main() {
 		return FALSE;
 	}
 
-	insertCutomer(0, 3, pArrivalQueue);
+	int arrival, process;
+	for (int i=0;i < maxUserCount; i++)
+	{
+		printf("arrival time? process time?\n");
+		scanf("%d %d", &arrival, &process);
+		insertCutomer(arrival, process, pArrivalQueue);
+	}
+	/*insertCutomer(0, 3, pArrivalQueue);
 	insertCutomer(1, 1, pArrivalQueue);
 	insertCutomer(2, 1, pArrivalQueue);
 	insertCutomer(2, 2, pArrivalQueue);
@@ -30,7 +40,7 @@ int main() {
 	insertCutomer(4, 5, pArrivalQueue);
 	insertCutomer(5, 1, pArrivalQueue);
 	insertCutomer(6, 2, pArrivalQueue);
-	insertCutomer(8, 3, pArrivalQueue);
+	insertCutomer(8, 3, pArrivalQueue);*/
 
 	for (currentTime = 0; currentTime < endTime; currentTime++) {
 		processArrival(currentTime, pArrivalQueue, pWaitQueue);
