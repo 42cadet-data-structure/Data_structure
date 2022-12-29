@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "bintree.h"
 
 int main() {
@@ -20,6 +19,9 @@ int main() {
         printf("%c ", getRightChildNodeBT(pRootNode)->data);
 
         deleteBinTree(pBinTree);
+	    printf("%c ", pRootNode->data);
+        printf("%c ", getLeftChildNodeBT(pRootNode)->data);
+        printf("%c ", getRightChildNodeBT(pRootNode)->data);
     }
 
     return 0;

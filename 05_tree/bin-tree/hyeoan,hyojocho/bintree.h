@@ -8,6 +8,10 @@
 #define TRUE 1
 #define FALSE 0
 
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+
 typedef struct BinTreeNodeType{
     char data;
     struct BinTreeNodeType *pLeftChild;
