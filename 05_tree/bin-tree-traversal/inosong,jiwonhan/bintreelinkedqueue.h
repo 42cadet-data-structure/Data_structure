@@ -1,10 +1,8 @@
-//
-// Created by sanguk on 09/08/2017.
-//
-
 #ifndef BIN_TREE_TRAVERSAL_BINTREELINKEDQUEUE_H
 #define BIN_TREE_TRAVERSAL_BINTREELINKEDQUEUE_H
 
+#include <stdlib.h>
+#include "bintree.h"
 
 typedef struct QueueNodeType {
     BinTreeNode *data;
