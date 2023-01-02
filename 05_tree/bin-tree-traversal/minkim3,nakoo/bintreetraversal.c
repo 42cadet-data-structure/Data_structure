@@ -58,15 +58,21 @@ void inorderTraversalBinTree(BinTree *pBinTree) {
     pStack = createLinkedStack();
     if (pStack == NULL) return;
     pNode = getRootNodeBT(pBinTree);
-    while (1) {
-        for (; pNode != NULL; pNode = getLeftChildNodeBT(pNode)) {
+    while (1) 
+    {
+        for (; pNode != NULL; pNode = getLeftChildNodeBT(pNode)) 
+        {
             pushLSBinTreeNode(pStack, pNode);
         }
-        if (isLinkedStackEmpty(pStack) == TRUE) {
+        if (isLinkedStackEmpty(pStack) == TRUE) 
+        {
             break;
-        } else {
+        }
+        else 
+        {
             pStackNode = popLS(pStack);
-            if (pStackNode != NULL) {
+            if (pStackNode != NULL) 
+            {
                 pNode = pStackNode->data;
                 printf("%c ", pNode->data);
                 pNode = getRightChildNodeBT(pNode);
