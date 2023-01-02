@@ -1,80 +1,88 @@
-//
-// Created by sanguk on 09/08/2017.
-//
-
-#include <stdio.h>
+#include "bintree.h"
 #include <stdlib.h>
 #include <string.h>
-#include "bintree.h"
 
+BinTree* makeBinTree(BinTreeNode rootNode)
+{
+	BinTree	*tree;
+	BinTreeNode *root;
 
-BinTree *makeBinTree(BinTreeNode rootNode) {
-    BinTree *pReturn = (BinTree *) malloc(sizeof(BinTree));
-    if (pReturn == NULL) return NULL;
-    memset(pReturn, 0, sizeof(BinTree));
-    pReturn->pRootNode = (BinTreeNode *) malloc(sizeof(BinTreeNode));
-    if (pReturn->pRootNode == NULL) {
-        free(pReturn);
-        return NULL;
-    }
-    *pReturn->pRootNode = rootNode;
-    pReturn->pRootNode->pLeftChild = NULL;
-    pReturn->pRootNode->pRightChild = NULL;
-    return pReturn;
+	tree = (BinTree *)malloc(sizeof(BinTree));
+	if (!tree)
+		return (NULL);
+	root = (BinTreeNode *)malloc(sizeof(BinTreeNode));
+	if (!root)
+		return (NULL);
+	memset(root, 0, sizeof(BinTreeNode));
+	*root = rootNode;
+	tree->pRootNode = root;
+	return (tree);
 }
 
-BinTreeNode *getRootNodeBT(BinTree *pBinTree) {
-    if (pBinTree == NULL) return NULL;
-    return pBinTree->pRootNode;
+BinTreeNode* getRootNodeBT(BinTree* pBinTree)
+{
+	if (pBinTree == NULL)
+		return (NULL);
+	return (pBinTree->pRootNode);
 }
 
-BinTreeNode *insertLeftChildNodeBT(BinTreeNode *pParentNode, BinTreeNode element) {
-    BinTreeNode *pNewNode = NULL;
-    if (pParentNode == NULL) return NULL;
-    if (pParentNode->pLeftChild != NULL) return NULL;
-    pNewNode = (BinTreeNode *) malloc(sizeof(BinTreeNode));
-    if (pNewNode == NULL) return NULL;
-    *pNewNode = element;
-    pNewNode->pLeftChild = NULL;
-    pNewNode->pRightChild = NULL;
-    pParentNode->pLeftChild = pNewNode;
-    return pNewNode;
+BinTreeNode* insertLeftChildNodeBT(BinTreeNode* pParentNode, BinTreeNode element)
+{
+	BinTreeNode *new;
+	
+	if (pParentNode == NULL || pParentNode->pLeftChild != NULL)
+		return (NULL);
+	new = (BinTreeNode *)malloc(sizeof(BinTreeNode));
+	if (!new)
+		return (NULL);
+	memset(new, 0, sizeof(BinTreeNode));
+	*new = element;
+	pParentNode->pLeftChild = new;
+	return (new);
 }
 
-BinTreeNode *insertRightChildNodeBT(BinTreeNode *pParentNode, BinTreeNode element) {
-    BinTreeNode *pNewNode = NULL;
-    if (pParentNode == NULL) return NULL;
-    if (pParentNode->pRightChild != NULL) return NULL;
-    pNewNode = (BinTreeNode *) malloc(sizeof(BinTreeNode));
-    if (pNewNode == NULL) return NULL;
-    *pNewNode = element;
-    pNewNode->pLeftChild = NULL;
-    pNewNode->pRightChild = NULL;
-    pParentNode->pRightChild = pNewNode;
-    return pNewNode;
+BinTreeNode* insertRightChildNodeBT(BinTreeNode* pParentNode, BinTreeNode element)
+{
+	BinTreeNode *new;
+
+	if (pParentNode == NULL || pParentNode->pRightChild != NULL)
+		return (NULL);
+	new = (BinTreeNode *)malloc(sizeof(BinTreeNode));
+	if (!new)
+		return (NULL);
+	memset(new, 0, sizeof(BinTreeNode));
+	*new = element;
+	pParentNode->pRightChild = new;
+	return (new);
 }
 
-BinTreeNode *getLeftChildNodeBT(BinTreeNode *pNode) {
-    if (pNode == NULL) return NULL;
-    if (pNode->pLeftChild == NULL) return NULL;
-    return pNode->pLeftChild;
+BinTreeNode* getLeftChildNodeBT(BinTreeNode* pNode)
+{
+	if (!pNode)
+		return (NULL);
+	return (pNode->pLeftChild);
 }
 
-BinTreeNode *getRightChildNodeBT(BinTreeNode *pNode) {
-    if (pNode == NULL) return NULL;
-    if (pNode->pRightChild == NULL) return NULL;
-    return pNode->pRightChild;
+BinTreeNode* getRightChildNodeBT(BinTreeNode* pNode)
+{
+	if (!pNode)
+		return (NULL);
+	return (pNode->pRightChild);
 }
 
-void deleteBinTree(BinTree *pBinTree) {
-    if (pBinTree == NULL) return;
-    deleteBinTreeNode(pBinTree->pRootNode);
-    free(pBinTree);
+void deleteBinTree(BinTree* pBinTree)
+{
+	if (pBinTree == NULL)
+		return ;
+	deleteBinTreeNode(pBinTree->pRootNode);
+	free(pBinTree);
 }
 
-void deleteBinTreeNode(BinTreeNode *pNode) {
-    if (pNode == NULL) return;
-    deleteBinTreeNode(pNode->pLeftChild);
-    deleteBinTreeNode(pNode->pRightChild);
-    free(pNode);
+void deleteBinTreeNode(BinTreeNode *pNode)
+{
+	if (pNode == NULL)
+		return ;
+	deleteBinTreeNode(pNode->pLeftChild);
+	deleteBinTreeNode(pNode->pRightChild);
+	free(pNode);
 }
