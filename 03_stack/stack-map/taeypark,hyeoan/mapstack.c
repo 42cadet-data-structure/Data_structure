@@ -1,10 +1,8 @@
-//
-// Created by sanguk on 07/08/2017.
-//
+#include "mapdef.h"
+#include "mapstack.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "linkedstack.h"
 
 
 Stack *createStack()
@@ -22,7 +20,8 @@ Stack *createStack()
 int push(Stack *pStack, StackNode node)
 {
 	StackNode	*new_node;
-	new_node = (StackNode *)malloc(sizeof(StackNode));
+
+    new_node = (StackNode *)malloc(sizeof(StackNode));
 	if (new_node == NULL)
 		return (FALSE);
 	*new_node = node;
