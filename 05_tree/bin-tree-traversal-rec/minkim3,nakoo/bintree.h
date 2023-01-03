@@ -10,12 +10,12 @@
 
 typedef struct BinTreeNodeType {
     char data;
-    struct BinTreeNodeType *pLeftNode;
-    struct BinTreeNodeType *pRightNode;
+    struct BinTreeNodeType *leftnode;
+    struct BinTreeNodeType *rightnode;
 } BinTreeNode;
 
 typedef struct BinTreeType {
-    BinTreeNode *pRootNode;
+    BinTreeNode *rootnode;
 } BinTree;
 
 BinTree *createBinTree(BinTreeNode node);
