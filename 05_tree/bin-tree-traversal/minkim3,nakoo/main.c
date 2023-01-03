@@ -70,8 +70,8 @@ int main() {
         printf("\nPostorder Iterative Traversal\n");
         postorderTraversalBinTree(pBinTree);
 
-        // printf("\nLevel Iterative Traversal\n");
-        // levelOrderTraversalBinTree(pBinTree);
+        printf("\nLevel Iterative Traversal\n");
+        levelOrderTraversalBinTree(pBinTree);
 
         deleteBinTree(pBinTree);
     }
