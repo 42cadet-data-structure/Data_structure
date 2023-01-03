@@ -4,6 +4,7 @@
 		"stdio.h": "c",
 		"arrayqueue.h": "c",
 		"__node_handle": "c",
-		"stdlib.h": "c"
+		"stdlib.h": "c",
+		"bintreetraversalrec.h": "c"
 	}
 }

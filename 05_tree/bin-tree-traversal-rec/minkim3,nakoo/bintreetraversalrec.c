@@ -1,40 +1,45 @@
-//
-// Created by sanguk on 09/08/2017.
-//
-
 #include <stdio.h>
 #include "bintree.h"
 #include "bintreetraversalrec.h"
 
-void preorderTraversalRecursiveBinTree(BinTree *pBinTree) {
-    preorderTraversalRecursiveBinTreeNode(pBinTree->pRootNode);
+void preorderTraversalRecursiveBinTree(BinTree *pBinTree) 
+{
+    preorderTraversalRecursiveBinTreeNode(pBinTree->rootnode);
 }
 
-void preorderTraversalRecursiveBinTreeNode(BinTreeNode *pRootNode) {
-    if (pRootNode == NULL) return;
-    printf("%c ", pRootNode->data);
-    preorderTraversalRecursiveBinTreeNode(pRootNode->pLeftNode);
-    preorderTraversalRecursiveBinTreeNode(pRootNode->pRightNode);
+void preorderTraversalRecursiveBinTreeNode(BinTreeNode *rootnode) 
+{
+    if (rootnode == NULL) 
+        return ;
+    printf("%c ", rootnode->data);
+    preorderTraversalRecursiveBinTreeNode(rootnode->leftnode);
+    preorderTraversalRecursiveBinTreeNode(rootnode->rightnode);
 }
 
-void inorderTraversalRecursiveBinTree(BinTree *pBinTree) {
-    inorderTraversalRecursiveBinTreeNode(pBinTree->pRootNode);
+void inorderTraversalRecursiveBinTree(BinTree *pBinTree) 
+{
+    inorderTraversalRecursiveBinTreeNode(pBinTree->rootnode);
 }
 
-void inorderTraversalRecursiveBinTreeNode(BinTreeNode *pRootNode) {
-    if (pRootNode == NULL) return;
-    inorderTraversalRecursiveBinTreeNode(pRootNode->pLeftNode);
-    printf("%c ", pRootNode->data);
-    inorderTraversalRecursiveBinTreeNode(pRootNode->pRightNode);
+void inorderTraversalRecursiveBinTreeNode(BinTreeNode *rootnode) 
+{
+    if (rootnode == NULL) 
+        return ;
+    inorderTraversalRecursiveBinTreeNode(rootnode->leftnode);
+    printf("%c ", rootnode->data);
+    inorderTraversalRecursiveBinTreeNode(rootnode->rightnode);
 }
 
-void postorderTraversalRecursiveBinTree(BinTree *pBinTree) {
-    postorderTraversalRecursiveBinTreeNode(pBinTree->pRootNode);
+void postorderTraversalRecursiveBinTree(BinTree *pBinTree) 
+{
+    postorderTraversalRecursiveBinTreeNode(pBinTree->rootnode);
 }
 
-void postorderTraversalRecursiveBinTreeNode(BinTreeNode *pRootNode) {
-    if (pRootNode == NULL) return;
-    postorderTraversalRecursiveBinTreeNode(pRootNode->pLeftNode);
-    postorderTraversalRecursiveBinTreeNode(pRootNode->pRightNode);
-    printf("%c ", pRootNode->data);
+void postorderTraversalRecursiveBinTreeNode(BinTreeNode *rootnode) 
+{
+    if (rootnode == NULL) 
+        return ;
+    postorderTraversalRecursiveBinTreeNode(rootnode->leftnode);
+    postorderTraversalRecursiveBinTreeNode(rootnode->rightnode);
+    printf("%c ", rootnode->data);
 }
