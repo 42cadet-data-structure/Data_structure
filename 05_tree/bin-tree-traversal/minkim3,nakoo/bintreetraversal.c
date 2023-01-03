@@ -94,16 +94,23 @@ void postorderTraversalBinTree(BinTree *pBinTree) {
     pushLSBinTreeNode(pStack, getRootNodeBT(pBinTree));
     while (isEmpty == FALSE) {
         pStackNode = peekLS(pStack);
-        if (pStackNode != NULL) {
+        if (pStackNode != NULL) 
+        {
             pRootNode = pStackNode->data;
             pLeftChildNode = getLeftChildNodeBT(pRootNode);
-            if (pLeftChildNode != NULL && pLeftChildNode->visited == FALSE) {
+            if (pLeftChildNode != NULL && pLeftChildNode->visited == FALSE) 
+            {
                 pushLSBinTreeNode(pStack, pLeftChildNode);
-            } else {
+            } 
+            else 
+            {
                 pRightChildNode = getRightChildNodeBT(pRootNode);
-                if (pRightChildNode != NULL && pRightChildNode->visited == FALSE) {
+                if (pRightChildNode != NULL && pRightChildNode->visited == FALSE) 
+                {
                     pushLSBinTreeNode(pStack, pRightChildNode);
-                } else {
+                } 
+                else 
+                {
                     pRootNode->visited = TRUE;
                     printf("%c ", pRootNode->data);
                     free(popLS(pStack));

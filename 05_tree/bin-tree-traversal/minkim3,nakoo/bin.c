@@ -90,8 +90,8 @@ void inorderTraversalBinTree(BinTree *pBinTree)
 void postorderTraversalBinTree(BinTree *pBinTree)
 {
 	LinkedStack *linked_stack;
-	StackNode *stack_node;
-	BinTreeNode *rootnode = NULL, *leftnode = NULL, *rightnode = NULL;
+	StackNode *stack_node = NULL;
+	BinTreeNode *pnode = NULL;
 
 	if (!pBinTree)
 		return ;
@@ -101,15 +101,27 @@ void postorderTraversalBinTree(BinTree *pBinTree)
 	pushLSBinTreeNode(linked_stack, getRootNodeBT(pBinTree));
 	while (isLinkedStackEmpty(linked_stack) == FALSE)
 	{
-		stack_node = popLS(linked_stack);
-		rootnode = stack_node->data;
-		printf("%c ",rootnode->data);
-		leftnode =  getLeftChildNodeBT(rootnode);
-		rightnode = getRightChildNodeBT(rootnode);
-		if (rightnode != NULL)
-			pushLSBinTreeNode(linked_stack, rightnode);
-		if (leftnode != NULL)
-			pushLSBinTreeNode(linked_stack, leftnode);
-		free(stack_node);
+		while (pnode != NULL && pnode->visited == NOT_VISITED)
+		{
+			pnode->visited = VISITED;
+			pushLSBinTreeNode(linked_stack, pnode);
+			pnode = getRightChildNodeBT(pnode);
+		}
+		if
+		{
+			stack_node = popLS(linked_stack);
+			if (stack_node != NULL)
+			{
+				pnode = getLeftChildNodeBT(pnode);
+				pnode->visited = VISITED;
+				pushLSBinTreeNode(linked_stack, pnode);
+				free(stack_node);
+			}
+		}
 	}
+	deleteLinkedStack(linked_stack);
+}
+
+void levelOrderTraversalBinTree(BinTree *pBinTree)
+{
 }

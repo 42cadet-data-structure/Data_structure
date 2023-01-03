@@ -41,5 +41,7 @@ void deleteBinTreeNode(BinTreeNode *pNode);
 
 #define TRUE        1
 #define FALSE        0
+#define VISITED 1
+#define NOT_VISITED 0
 
 #endif
