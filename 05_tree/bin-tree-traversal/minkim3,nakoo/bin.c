@@ -53,27 +53,38 @@ void preorderTraversalBinTree(BinTree *pBinTree)
 void inorderTraversalBinTree(BinTree *pBinTree)
 {
 	LinkedStack *linked_stack;
-	StackNode *stack_node;
-	BinTreeNode *rootnode = NULL, *leftnode = NULL, *rightnode = NULL;
+	StackNode *stack_node = NULL;
+	BinTreeNode *pnode = NULL;
 
 	if (!pBinTree)
 		return ;
 	linked_stack = createLinkedStack();
 	if (!linked_stack)
 		return ;
-	rootnode = getRootNodeBT(pBinTree);
-    for (; rootnode != NULL; rootnode = getLeftChildNodeBT(rootnode)) 
-    {
-        pushLSBinTreeNode(linked_stack, rootnode);
-    }
-	while (isLinkedStackEmpty(linked_stack) == FALSE)
+	pnode = getRootNodeBT(pBinTree);
+	while (TRUE)
 	{
-		stack_node = popLS(linked_stack);
-		rootnode = stack_node->data;
-		printf("%c ", rootnode->data);
-		rootnode = getRightChildNodeBT(rootnode);
-		free(stack_node);
+		/* 무조건 왼쪽 아래까지 내려간다 */
+		while (pnode != NULL)
+		{
+			pushLSBinTreeNode(linked_stack, pnode);
+			pnode = getLeftChildNodeBT(pnode);
+		}
+		if (isLinkedStackEmpty(linked_stack) == TRUE)
+			break ;
+		else
+		{
+			stack_node = popLS(linked_stack);
+			if (stack_node != NULL)
+			{
+				pnode = stack_node->data;
+				printf("%c ", pnode->data);
+				pnode = getRightChildNodeBT(pnode);
+				free(stack_node);
+			}
+		}
 	}
+	deleteLinkedStack(linked_stack);
 }
 
 void postorderTraversalBinTree(BinTree *pBinTree)
