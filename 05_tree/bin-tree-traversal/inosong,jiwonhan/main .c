@@ -67,13 +67,13 @@ int main() {
         printf("\nInorder Iterative Traversal\n");
         inorderTraversalBinTree(pBinTree);
 
-        // printf("\nPostorder Iterative Traversal\n");
-        // postorderTraversalBinTree(pBinTree);
+        printf("\nPostorder Iterative Traversal\n");
+        postorderTraversalBinTree(pBinTree);
 
-        // printf("\nLevel Iterative Traversal\n");
-        // levelOrderTraversalBinTree(pBinTree);
+        printf("\nLevel Iterative Traversal\n");
+        levelOrderTraversalBinTree(pBinTree);
 
-        // deleteBinTree(pBinTree);
+        deleteBinTree(pBinTree);
     }
 
     return 0;
