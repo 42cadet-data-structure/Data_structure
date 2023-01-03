@@ -4,6 +4,7 @@
 
 #ifndef BIN_TREE_TRAVERSAL_BINTREETRAVERSAL_H
 #define BIN_TREE_TRAVERSAL_BINTREETRAVERSAL_H
+#include <stdlib.h>
 
 void preorderTraversalBinTree(BinTree *pBinTree);
 
