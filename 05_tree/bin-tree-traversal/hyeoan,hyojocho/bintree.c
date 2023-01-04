@@ -8,13 +8,7 @@
 #include "bintree.h"
 
 BinTree *makeBinTree(BinTreeNode rootNode) {
-    BinTree *pBinTree = (BinTree *) malloc(sizeof(BinTree));
-    if (pBinTree == NULL) return NULL;
     pBinTree->pRootNode = (BinTreeNode *) malloc(sizeof(BinTreeNode));
-    if (pBinTree->pRootNode == NULL) {
-        free(pBinTree);
-        return NULL;
-    }
     memset(pBinTree->pRootNode, 0, sizeof(BinTreeNode));
     *(pBinTree->pRootNode) = rootNode;
     pBinTree->pRootNode->pLeftChild = NULL;
@@ -28,9 +22,9 @@ BinTreeNode *getRootNodeBT(BinTree *pBinTree) {
 }
 
 BinTreeNode *insertLeftChildNodeBT(BinTreeNode *pParentNode, BinTreeNode element) {
-    if (pParentNode == NULL || pParentNode->pLeftChild != NULL) return NULL;
     pParentNode->pLeftChild = (BinTreeNode *) malloc(sizeof(BinTreeNode));
     if (pParentNode->pLeftChild == NULL) return NULL;
+    
     *(pParentNode->pLeftChild) = element;
     pParentNode->pLeftChild->pLeftChild = NULL;
     pParentNode->pLeftChild->pRightChild = NULL;
