@@ -5,6 +5,10 @@
 #ifndef ARRAY_HEAP_ARRAY_HEAP_H
 #define ARRAY_HEAP_ARRAY_HEAP_H
 
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+
 #define TRUE 1
 #define FALSE 0
 

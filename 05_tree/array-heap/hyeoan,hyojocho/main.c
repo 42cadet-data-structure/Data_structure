@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "arrayheap.h"
 
+
 void displayArrayHeap(ArrayMaxHeap *pHeap) {
     int i = 0;
     if (pHeap != NULL) {
