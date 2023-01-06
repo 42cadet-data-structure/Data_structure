@@ -12,46 +12,37 @@ BinSearchTree *createBinSearchTree() {
     return pReturn;
 }
 
-int insertElementBST(BinSearchTree *pBinSearchTree, BinSearchTreeNode element) {
-    BinSearchTreeNode *pParentNode = NULL;
-    BinSearchTreeNode *pNewNode = NULL;
-    if (pBinSearchTree == NULL) return FALSE;
-    pParentNode = pBinSearchTree->pRootNode;
-    while (pParentNode != NULL) {
-        if (pParentNode->key == element.key) {
-            return FALSE;
-        }
-        if (pParentNode->key < element.key) {
-            if (pParentNode->pRightChild == NULL) {
-                break;
-            } else {
-                pParentNode = pParentNode->pRightChild;
-            }
-        } else {
-            if (pParentNode->pLeftChild == NULL) {
-                break;
-            } else {
-                pParentNode = pParentNode->pLeftChild;
-            }
-        }
-    }
-    pNewNode = (BinSearchTreeNode *) malloc(sizeof(BinSearchTreeNode));
-    if (pNewNode == NULL) return FALSE;
-    *pNewNode = element;
-    pNewNode->pRightChild = NULL;
-    pNewNode->pLeftChild = NULL;
+int insertElementBST(BinSearchTree *pBinSearchTree, BinSearchTreeNode element)
+{
+	BinSearchTreeNode *node;
+	BinSearchTreeNode **search;
 
-    if (pParentNode == NULL) {
-        pBinSearchTree->pRootNode = pNewNode;
-    } else {
-        if (pParentNode->key < element.key) {
-            pParentNode->pRightChild = pNewNode;
-        } else {
-            pParentNode->pLeftChild = pNewNode;
-        }
-    }
-
-    return TRUE;
+	if (pBinSearchTree == NULL)
+		return (FALSE);
+	node = calloc(1, sizeof(BinSearchTreeNode));
+	if (!node)
+		return (FALSE);
+	*node = element;
+	search = &pBinSearchTree->pRootNode; 
+	if (pBinSearchTree->pRootNode == NULL)
+	{
+		pBinSearchTree->pRootNode = node;
+		return (TRUE);
+	}
+	while (*search)
+	{
+		if ((*search)->key == node->key)
+		{
+			free(node);
+			return (FALSE);
+		}
+		else if ((*search)->key > node->key)
+			search = &(*search)->pLeftChild;
+		else
+			search = &(*search)->pRightChild;
+	}
+	(*search) = node;
+	return (TRUE);
 }
 
 int deleteElementBST(BinSearchTree *pBinSearchTree, int key) {
