@@ -3,8 +3,9 @@
 #include "arrayheap.h"
 
 void displayArrayHeap(ArrayMaxHeap *pHeap) {
+    int i = 0;
     if (pHeap != NULL) {
-        for (int i = 1; i <= pHeap->currentElementCount; i++) {
+        for (i = 1; i <= pHeap->currentElementCount; i++) {
             printf("[%d],%d\n", i, pHeap->pElement[i].key);
         }
     }
@@ -17,26 +18,18 @@ int main() {
 
     HeapNode *pNode = NULL;
     HeapNode e1 = {10};
-    HeapNode e2 = {20};
+    HeapNode e2 = {40};
     HeapNode e3 = {30};
-    HeapNode e4 = {40};
+    HeapNode e4 = {20};
     HeapNode e5 = {50};
-    HeapNode e6 = {60};
-    HeapNode e7 = {70};
-    HeapNode e8 = {80};
-    HeapNode e9 = {90};
 
     pHeap1 = createArrayMaxHeap(maxHeapSize);
     if (pHeap1 != NULL) {
         insertMaxHeapAH(pHeap1, e1);
-        insertMaxHeapAH(pHeap1, e4);
-        insertMaxHeapAH(pHeap1, e3);
         insertMaxHeapAH(pHeap1, e2);
+        insertMaxHeapAH(pHeap1, e3);
+        insertMaxHeapAH(pHeap1, e4);
         insertMaxHeapAH(pHeap1, e5);
-        insertMaxHeapAH(pHeap1, e8);
-        insertMaxHeapAH(pHeap1, e6);
-        insertMaxHeapAH(pHeap1, e9);
-        insertMaxHeapAH(pHeap1, e7);
 
         printf("Max Heap:\n");
         displayArrayHeap(pHeap1);
@@ -50,6 +43,15 @@ int main() {
         printf("Max Heap:\n");
         displayArrayHeap(pHeap1);
 
+        printf("Heap sort:\n");
+        while (pHeap1->currentElementCount)
+        {
+            pNode = deleteMaxHeapAH(pHeap1);
+            if (pNode != NULL) {
+                printf("deleteMaxHeapAH()-[%d]\n", pNode->key);
+                free(pNode);
+            }
+        }
         deleteArrayMaxHeap(pHeap1);
     }
 
