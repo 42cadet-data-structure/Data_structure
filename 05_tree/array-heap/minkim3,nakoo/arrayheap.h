@@ -16,7 +16,7 @@ typedef struct HeapElementType {
 typedef struct ArrayHeapType {
     int maxElementCount;
     int currentElementCount;
-    HeapNode *pElement;
+    HeapNode *element;
 } ArrayMaxHeap;
 
 ArrayMaxHeap *createArrayMaxHeap(int maxElementCount);
