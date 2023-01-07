@@ -1,12 +1,10 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include "arrayheap.h"
 
 void displayArrayHeap(ArrayMaxHeap *pHeap) {
     int i = 0;
     if (pHeap != NULL) {
         for (i = 1; i <= pHeap->currentElementCount; i++) {
-            printf("[%d],%d\n", i, pHeap->pElement[i]);
+            printf("[%d] - %d\n", i, pHeap->pElement[i].key);
         }
     }
 }
@@ -36,7 +34,7 @@ int main() {
 
         pNode = deleteMaxHeapAH(pHeap1);
         if (pNode != NULL) {
-            printf("deleteMaxHeapAH()-[%d]\n", pNode->key);
+            printf("deleteMaxHeapAH() - [%d]\n", pNode->key);
             free(pNode);
         }
 
@@ -45,6 +43,5 @@ int main() {
 
         deleteArrayMaxHeap(pHeap1);
     }
-
-    return 0;
+    return (0);
 }
