@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> f1ae0af914060f6e5e3c39fea5847ec22e2888b1
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -126,4 +129,8 @@ void displayList(List *pList)
 		i++;
 	}
 	printf("\n");
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> f1ae0af914060f6e5e3c39fea5847ec22e2888b1
