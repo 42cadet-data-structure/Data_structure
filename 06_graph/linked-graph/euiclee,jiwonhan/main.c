@@ -1,12 +1,17 @@
 #include <stdio.h>
 #include "graphlinkedlist.h"
 #include "linkedgraph.h"
+void    leaks(void)
+{
+    system("leaks a.out");
+}
 int main() {
 
     int i = 0;
     LinkedGraph *pG1 = NULL;
     LinkedGraph *pG2 = NULL;
     LinkedGraph *pG4 = NULL;
+    atexit(leaks);
     pG1 = createLinkedGraph(6);
     pG2 = createLinkedDirectedGraph(6);
     pG4 = createLinkedDirectedGraph(6);

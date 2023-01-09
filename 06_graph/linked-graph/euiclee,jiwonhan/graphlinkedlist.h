@@ -1,7 +1,3 @@
-//
-// Created by sanguk on 10/08/2017.
-//
-
 #ifndef LINKED_GRAPH_GRAPHLINKEDLIST_H
 #define LINKED_GRAPH_GRAPHLINKEDLIST_H
 
