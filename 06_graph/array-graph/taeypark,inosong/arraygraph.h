@@ -1,7 +1,3 @@
-//
-// Created by sanguk on 10/08/2017.
-//
-
 #ifndef ARRAY_GRAPH_ARRAYGRAPH_H
 #define ARRAY_GRAPH_ARRAYGRAPH_H
 
