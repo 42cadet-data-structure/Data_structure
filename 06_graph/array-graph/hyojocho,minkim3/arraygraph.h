@@ -5,6 +5,10 @@
 #ifndef ARRAY_GRAPH_ARRAYGRAPH_H
 #define ARRAY_GRAPH_ARRAYGRAPH_H
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 typedef struct ArrayGraphType {
     int maxVertexCount;
     int currentVertexCount;
