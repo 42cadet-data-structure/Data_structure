@@ -50,7 +50,15 @@ int main() {
         displayArrayGraph(pG1);
         printf("\nG2: \n");
         displayArrayGraph(pG2);
-        printf("\nG3: \n");
+        printf("\nG4: \n");
+        displayArrayGraph(pG4);
+
+		removeVertexAG(pG4, 1);
+	    printf("G1: \n");
+        displayArrayGraph(pG1);
+        printf("\nG2: \n");
+        displayArrayGraph(pG2);
+        printf("\nG4: \n");
         displayArrayGraph(pG4);
 
         deleteArrayGraph(pG1);
