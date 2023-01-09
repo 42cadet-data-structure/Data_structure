@@ -1,137 +1,150 @@
-//
-// Created by sanguk on 10/08/2017.
-//
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "arraygraph.h"
 
-ArrayGraph *createArrayGraph(int maxVertexCount) {
-    ArrayGraph *pReturn = NULL;
-    int i = 0, j = 0;
-    if (maxVertexCount < 1) return NULL;
-    pReturn = (ArrayGraph *) malloc(sizeof(ArrayGraph));
-    if (pReturn == NULL) return NULL;
-    memset(pReturn, 0, sizeof(ArrayGraph));
-    pReturn->graphType = GRAPH_UNDIRECTED;
-    pReturn->maxVertexCount = maxVertexCount;
-    pReturn->pVertex = (int *) malloc(sizeof(int) * maxVertexCount);
-    if (pReturn->pVertex == NULL) {
-        free(pReturn);
-        return NULL;
-    }
-    pReturn->ppAdjEdge = (int **) malloc(sizeof(int *) * maxVertexCount);
-    if (pReturn->ppAdjEdge == NULL) {
-        free(pReturn->pVertex);
-        free(pReturn);
-        return NULL;
-    }
-    for (i = 0; i < maxVertexCount; i++) {
-        pReturn->ppAdjEdge[i] = (int *) malloc(sizeof(int) * maxVertexCount);
-        if (pReturn->ppAdjEdge[i] == NULL) {
-            for (j = 0; j < i - 1; j++) {
-                if (pReturn->ppAdjEdge[j] != NULL) {
-                    free(pReturn->ppAdjEdge[j]);
-                }
-            }
-            free(pReturn->ppAdjEdge);
-            free(pReturn->pVertex);
-            free(pReturn);
-        }
-    }
-    memset(pReturn->pVertex, NOT_USED, sizeof(int) * maxVertexCount);
-    for (i = 0; i < maxVertexCount; i++) {
-        memset(pReturn->ppAdjEdge[i], 0, sizeof(int) * maxVertexCount);
-    }
-    return pReturn;
+static void free_all(ArrayGraph *graph, int fail_idx)
+{
+    for (int i = 0; i < fail_idx; i++)
+        free(graph->ppAdjEdge[i]), graph->ppAdjEdge[i] = NULL;
+    free(graph->ppAdjEdge);
+    free(graph->pVertex);
+    graph->ppAdjEdge = NULL;
+    graph->pVertex = NULL;
+    free(graph);
 }
 
-ArrayGraph *createArrayDirectedGraph(int maxVertexCount) {
-    ArrayGraph *pReturn = NULL;
-    pReturn = createArrayGraph(maxVertexCount);
-    if (pReturn != NULL) {
-        pReturn->graphType = GRAPH_DIRECTED;
+ArrayGraph *createArrayGraph(int maxVertexCount)
+{
+    ArrayGraph  *graph;
+
+    graph = (ArrayGraph *)malloc(sizeof(ArrayGraph));
+    if (graph == NULL)
+        return (NULL);
+    graph->pVertex = (int *)malloc(sizeof(int) * maxVertexCount);
+    graph->ppAdjEdge = (int **)malloc(sizeof(int *) * maxVertexCount);
+    if (graph->pVertex == NULL || graph->ppAdjEdge == NULL)
+        return (free(graph->pVertex), free(graph->ppAdjEdge), free(graph), NULL);
+    for (int i = 0; i < maxVertexCount; i++)
+    {
+        graph->ppAdjEdge[i] = (int *)malloc(sizeof(int) * maxVertexCount);
+        if (graph->ppAdjEdge[i] == NULL)
+            return (free_all(graph, i), NULL);
     }
-    return pReturn;
+    graph->currentVertexCount = 0;
+    graph->maxVertexCount = maxVertexCount;
+    graph->graphType = GRAPH_UNDIRECTED;
+    return (graph);
 }
 
-void deleteArrayGraph(ArrayGraph *pGraph) {
-    int i = 0;
-    if (pGraph == NULL) return;
-    for (i = 0; i < pGraph->maxVertexCount; i++){
-        free(pGraph->ppAdjEdge[i]);
+ArrayGraph *createArrayDirectedGraph(int maxVertexCount)
+{
+    ArrayGraph  *graph;
+
+    graph = (ArrayGraph *)malloc(sizeof(ArrayGraph));
+    if (graph == NULL)
+        return (NULL);
+    graph->pVertex = (int *)malloc(sizeof(int) * maxVertexCount);
+    graph->ppAdjEdge = (int **)malloc(sizeof(int *) * maxVertexCount);
+    if (graph->pVertex == NULL || graph->ppAdjEdge == NULL)
+        return (free(graph->pVertex), free(graph->ppAdjEdge), free(graph), NULL);
+    for (int i = 0; i < maxVertexCount; i++)
+    {
+        graph->ppAdjEdge[i] = (int *)calloc(maxVertexCount, sizeof(int));
+        if (graph->ppAdjEdge[i] == NULL)
+            return (free_all(graph, i), NULL);
     }
-    free(pGraph->ppAdjEdge);
-    free(pGraph->pVertex);
-    free(pGraph);
+    graph->currentVertexCount = 0;
+    graph->maxVertexCount = maxVertexCount;
+    graph->graphType = GRAPH_DIRECTED;
+    return (graph);
 }
 
-int isEmptyAG(ArrayGraph *pGraph) {
-    if (pGraph == NULL) return FAIL;
-    if (pGraph->currentVertexCount == 0) return SUCCESS;
-    return FAIL;
+void deleteArrayGraph(ArrayGraph *pGraph)
+{
+    free_all(pGraph, pGraph->maxVertexCount);
 }
 
-int addVertexAG(ArrayGraph *pGraph, int vertexID) {
-    if (pGraph == NULL) return FAIL;
-    if (vertexID > pGraph->maxVertexCount) return FAIL;
-    if (pGraph->pVertex[vertexID] == USED) return FAIL;
+int isEmptyAG(ArrayGraph *pGraph)
+{
+    return (pGraph->currentVertexCount <= 0);
+}
+
+int addVertexAG(ArrayGraph *pGraph, int vertexID)
+{
+    if (!(0 <= vertexID && vertexID < pGraph->maxVertexCount)
+        || pGraph->pVertex[vertexID] == USED)
+        return (FALSE);
     pGraph->pVertex[vertexID] = USED;
     pGraph->currentVertexCount++;
-    return SUCCESS;
+    return (TRUE);
 }
 
-int addEdgeAG(ArrayGraph *pGraph, int fromVertexID, int toVertexID) {
-    return addEdgeWithWeightAG(pGraph, fromVertexID, toVertexID, USED);
+int addEdgeAG(ArrayGraph *pGraph, int fromVertexID, int toVertexID)
+{
+    if (checkVertexValid(pGraph, fromVertexID) == FALSE
+        || checkVertexValid(pGraph, toVertexID) == FALSE)
+        return (FALSE);
+    pGraph->ppAdjEdge[fromVertexID][toVertexID] = 1;
+    if (pGraph->graphType == GRAPH_UNDIRECTED)
+        pGraph->ppAdjEdge[toVertexID][fromVertexID] = 1;
+    return (TRUE);
 }
 
-int addEdgeWithWeightAG(ArrayGraph *pGraph, int fromVertexID, int toVertexID, int weight) {
-    if (pGraph == NULL) return FAIL;
-    if (checkVertexValid(pGraph, fromVertexID) == FAIL) return FAIL;
-    if (checkVertexValid(pGraph, toVertexID) == FAIL) return FAIL;
+int addEdgeWithWeightAG(ArrayGraph *pGraph, int fromVertexID, int toVertexID, int weight)
+{
+    if (checkVertexValid(pGraph, fromVertexID) == FALSE
+        || checkVertexValid(pGraph, toVertexID) == FALSE)
+        return (FALSE);
     pGraph->ppAdjEdge[fromVertexID][toVertexID] = weight;
-    if (pGraph->graphType == GRAPH_UNDIRECTED) {
+    if (pGraph->graphType == GRAPH_UNDIRECTED)
         pGraph->ppAdjEdge[toVertexID][fromVertexID] = weight;
-    }
-    return SUCCESS;
+    return (TRUE);
 }
 
-int checkVertexValid(ArrayGraph *pGraph, int vertexID) {
-    if (pGraph == NULL) return FAIL;
-    if (pGraph->pVertex[vertexID] == USED) return SUCCESS;
-    return FAIL;
+int checkVertexValid(ArrayGraph *pGraph, int vertexID)
+{
+    return ((0 <= vertexID && vertexID < pGraph->maxVertexCount)
+            && pGraph->pVertex[vertexID] == USED);
 }
 
-int removeVertexAG(ArrayGraph *pGraph, int vertexID) {
-    int i = 0;
-    if (pGraph == NULL) return FAIL;
-    if (checkVertexValid(pGraph, vertexID) == FAIL) return FAIL;
-    for (i = 0; i < pGraph->maxVertexCount; i++) {
-        removeEdgeAG(pGraph, vertexID, i);
-        removeEdgeAG(pGraph, i, vertexID);
-    }
+int removeVertexAG(ArrayGraph *pGraph, int vertexID)
+{
+    if (checkVertexValid(pGraph, vertexID) == FALSE)
+        return (FALSE);
+    for(int i = 0; i < pGraph->maxVertexCount; i++)
+        pGraph->ppAdjEdge[vertexID][i] = pGraph->ppAdjEdge[i][vertexID] = 0;
     pGraph->pVertex[vertexID] = NOT_USED;
-    return SUCCESS;
+    pGraph->currentVertexCount--;
+    return (TRUE);
 }
 
-int removeEdgeAG(ArrayGraph *pGraph, int fromVertexID, int toVertexID) {
-    if (pGraph == NULL) return FAIL;
-    if (checkVertexValid(pGraph, fromVertexID) == FAIL) return FAIL;
-    if (checkVertexValid(pGraph, toVertexID) == FAIL) return FAIL;
-    pGraph->ppAdjEdge[fromVertexID][toVertexID] = NOT_USED;
-    if (pGraph->graphType == GRAPH_UNDIRECTED) {
-        pGraph->ppAdjEdge[toVertexID][fromVertexID] = NOT_USED;
-    }
-    return SUCCESS;
+int removeEdgeAG(ArrayGraph *pGraph, int fromVertexID, int toVertexID)
+{
+    if (checkVertexValid(pGraph, fromVertexID) == FALSE
+        || checkVertexValid(pGraph, toVertexID) == FALSE
+        || pGraph->ppAdjEdge[fromVertexID][toVertexID] == NOT_USED)
+        return (FALSE);
+    pGraph->ppAdjEdge[fromVertexID][toVertexID] = 0;
+    if (pGraph->graphType == GRAPH_UNDIRECTED)
+        pGraph->ppAdjEdge[toVertexID][fromVertexID] = 0;
+    return (TRUE);
 }
 
-void displayArrayGraph(ArrayGraph *pGraph) {
-    int i = 0, j = 0;
-    if (pGraph == NULL) return;
-    for (i = 0; i < pGraph->maxVertexCount; i++) {
-        for (j = 0; j < pGraph->maxVertexCount; j++) {
-            printf("%d ", pGraph->ppAdjEdge[i][j]);
+void displayArrayGraph(ArrayGraph *pGraph)
+{
+    int y, x;
+
+    for (y = 0; y < pGraph->maxVertexCount; y++)
+    {
+        if (pGraph->pVertex[y] == NOT_USED && printf("\n"))
+            continue ;
+        for (x = 0; x < pGraph->maxVertexCount; x++)
+        {
+            if (pGraph->pVertex[x] == NOT_USED)
+                printf("  ");
+            else
+               printf("%d ", pGraph->ppAdjEdge[y][x]);
         }
         printf("\n");
     }

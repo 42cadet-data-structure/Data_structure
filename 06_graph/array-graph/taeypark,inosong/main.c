@@ -1,7 +1,14 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "arraygraph.h"
 
+void    leaks(void)
+{
+    system("leaks a.out");
+}
+
 int main() {
+    atexit(leaks);
     int i = 0;
     ArrayGraph *pG1 = NULL;
     ArrayGraph *pG2 = NULL;
@@ -17,7 +24,7 @@ int main() {
             addVertexAG(pG2, i);
             addVertexAG(pG4, i);
         }
-
+        removeVertexAG(pG1, 2);
         addEdgeAG(pG1, 0, 1);
         addEdgeAG(pG1, 0, 2);
         addEdgeAG(pG1, 1, 2);

@@ -1,8 +1,15 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "graphlinkedlist.h"
 #include "linkedgraph.h"
-int main() {
 
+void    leaks(void)
+{
+    system("leaks a.out");
+}
+
+int main() {
+    atexit(leaks);
     int i = 0;
     LinkedGraph *pG1 = NULL;
     LinkedGraph *pG2 = NULL;
@@ -18,7 +25,7 @@ int main() {
             addVertexLG(pG2, i);
             addVertexLG(pG4, i);
         }
-
+        removeVertexLG(pG1, 2);
         addEdgeLG(pG1, 0, 1);
         addEdgeLG(pG1, 0, 2);
         addEdgeLG(pG1, 1, 2);
