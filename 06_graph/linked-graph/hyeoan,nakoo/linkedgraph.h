@@ -1,7 +1,3 @@
-//
-// Created by sanguk on 10/08/2017.
-//
-
 #ifndef LINKED_GRAPH_LINKEDGRAPH_H
 #define LINKED_GRAPH_LINKEDGRAPH_H
 
@@ -48,7 +44,7 @@ int getGraphTypeLG(LinkedGraph *pGraph);
 
 void displayLinkedGraph(LinkedGraph *pGraph);
 
-#endif //LINKED_GRAPH_LINKEDGRAPH_H
+#endif
 
 #ifndef _COMMON_GRAPH_DEF_
 #define _COMMON_GRAPH_DEF_

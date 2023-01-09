@@ -1,7 +1,3 @@
-//
-// Created by sanguk on 10/08/2017.
-//
-
 #ifndef LINKED_GRAPH_GRAPHLINKEDLIST_H
 #define LINKED_GRAPH_GRAPHLINKEDLIST_H
 
@@ -15,7 +11,7 @@ typedef struct GraphVertexType {
 
 typedef struct ListNodeType {
     GraphVertex data;
-    struct ListNodeType *pLink;
+    struct ListNode *pLink;
 } ListNode;
 
 typedef struct LinkedListType {
@@ -37,4 +33,4 @@ int getLinkedListLength(LinkedList *pList);
 
 void deleteLinkedList(LinkedList *pList);
 
-#endif //LINKED_GRAPH_GRAPHLINKEDLIST_H
+#endif

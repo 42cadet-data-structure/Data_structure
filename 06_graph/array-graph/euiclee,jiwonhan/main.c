@@ -1,16 +1,22 @@
 #include <stdio.h>
 #include "arraygraph.h"
 
+void    leaks(void)
+{
+    system("leaks a.out");
+}
 int main() {
     int i = 0;
     ArrayGraph *pG1 = NULL;
     ArrayGraph *pG2 = NULL;
     ArrayGraph *pG4 = NULL;
 
+    atexit(leaks);
     pG1 = createArrayGraph(6);
     pG2 = createArrayDirectedGraph(6);
     pG4 = createArrayDirectedGraph(6);
     if (pG1 != NULL && pG2 != NULL && pG4 != NULL) {
+	    printf("in\n");
 
         for (i = 0; i < 6; i++) {
             addVertexAG(pG1, i);
