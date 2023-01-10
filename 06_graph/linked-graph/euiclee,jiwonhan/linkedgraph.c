@@ -211,7 +211,7 @@ void displayLinkedGraph(LinkedGraph *pGraph)
 	{
 		if (pGraph->pVertex[i] != USED)
 		{
-			for(int j=0;j<pGraph->maxVertexCount;j++_
+			for(int j=0;j<pGraph->maxVertexCount;j++)
 			    printf("0 ");
 			continue;	
 		}
