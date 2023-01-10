@@ -132,7 +132,7 @@ int checkVertexValid(LinkedGraph *pGraph, int vertexID)
 {
 	if (pGraph == NULL)
 		return (FALSE);
-	if (vertexID < 0 || vertexID > pGraph->maxVertexCount)
+	if (vertexID < 0 || vertexID >= pGraph->maxVertexCount)
 		return (FALSE);
 	if (pGraph->pVertex[vertexID] == USED)
 		return (TRUE);
