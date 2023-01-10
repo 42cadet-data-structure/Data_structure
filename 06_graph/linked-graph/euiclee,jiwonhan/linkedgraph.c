@@ -90,7 +90,6 @@ int addEdgeLG(LinkedGraph *pGraph, int fromVertexID, int toVertexID)
 		addLLElement(pGraph->ppAdjEdge[fromVertexID], 0, node);
 		node.data.vertexID = fromVertexID;
 		addLLElement(pGraph->ppAdjEdge[toVertexID], 0, node);
-		pGraph->currentEdgeCount++;
 	}
 	else if (pGraph->graphType == GRAPH_DIRECTED)
 		addLLElement(pGraph->ppAdjEdge[fromVertexID], 0, node);
@@ -111,7 +110,6 @@ int addEdgeWithWeightLG(LinkedGraph *pGraph, int fromVertexID, int toVertexID, i
 		addLLElement(pGraph->ppAdjEdge[fromVertexID], 0, node);
 		node.data.vertexID = fromVertexID;
 		addLLElement(pGraph->ppAdjEdge[toVertexID], 0, node);
-		pGraph->currentEdgeCount++;
 	}
 	else if (pGraph->graphType == GRAPH_DIRECTED)
 		addLLElement(pGraph->ppAdjEdge[fromVertexID], 0, node);
@@ -150,7 +148,6 @@ int removeEdgeLG(LinkedGraph *pGraph, int fromVertexID, int toVertexID)
 		removeLLElement(pGraph->ppAdjEdge[fromVertexID], 0);
 		node.data.vertexID = fromVertexID;
 		removeLLElement(pGraph->ppAdjEdge[toVertexID], 0);
-		pGraph->currentEdgeCount--;
 	}
 	else if (pGraph->graphType == GRAPH_DIRECTED)
 		removeLLElement(pGraph->ppAdjEdge[fromVertexID], 0);
@@ -212,13 +209,23 @@ void displayLinkedGraph(LinkedGraph *pGraph)
 		return ;
 	for (int i=0;i<pGraph->maxVertexCount;i++)
 	{
+		if (pGraph->pVertex[i] != USED)
+		{
+			for(int j=0;j<pGraph->maxVertexCount;j++_
+			    printf("0 ");
+			continue;	
+		}
 		for (int j=0;j<pGraph->maxVertexCount;j++)
 		{
-			position = findGraphNodePosition(pGraph->ppAdjEdge[i], j);
-			if (position >= 0)
-				printf("%d ", getLLElement(pGraph->ppAdjEdge[i], position)->data.weight);
-			else
+			if (pGraph->pVertex[j] != USED)
 				printf("0 ");
+			else{
+				position = findGraphNodePosition(pGraph->ppAdjEdge[i], j);
+				if (position >= 0)
+					printf("%d ", getLLElement(pGraph->ppAdjEdge[i], position)->data.weight);
+				else
+					printf("0 ");
+			}
 		}
 		printf("\n");
 	}
