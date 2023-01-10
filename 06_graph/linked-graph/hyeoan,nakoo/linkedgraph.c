@@ -57,9 +57,15 @@ void deleteLinkedGraph(LinkedGraph *pGraph)
 	if (pGraph == NULL)
 		return ;
 	for (int i = 0; i < pGraph->maxVertexCount; i++)
+	{
         deleteLinkedList(pGraph->ppAdjEdge[i]);
+		pGraph->ppAdjEdge[i] = NULL;
+	}
 	free(pGraph->ppAdjEdge);
+	pGraph->ppAdjEdge = NULL;
 	free(pGraph->pVertex);
+	pGraph->pVertex = NULL;
+	free(pGraph);
 }
 
 int isEmptyLG(LinkedGraph *pGraph)
