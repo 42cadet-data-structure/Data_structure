@@ -90,6 +90,7 @@ int addEdgeLG(LinkedGraph *pGraph, int fromVertexID, int toVertexID)
 		addLLElement(pGraph->ppAdjEdge[fromVertexID], 0, node);
 		node.data.vertexID = fromVertexID;
 		addLLElement(pGraph->ppAdjEdge[toVertexID], 0, node);
+		pGraph->currentEdgeCount++;
 	}
 	else if (pGraph->graphType == GRAPH_DIRECTED)
 		addLLElement(pGraph->ppAdjEdge[fromVertexID], 0, node);
