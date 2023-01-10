@@ -6,7 +6,7 @@
 /*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 19:26:54 by hyojocho          #+#    #+#             */
-/*   Updated: 2023/01/10 11:31:50 by minkim3          ###   ########.fr       */
+/*   Updated: 2023/01/10 11:39:48 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,18 +38,18 @@ ArrayGraph *createArrayGraph(int maxVertexCount)
 	
     if (maxVertexCount < 1)
 		return NULL;
-    new_node = (ArrayGraph *) calloc(1, sizeof(ArrayGraph));
+    new_node = calloc(1, sizeof(ArrayGraph));
     if (new_node == NULL)
 		return NULL;
     new_node->graphType = GRAPH_UNDIRECTED;
     new_node->maxVertexCount = maxVertexCount;
-    new_node->pVertex = (int *) calloc(sizeof(int), maxVertexCount);
+    new_node->pVertex = calloc(sizeof(int), maxVertexCount);
     if (new_node->pVertex == NULL) {
         free(new_node);
 		new_node = NULL;
         return NULL;
     }
-    new_node->ppAdjEdge = (int **)calloc(sizeof(int *), maxVertexCount);
+    new_node->ppAdjEdge = calloc(sizeof(int *), maxVertexCount);
     if (new_node->ppAdjEdge == NULL) {
         free(new_node->pVertex);
 		new_node->pVertex = NULL;
@@ -58,17 +58,9 @@ ArrayGraph *createArrayGraph(int maxVertexCount)
         return NULL;
     }
     for (i = 0; i < maxVertexCount; i++) {
-        new_node->ppAdjEdge[i] = (int *) calloc(sizeof(int), maxVertexCount);
+        new_node->ppAdjEdge[i] = calloc(sizeof(int), maxVertexCount);
         if (new_node->ppAdjEdge[i] == NULL) {
-            for (j = 0; j < i - 1; j++) {
-                if (new_node->ppAdjEdge[j] != NULL) {
-                    free(new_node->ppAdjEdge[j]);
-					new_node->ppAdjEdge[j] = NULL;
-                }
-            }
-            free(new_node->ppAdjEdge);
-            free(new_node->pVertex);
-            free(new_node);
+            deleteArrayNode(new_node, i);
         }
     }
     return new_node;
