@@ -150,7 +150,8 @@ int removeEdgeLG(LinkedGraph *pGraph, int fromVertexID, int toVertexID)
 		removeLLElement(pGraph->ppAdjEdge[toVertexID], 0);
 	}
 	else if (pGraph->graphType == GRAPH_DIRECTED)
-	pGraph->currentEdgeCount++;
+		removeLLElement(pGraph->ppAdjEdge[fromVertexID], 0);
+	pGraph->currentEdgeCount--;
 	return (TRUE);
 }
 
