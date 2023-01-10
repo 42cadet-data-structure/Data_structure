@@ -128,7 +128,7 @@ int checkVertexValid(LinkedGraph *pGraph, int vertexID)
 
 int removeVertexLG(LinkedGraph *pGraph, int vertexID)
 {
-	if (!pGraph || pGraph->currentVertexCount == pGraph->maxVertexCount)
+	if (!pGraph)
 		return (FALSE);
 	pGraph->pVertex[vertexID] = NOT_USED;
 	pGraph->currentVertexCount--;
