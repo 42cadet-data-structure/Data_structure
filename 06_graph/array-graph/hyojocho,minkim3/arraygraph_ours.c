@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   arraygraph_ours.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyojocho <hyojocho@student.42.fr>          +#+  +:+       +#+        */
+/*   By: minkim3 <minkim3@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 19:26:54 by hyojocho          #+#    #+#             */
-/*   Updated: 2023/01/09 21:37:50 by hyojocho         ###   ########.fr       */
+/*   Updated: 2023/01/10 11:31:50 by minkim3          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,39 +35,41 @@ ArrayGraph *createArrayGraph(int maxVertexCount)
 {
     ArrayGraph *new_node = NULL;
     int i = 0, j = 0;
-    if (maxVertexCount < 1) return NULL;
-    new_node = (ArrayGraph *) malloc(sizeof(ArrayGraph));
-    if (new_node == NULL) return NULL;
-    memset(new_node, 0, sizeof(ArrayGraph));
+	
+    if (maxVertexCount < 1)
+		return NULL;
+    new_node = (ArrayGraph *) calloc(1, sizeof(ArrayGraph));
+    if (new_node == NULL)
+		return NULL;
     new_node->graphType = GRAPH_UNDIRECTED;
     new_node->maxVertexCount = maxVertexCount;
-    new_node->pVertex = (int *) malloc(sizeof(int) * maxVertexCount);
+    new_node->pVertex = (int *) calloc(sizeof(int), maxVertexCount);
     if (new_node->pVertex == NULL) {
         free(new_node);
+		new_node = NULL;
         return NULL;
     }
-    new_node->ppAdjEdge = (int **) malloc(sizeof(int *) * maxVertexCount);
+    new_node->ppAdjEdge = (int **)calloc(sizeof(int *), maxVertexCount);
     if (new_node->ppAdjEdge == NULL) {
         free(new_node->pVertex);
+		new_node->pVertex = NULL;
         free(new_node);
+		new_node = NULL;
         return NULL;
     }
     for (i = 0; i < maxVertexCount; i++) {
-        new_node->ppAdjEdge[i] = (int *) malloc(sizeof(int) * maxVertexCount);
+        new_node->ppAdjEdge[i] = (int *) calloc(sizeof(int), maxVertexCount);
         if (new_node->ppAdjEdge[i] == NULL) {
             for (j = 0; j < i - 1; j++) {
                 if (new_node->ppAdjEdge[j] != NULL) {
                     free(new_node->ppAdjEdge[j]);
+					new_node->ppAdjEdge[j] = NULL;
                 }
             }
             free(new_node->ppAdjEdge);
             free(new_node->pVertex);
             free(new_node);
         }
-    }
-    memset(new_node->pVertex, NOT_USED, sizeof(int) * maxVertexCount);
-    for (i = 0; i < maxVertexCount; i++) {
-        memset(new_node->ppAdjEdge[i], 0, sizeof(int) * maxVertexCount);
     }
     return new_node;
 }
