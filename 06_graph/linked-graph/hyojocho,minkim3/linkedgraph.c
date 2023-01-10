@@ -105,7 +105,7 @@ int removeVertexLG(LinkedGraph *pGraph, int vertexID) {
         removeEdgeLG(pGraph, i, vertexID);
         removeEdgeLG(pGraph, vertexID, i);
     }
-    pGraph->pVertex[vertexID] == NOT_USED;
+    pGraph->pVertex[vertexID] = NOT_USED;
     return SUCCESS;
 }
 

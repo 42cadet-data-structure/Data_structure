@@ -4,6 +4,11 @@
 
 #ifndef LINKED_GRAPH_LINKEDGRAPH_H
 #define LINKED_GRAPH_LINKEDGRAPH_H
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "graphlinkedlist.h"
+#include "linkedgraph.h"
 
 typedef struct LinkedGraphType {
     int maxVertexCount;
