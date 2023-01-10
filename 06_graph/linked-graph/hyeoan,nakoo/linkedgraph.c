@@ -71,7 +71,7 @@ void deleteLinkedGraph(LinkedGraph *pGraph)
 int isEmptyLG(LinkedGraph *pGraph)
 {
 	if (pGraph == NULL)
-		return (NULL);
+		return (FALSE);
 	return (pGraph->currentEdgeCount == 0 ? TRUE : FALSE);	
 }
 
@@ -79,7 +79,7 @@ int addVertexLG(LinkedGraph *pGraph, int vertexID)
 {
 	if (pGraph == NULL)
 		return (FALSE);
-	if (vertexID < 0 || vertexID > pGraph->maxVertexCount)
+	if (vertexID < 0 || vertexID >= pGraph->maxVertexCount)
 		return (FALSE);
 	if (pGraph->pVertex[vertexID] == USED)
 		return (FALSE);
@@ -132,7 +132,7 @@ int checkVertexValid(LinkedGraph *pGraph, int vertexID)
 {
 	if (pGraph == NULL)
 		return (FALSE);
-	if (vertexID < 0 || vertexID > pGraph->maxVertexCount)
+	if (vertexID < 0 || vertexID >= pGraph->maxVertexCount)
 		return (FALSE);
 	if (pGraph->pVertex[vertexID] == USED)
 		return (TRUE);
@@ -165,7 +165,6 @@ int removeEdgeLG(LinkedGraph *pGraph, int fromVertexID, int toVertexID)
 	{
 		if (findGraphNodePosition(pGraph->ppAdjEdge[toVertexID], fromVertexID) == fromVertexID)
 			removeLLElement(pGraph->ppAdjEdge[toVertexID], fromVertexID);
-		pGraph->currentEdgeCount--;
 	}
 	pGraph->currentEdgeCount--;
 	return (TRUE);
