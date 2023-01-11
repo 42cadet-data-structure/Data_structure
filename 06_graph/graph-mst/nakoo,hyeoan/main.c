@@ -4,6 +4,7 @@
 #include "linkedgraph.h"
 #include "grapharrayheap.h"
 #include "graphmst.h"
+#include <unistd.h>
 
 int main() {
 
@@ -27,10 +28,11 @@ int main() {
         addEdgeWithWeight(pG1, 4, 5, 6);
 
         printf("G1:\n");
+        
         displayGraph(pG1);
-
         printf("\nKruskal MST:\n");
         pMST1 = mstKruskal(pG1);
+        printf("\n");
         displayGraph(pMST1);
 
         deleteGraph(pG1);

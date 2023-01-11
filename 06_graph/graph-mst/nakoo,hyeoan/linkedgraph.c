@@ -44,19 +44,25 @@ Graph *createGraph(int maxVertexCount) {
 }
 
 Graph *createDirectedGraph(int maxVertexCount) {
-    Graph *pReturn = createDirectedGraph(maxVertexCount);
+    Graph *pReturn = createGraph(maxVertexCount);
     if (pReturn != NULL) {
         pReturn->graphType = GRAPH_DIRECTED;
     }
     return pReturn;
 }
 
-int addVertex(Graph *pGraph, int vertexID) {
-    if (pGraph == NULL) return FAIL;
-    if (checkVertexValid(pGraph, vertexID) == TRUE) return FAIL;
-    pGraph->pVertex[vertexID] = USED;
-    pGraph->currentVertexCount++;
-    return SUCCESS;
+int addVertex(Graph *pGraph, int vertexID)
+{
+	if (pGraph == NULL)
+		return (FALSE);
+	if (vertexID < 0 || vertexID >= pGraph->maxVertexCount)
+		return (FALSE);
+	if (pGraph->pVertex[vertexID] == USED)
+		return (FALSE);
+    pGraph->ppEdge[vertexID]->headerNode.data.vertexID = vertexID;
+	pGraph->pVertex[vertexID] = USED;
+	pGraph->currentVertexCount++;
+	return (TRUE);
 }
 
 int removeVertex(Graph *pGraph, int vertexID){

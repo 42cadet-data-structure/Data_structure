@@ -83,6 +83,7 @@ int addVertexLG(LinkedGraph *pGraph, int vertexID)
 		return (FALSE);
 	if (pGraph->pVertex[vertexID] == USED)
 		return (FALSE);
+	pGraph->ppAdjEdge[vertexID]->headerNode.data.vertexID = vertexID;
 	pGraph->pVertex[vertexID] = USED;
 	pGraph->currentVertexCount++;
 	return (TRUE);
