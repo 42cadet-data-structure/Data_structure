@@ -1,7 +1,3 @@
-//
-// Created by sanguk on 11/08/2017.
-//
-
 #include <stdio.h>
 #include <stdlib.h>
 #include "graphlinkedlist.h"
@@ -10,13 +6,55 @@
 #include "grapharrayheap.h"
 #include "graphmst.h"
 
+Graph *mstKruskal(Graph* pGraph)
+{
+	Graph			*graph;
+	ArrayMinHeap	*heap;
 
+	if (!pGraph)
+		return (NULL);
+	if (pGraph->graphType == GRAPH_UNDIRECTED)
+		graph = createGraph(pGraph->maxVertexCount);
+	else if (pGraph->graphType == GRAPH_DIRECTED)
+		graph = createDirectedGraph(pGraph->maxVertexCount);
+	if (graph)
+		return (NULL);
+	heap = orderEdges(pGraph);
+}
+
+ArrayMinHeap *orderEdges(Graph* pGraph)
+{
+	ArrayMinHeap	*heap;
+	HeapNode		heapnode;
+	ListNode		*ListNode;
+
+	heap = createArrayMinHeap(pGraph->maxVertexCount);
+	if (!heap)
+		return (NULL);
+	for (int i = 0; i < pGraph->maxVertexCount; i++)
+	{
+		if (pGraph->ppEdge[i] = USED)
+		{
+			for(ListNode = pGraph->ppEdge[i]->headerNode.pLink; ListNode; ListNode = ListNode->pLink)
+			{
+				heapnode.fromVertexID = pGraph->ppEdge[i];
+				heapnode.key = ListNode->data.weight;
+				heapnode.toVertexID = ListNode->data.vertexID;
+				insertMinHeapAH(heap, heapnode);
+			}
+		}
+	}
+	return (heap);
+}
+
+int checkCycle(Graph* pGraph, int fromVertexID, int toVertexID)
+{
+}
 Graph *mstKruskal(Graph *pGraph) {
     Graph *pReturn = NULL;
     int i = 0, maxNodeCount = 0, currentNodeCount = 0, edgeCount = 0, isCycle = 0;
     ArrayMinHeap *pMinHeap = NULL;
     HeapNode *pHeapNode = NULL;
-    if (pGraph == NULL) return NULL;
 
     maxNodeCount = pGraph->maxVertexCount;
     currentNodeCount = pGraph->currentVertexCount;
@@ -47,36 +85,6 @@ Graph *mstKruskal(Graph *pGraph) {
 
             if (pReturn->currentVertexCount == currentNodeCount) {
                 break;
-            }
-        }
-    }
-    return pReturn;
-}
-
-ArrayMinHeap *orderEdges(Graph *pGraph) {
-    int i = 0;
-    int edgeCount = 0;
-    ArrayMinHeap *pReturn = NULL;
-    ListNode *pListNode = NULL;
-    List *pEdgeList = NULL;
-    if (pGraph == NULL) return NULL;
-    edgeCount = pGraph->currentEdgeCount;
-    pReturn = createArrayMinHeap(edgeCount);
-    for (i = 0; i < pGraph->maxVertexCount; i++) {
-        if (checkVertexValid(pGraph, i) == TRUE) {
-            pEdgeList = pGraph->ppEdge[i];
-            pListNode = pEdgeList->headerNode.pLink;
-            while (pListNode != NULL) {
-                int vertexID = pListNode->data.vertexID;
-                int weight = pListNode->data.weight;
-                if (pGraph->graphType == GRAPH_DIRECTED || (pGraph->graphType == GRAPH_UNDIRECTED && i < vertexID)) {
-                    HeapNode heapNode = {0,};
-                    heapNode.fromVertexID = i;
-                    heapNode.toVertexID = vertexID;
-                    heapNode.key = weight;
-                    insertMinHeapAH(pReturn, heapNode);
-                }
-                pListNode = pListNode->pLink;
             }
         }
     }
