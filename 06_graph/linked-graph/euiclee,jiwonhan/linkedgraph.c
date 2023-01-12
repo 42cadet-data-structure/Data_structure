@@ -1,6 +1,22 @@
 #include "graphlinkedlist.h"
 #include "linkedgraph.h"
 
+static void	ft_free(LinkedGraph *pG, int edgePosition)
+{
+	if (!pG)
+		return ;
+	if (pG->ppAdjEdge)
+	{
+		for(int i = 0; i< edgePosition;i++)
+			free(pG->ppAdjEdge[i]), pG->ppAdjEdge[i] = NULL;
+		free(pG->ppAdjEdge);
+		pG->ppAdjEdge = NULL;
+	}
+	if (pG->pVertex)
+		free(pG->pVertex), pG->pVertex = NULL;
+	free(pG);
+}
+
 LinkedGraph *createLinkedGraph(int maxVertexCount)
 {
 	LinkedGraph	*pG;
@@ -13,21 +29,15 @@ LinkedGraph *createLinkedGraph(int maxVertexCount)
 	memset(pG, 0, sizeof(LinkedGraph));
 	pG->pVertex = (int *)malloc(sizeof(int) * maxVertexCount);
 	if (!pG->pVertex)
-		return (free(pG), NULL);
+		return (ft_free(pG, -1),  NULL);
 	pG->ppAdjEdge = (LinkedList **)malloc(sizeof(LinkedList *) * maxVertexCount);
 	if (!pG->ppAdjEdge)
-		return (free(pG->pVertex), free(pG), NULL);
+		return (ft_free(pG, -1), NULL);
 	for (int i = 0; i < maxVertexCount; i++)	
 	{
 		pG->ppAdjEdge[i] = createLinkedList();
 		if (pG->ppAdjEdge[i] == NULL)
-		{
-			for (int j = 0; j < i;j++)
-				free(pG->ppAdjEdge[j]);
-			free(pG->ppAdjEdge); 
-			free(pG->pVertex); free(pG);
-			return (NULL);
-		}
+			return (ft_free(pG, i), NULL);
 	}
 	memset(pG->pVertex, 0, sizeof(int) * maxVertexCount);
 	pG->maxVertexCount = maxVertexCount;
@@ -47,18 +57,7 @@ LinkedGraph *createLinkedDirectedGraph(int maxVertexCount)
 
 void deleteLinkedGraph(LinkedGraph *pGraph)
 {
-	if (!pGraph)
-		return ;
-	for (int i = 0; i < pGraph->maxVertexCount; i++)
-	{
-		deleteLinkedList(pGraph->ppAdjEdge[i]);
-		pGraph->ppAdjEdge[i] = NULL;
-	}
-	free(pGraph->ppAdjEdge);
-	pGraph->ppAdjEdge = NULL;
-	free(pGraph->pVertex);
-	pGraph->pVertex = NULL;
-	free(pGraph);
+	ft_free(pGraph, pGraph->maxVertexCount);
 }
 
 int isEmptyLG(LinkedGraph *pGraph)
@@ -70,7 +69,8 @@ int isEmptyLG(LinkedGraph *pGraph)
 
 int addVertexLG(LinkedGraph *pGraph, int vertexID)
 {
-	if (!pGraph || pGraph->currentVertexCount == pGraph->maxVertexCount)
+	if (!pGraph || pGraph->currentVertexCount == pGraph->maxVertexCount \
+		|| pGraph->pVertex[vertexID] == USED)
 		return (FALSE);
 	pGraph->pVertex[vertexID] = USED;
 	pGraph->currentVertexCount++;
@@ -79,21 +79,18 @@ int addVertexLG(LinkedGraph *pGraph, int vertexID)
 
 int addEdgeLG(LinkedGraph *pGraph, int fromVertexID, int toVertexID)
 {
-	ListNode node;
+	return (addEdgeWithWeightLG(pGraph, fromVertexID, toVertexID, 0));
+}
 
-	if (!pGraph || checkVertexValid(pGraph, fromVertexID) == 0 || checkVertexValid(pGraph, toVertexID) == 0)
+static int checkEdgeValid(LinkedGraph *pGraph, int fromVertexID, int toVertexID, int weight)
+{
+	int i;
+	int position = -1;
+	if (!pGraph)
 		return (FALSE);
-	node.data.vertexID = toVertexID;
-	node.data.weight = SUCCESS;
-	if (pGraph->graphType == GRAPH_UNDIRECTED)
-	{
-		addLLElement(pGraph->ppAdjEdge[fromVertexID], 0, node);
-		node.data.vertexID = fromVertexID;
-		addLLElement(pGraph->ppAdjEdge[toVertexID], 0, node);
-	}
-	else if (pGraph->graphType == GRAPH_DIRECTED)
-		addLLElement(pGraph->ppAdjEdge[fromVertexID], 0, node);
-	pGraph->currentEdgeCount++;
+	position = findGraphNodePosition(pGraph->ppAdjEdge[fromVertexID], toVertexID);
+	if (position >= 0)
+		return (FALSE);
 	return (TRUE);
 }
 
@@ -101,18 +98,17 @@ int addEdgeWithWeightLG(LinkedGraph *pGraph, int fromVertexID, int toVertexID, i
 {
 	ListNode node;
 
-	if (!pGraph || checkVertexValid(pGraph, fromVertexID) == 0 || checkVertexValid(pGraph, toVertexID) == 0)
+	if (!checkVertexValid(pGraph, fromVertexID) || !checkVertexValid(pGraph, toVertexID) \
+		|| checkEdgeValid(pGraph, fromVertexID, toVertexID, weight) == 0)
 		return (FALSE);
 	node.data.vertexID = toVertexID;
 	node.data.weight = weight;
+	addLLElement(pGraph->ppAdjEdge[fromVertexID], 0, node);
 	if (pGraph->graphType == GRAPH_UNDIRECTED)
 	{
-		addLLElement(pGraph->ppAdjEdge[fromVertexID], 0, node);
 		node.data.vertexID = fromVertexID;
 		addLLElement(pGraph->ppAdjEdge[toVertexID], 0, node);
 	}
-	else if (pGraph->graphType == GRAPH_DIRECTED)
-		addLLElement(pGraph->ppAdjEdge[fromVertexID], 0, node);
 	pGraph->currentEdgeCount++;
 	return (TRUE);
 }
@@ -122,7 +118,7 @@ int checkVertexValid(LinkedGraph *pGraph, int vertexID)
 	if (!pGraph)
 		return (FALSE);
 	if (pGraph->pVertex[vertexID] == USED)
-			return (SUCCESS);
+		return (TRUE);
 	return (FALSE);
 }
 
@@ -131,6 +127,9 @@ int removeVertexLG(LinkedGraph *pGraph, int vertexID)
 	if (!pGraph)
 		return (FALSE);
 	pGraph->pVertex[vertexID] = NOT_USED;
+	for (int i=0;i<pGraph->currentVertexCount;i++)
+		deleteGraphNode(pGraph->ppAdjEdge[i], vertexID);
+	clearLinkedList(pGraph->ppAdjEdge[vertexID]);
 	pGraph->currentVertexCount--;
 	return (TRUE);
 }
@@ -139,18 +138,17 @@ int removeEdgeLG(LinkedGraph *pGraph, int fromVertexID, int toVertexID)
 {
 	ListNode node;
 
-	if (!pGraph || checkVertexValid(pGraph, fromVertexID) == 0 || checkVertexValid(pGraph, toVertexID) == 0)
+	if (!checkVertexValid(pGraph, fromVertexID) || !checkVertexValid(pGraph, toVertexID) \
+		|| checkEdgeValid(pGraph, fromVertexID, toVertexID, 0))
 		return (FALSE);
 	node.data.vertexID = toVertexID;
 	node.data.weight = FAIL;
+	removeLLElement(pGraph->ppAdjEdge[fromVertexID], 0);
 	if (pGraph->graphType == GRAPH_UNDIRECTED)
 	{
-		removeLLElement(pGraph->ppAdjEdge[fromVertexID], 0);
 		node.data.vertexID = fromVertexID;
 		removeLLElement(pGraph->ppAdjEdge[toVertexID], 0);
 	}
-	else if (pGraph->graphType == GRAPH_DIRECTED)
-		removeLLElement(pGraph->ppAdjEdge[fromVertexID], 0);
 	pGraph->currentEdgeCount--;
 	return (TRUE);
 }
@@ -161,7 +159,7 @@ void deleteGraphNode(LinkedList *pList, int delVertexID)
 
 	position = findGraphNodePosition(pList, delVertexID);
 	if (position >= 0)
-	removeLLElement(pList, position);
+		removeLLElement(pList, position);
 }
 
 int findGraphNodePosition(LinkedList *pList, int vertexID)
@@ -202,31 +200,30 @@ int getGraphTypeLG(LinkedGraph *pGraph)
 	return (pGraph->graphType);
 }
 
-void displayLinkedGraph(LinkedGraph *pGraph)
+void displayLinkedGraph(LinkedGraph *pGraph) 
 {
-	int	position;
 	if (!pGraph)
 		return ;
+	ListNode *node;
+
 	for (int i=0;i<pGraph->maxVertexCount;i++)
 	{
-		if (pGraph->pVertex[i] != USED)
+		for (int j = 0;j<pGraph->maxVertexCount;j++)
 		{
-			for(int j=0;j<pGraph->maxVertexCount;j++)
-			    printf("0 ");
-			continue;	
-		}
-		for (int j=0;j<pGraph->maxVertexCount;j++)
-		{
-			if (pGraph->pVertex[j] != USED)
-				printf("0 ");
-			else{
-				position = findGraphNodePosition(pGraph->ppAdjEdge[i], j);
-				if (position >= 0)
-					printf("%d ", getLLElement(pGraph->ppAdjEdge[i], position)->data.weight);
-				else
-					printf("0 ");
+			node = (pGraph->ppAdjEdge[i]->headerNode.pLink);
+			int tmp = 0;
+			while (node)
+			{
+				if (j == node->data.vertexID)
+				{
+					tmp =  node->data.weight;
+					if (node->data.weight == 0)
+						tmp = 1;
+					break ;
+				}
+				node = node->pLink;
 			}
-		}
-		printf("\n");
+			printf("%d ", tmp);
+		}printf("\n");
 	}
 }
