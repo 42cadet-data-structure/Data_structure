@@ -20,7 +20,6 @@ Graph *mstKruskal(Graph* pGraph)
 	sorted_edge = orderEdges(pGraph);
 	if (sorted_edge == NULL)
 		return (NULL);
-	printf("edge_cnt : %d\n", pGraph->currentEdgeCount);
 	for (i = 0; i < pGraph->currentEdgeCount; i++)
 	{
 		cur_edge = deleteMinHeapAH(sorted_edge);
@@ -34,6 +33,7 @@ Graph *mstKruskal(Graph* pGraph)
 				cur_edge->toVertexID) == FALSE)
 			addEdgeWithWeight(mstKgraph, cur_edge->fromVertexID, cur_edge->toVertexID, cur_edge->key);
 	}
+	deleteArrayMinHeap(sorted_edge);
     return (mstKgraph);
 }
 
