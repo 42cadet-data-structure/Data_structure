@@ -22,7 +22,7 @@ Graph *mstKruskal(Graph* pGraph)
 		return (NULL);
 	if (!(heap = orderEdges(pGraph)))
 		return (NULL);
-	for (int i = 0; i < pGraph->currentEdgeCount && ret->currentEdgeCount < pGraph->currentEdgeCount;i++)
+	for (int i = 0; i < pGraph->currentEdgeCount && ret->currentVertexCount < pGraph->currentVertexCount;i++)
 	{
 		heapnode = deleteMinHeapAH(heap);
 		if (heapnode && !checkCycle(pGraph, heapnode->fromVertexID, heapnode->toVertexID))
