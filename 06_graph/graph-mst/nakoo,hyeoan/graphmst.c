@@ -22,6 +22,10 @@ Graph *mstKruskal(Graph* pGraph)
 	sorted_heap = orderEdges(pGraph);
 	if (sorted_heap == NULL)
 		return (free(mst_graph), NULL);
+	/* 왜 pGraph->currentEdgeCount로 했을 땐, 안됐는지 ? 
+	-> 교재의 예시에 의하면, <pGraph->maxVertexCount == 6>  <pGraph->currentEdgeCount == 7> 즉 한번 더 참조를 해서
+	segmentation fault가 발생한다. checkcycle에서 visited를 maxVertexCount만큼 만들었기 때문에 간선이 더 많은 경우 
+	에러가 발생하는게 아닌지 ? - x */
 	for (int i = 0; i < pGraph->maxVertexCount; i++)
 	{
 		min_node = deleteMinHeapAH(sorted_heap);
@@ -99,7 +103,6 @@ int checkCycle(Graph* pGraph, int fromVertexID, int toVertexID)
 	memset(stack, 0 ,sizeof(Stack));
 	pushLSForDFS(stack, fromVertexID);
 	visited[fromVertexID] = TRUE;
-
 	while (isStackEmpty(stack) == FALSE)
 	{
 		stack_node = pop(stack);
@@ -107,7 +110,7 @@ int checkCycle(Graph* pGraph, int fromVertexID, int toVertexID)
 			break;
 		if (stack_node->data == toVertexID)
 		{
-			printf("이거 아무도 못 찾았을텐데 우리팀은 찾아냄 ㅎㅎ 이거 왜 안되는줄 앎 ? 안알랴줌 (%d,%d)\n",fromVertexID, toVertexID);
+			printf("순환 되는 구조 - (%d, %d)\n",fromVertexID, toVertexID);
         	ret = TRUE;
             break;			
 		}
@@ -126,4 +129,3 @@ int checkCycle(Graph* pGraph, int fromVertexID, int toVertexID)
 	deleteStack(stack);
 	return (ret);
 }
-
