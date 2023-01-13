@@ -109,7 +109,7 @@ int checkCycle(Graph* pGraph, int fromVertexID, int toVertexID)
 		{
 			printf("이거 아무도 못 찾았을텐데 우리팀은 찾아냄 ㅎㅎ 이거 왜 안되는줄 앎 ? 안알랴줌 (%d,%d)\n",fromVertexID, toVertexID);
         	ret = TRUE;
-            break;		
+            break;			
 		}
 		list_node = pGraph->ppEdge[stack_node->data]->headerNode.pLink;
 		while (list_node != NULL)
