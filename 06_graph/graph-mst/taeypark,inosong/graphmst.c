@@ -19,7 +19,7 @@ Graph *mstKruskal(Graph* pGraph)
 		mstKgraph = createDirectedGraph(pGraph->maxVertexCount);
 	sorted_edge = orderEdges(pGraph);
 	if (sorted_edge == NULL)
-		return (NULL);
+		return (deleteLinkedGraph(mstKgraph), NULL);
 	for (i = 0; i < pGraph->currentEdgeCount; i++)
 	{
 		cur_edge = deleteMinHeapAH(sorted_edge);
@@ -32,6 +32,7 @@ Graph *mstKruskal(Graph* pGraph)
 		if (checkCycle(mstKgraph, cur_edge->fromVertexID,
 				cur_edge->toVertexID) == FALSE)
 			addEdgeWithWeight(mstKgraph, cur_edge->fromVertexID, cur_edge->toVertexID, cur_edge->key);
+		free(cur_edge);
 	}
 	deleteArrayMinHeap(sorted_edge);
     return (mstKgraph);
