@@ -51,7 +51,7 @@ int main() {
         displayLinkedGraph(pG1);
         printf("\nG2: \n");
         displayLinkedGraph(pG2);
-        printf("\nG3: \n");
+        printf("\nG4: \n");
         displayLinkedGraph(pG4);
 
         deleteLinkedGraph(pG1);

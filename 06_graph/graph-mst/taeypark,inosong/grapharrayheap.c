@@ -141,7 +141,7 @@ void displayArrayHeap(ArrayMaxHeap* pHeap){
     int i = 0;
     if (pHeap != NULL) {
         for(i = 1; i <= pHeap->currentElementCount; i++) {
-            printf("[%d],%d\n", i, pHeap->pElement[i]);
+            printf("[%d],%d\n", i, pHeap->pElement[i].key);
         }
     }
 }

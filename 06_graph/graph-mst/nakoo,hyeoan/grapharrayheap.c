@@ -87,10 +87,12 @@ HeapNode* deleteMaxHeapAH(ArrayMaxHeap* pArrayHeap){
 void insertMinHeapAH(ArrayMinHeap* pArrayHeap, HeapNode element){
     int i = 0;
     if (pArrayHeap == NULL) return;
-    if (pArrayHeap->currentElementCount == pArrayHeap->maxElementCount) return;
+    if (pArrayHeap->currentElementCount == pArrayHeap->maxElementCount) 
+        return;
     pArrayHeap->currentElementCount++;
     i = pArrayHeap->currentElementCount;
-    while ((i != 1) && (element.key < pArrayHeap->pElement[i/2].key)) {
+    while ((i != 1) && (element.key < pArrayHeap->pElement[i/2].key)) 
+    {
         pArrayHeap->pElement[i] = pArrayHeap->pElement[i/2];
         i /= 2;
     }

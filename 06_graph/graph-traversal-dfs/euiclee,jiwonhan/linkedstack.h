@@ -9,7 +9,7 @@
 #define FALSE 0
 
 typedef struct StackNodeType {
-    char data;
+    int data;
     struct StackNodeType *pLink;
 } StackNode;
 

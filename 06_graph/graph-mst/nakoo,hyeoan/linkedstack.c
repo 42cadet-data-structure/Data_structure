@@ -21,6 +21,7 @@ int push(Stack *pStack, StackNode node) {
     if (pStack == NULL) return FALSE;
     pNewNode = (StackNode *) malloc(sizeof(StackNode));
     if (pNewNode == NULL) return FALSE;
+    *pNewNode = node;
     pNewNode->pLink = pStack->pTopElement;
     pStack->pTopElement = pNewNode;
     pStack->currentElementCount++;
