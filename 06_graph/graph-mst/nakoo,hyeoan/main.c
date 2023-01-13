@@ -19,13 +19,13 @@ int main() {
             addVertex(pG1, i);
         }
 
-        addEdgeWithWeight(pG1, 0, 1, 4);
-        addEdgeWithWeight(pG1, 0, 2, 3);
-        addEdgeWithWeight(pG1, 1, 2, 2);
-        addEdgeWithWeight(pG1, 2, 3, 1);
-        addEdgeWithWeight(pG1, 3, 4, 1);
-        addEdgeWithWeight(pG1, 3, 5, 5);
-        addEdgeWithWeight(pG1, 4, 5, 6);
+        addEdgeWithWeight(pG1, 0, 1, 1);
+        addEdgeWithWeight(pG1, 2, 3, 2);
+        addEdgeWithWeight(pG1, 4, 5, 3);
+        addEdgeWithWeight(pG1, 0, 2, 4);
+        addEdgeWithWeight(pG1, 1, 3, 4);
+        addEdgeWithWeight(pG1, 2, 4, 4);
+        addEdgeWithWeight(pG1, 3, 5, 4);
 
         printf("G1:\n");
         
