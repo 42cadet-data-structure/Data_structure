@@ -1,7 +1,3 @@
-//
-// Created by sanguk on 11/08/2017.
-//
-
 #include <stdio.h>
 #include <stdlib.h>
 #include "graphlinkedlist.h"
@@ -10,145 +6,85 @@
 #include "grapharrayheap.h"
 #include "graphmst.h"
 
-
-Graph *mstKruskal(Graph *pGraph) {
-    Graph *pReturn = NULL;
-    int i = 0, maxNodeCount = 0, currentNodeCount = 0, edgeCount = 0, isCycle = 0;
-    ArrayMinHeap *pMinHeap = NULL;
-    HeapNode *pHeapNode = NULL;
-    if (pGraph == NULL) return NULL;
-
-    maxNodeCount = pGraph->maxVertexCount;
-    currentNodeCount = pGraph->currentVertexCount;
-    edgeCount = pGraph->currentEdgeCount;
-    pReturn = createGraph(maxNodeCount);
-    if (pReturn == NULL) return NULL;
-    pMinHeap = orderEdges(pGraph);
-    if (pMinHeap == NULL) return NULL;
-    for (i = 0; i < edgeCount; i++) {
-        pHeapNode = deleteMinHeapAH(pMinHeap);
-        if (pHeapNode != NULL) {
-            isCycle = checkCycle(pReturn, pHeapNode->fromVertexID,
-                                 pHeapNode->toVertexID);
-            if (isCycle == FALSE) {
-                if (pReturn->pVertex[pHeapNode->fromVertexID] != USED) {
-                    addVertex(pReturn, pHeapNode->fromVertexID);
-                }
-                if (pReturn->pVertex[pHeapNode->toVertexID] != USED) {
-                    addVertex(pReturn, pHeapNode->toVertexID);
-                }
-                addEdgeWithWeight(pReturn, pHeapNode->fromVertexID,
-                                    pHeapNode->toVertexID, pHeapNode->key);
-                printf("[%d], : (%d,%d)->%d\n",
-                       i, pHeapNode->fromVertexID, pHeapNode->toVertexID,
-                       pHeapNode->key);
-            }
-            free(pHeapNode);
-
-            if (pReturn->currentVertexCount == currentNodeCount) {
-                break;
-            }
-        }
-    }
-    return pReturn;
-}
-
-ArrayMinHeap *orderEdges(Graph *pGraph) {
-    int i = 0;
-    int edgeCount = 0;
-    ArrayMinHeap *pReturn = NULL;
-    ListNode *pListNode = NULL;
-    List *pEdgeList = NULL;
-    if (pGraph == NULL) return NULL;
-    edgeCount = pGraph->currentEdgeCount;
-    pReturn = createArrayMinHeap(edgeCount);
-    for (i = 0; i < pGraph->maxVertexCount; i++) {
-        if (checkVertexValid(pGraph, i) == TRUE) {
-            pEdgeList = pGraph->ppEdge[i];
-            pListNode = pEdgeList->headerNode.pLink;
-            while (pListNode != NULL) {
-                int vertexID = pListNode->data.vertexID;
-                int weight = pListNode->data.weight;
-                if (pGraph->graphType == GRAPH_DIRECTED || (pGraph->graphType == GRAPH_UNDIRECTED && i < vertexID)) {
-                    HeapNode heapNode = {0,};
-                    heapNode.fromVertexID = i;
-                    heapNode.toVertexID = vertexID;
-                    heapNode.key = weight;
-                    insertMinHeapAH(pReturn, heapNode);
-                }
-                pListNode = pListNode->pLink;
-            }
-        }
-    }
-    return pReturn;
-}
-
-int pushLSForDFS(Stack* pStack, int nodeID)
+Graph *mstKruskal(Graph* pGraph)
 {
-    StackNode node = {0,};
-    node.data = nodeID;
-    return push(pStack, node);
+	int				i;
+    Graph           *mstKgraph;
+	ArrayMinHeap	*sorted_edge;
+	HeapNode		*cur_edge;
+
+	if (pGraph->graphType == GRAPH_UNDIRECTED)
+		mstKgraph = createGraph(pGraph->maxVertexCount);
+	else
+		mstKgraph = createDirectedGraph(pGraph->maxVertexCount);
+	sorted_edge = orderEdges(pGraph);
+	if (sorted_edge == NULL)
+		return (NULL);
+	for (i = 0; i < pGraph->currentEdgeCount; i++)
+	{
+		cur_edge = deleteMinHeapAH(sorted_edge);
+		printf("[%d], : (%d,%d)->%d\n",
+			i, cur_edge->fromVertexID, cur_edge->toVertexID, cur_edge->key);
+		if (mstKgraph->pVertex[cur_edge->fromVertexID] == NOT_USED)
+			addVertex(mstKgraph, cur_edge->fromVertexID);
+		if (mstKgraph->pVertex[cur_edge->toVertexID] == NOT_USED)
+			addVertex(mstKgraph, cur_edge->toVertexID);
+		if (checkCycle(mstKgraph, cur_edge->fromVertexID,
+				cur_edge->toVertexID) == FALSE)
+			addEdgeWithWeight(mstKgraph, cur_edge->fromVertexID, cur_edge->toVertexID, cur_edge->key);
+	}
+	deleteArrayMinHeap(sorted_edge);
+    return (mstKgraph);
 }
 
-int checkCycle(Graph *pGraph, int fromVertexID, int toVertexID) {
-    int pReturn = FALSE;
+ArrayMinHeap *orderEdges(Graph* pGraph)
+{
+	int				y;
+    ArrayMinHeap    *minheap;
+	ListNode		*move;
+    HeapNode		heap_node = {0, };
 
-    int i = 0;
-    int vertextID = 0;
-    Stack* pStack = NULL;
-    StackNode* pStackNode = NULL;
-    ListNode *pListNode = NULL;
-    int *pVisited = NULL;
+    minheap = createArrayMinHeap(pGraph->currentEdgeCount);
+	if (minheap == NULL)
+		return (NULL);
+	for (y = 0; y < pGraph->maxVertexCount; y++)
+	{
+		if (pGraph->pVertex[y] == USED)
+		{
+			for (move = pGraph->ppEdge[y]->headerNode.pLink; move; move = move->pLink)
+			{
+				heap_node.key = move->data.weight;
+				heap_node.fromVertexID = y;
+				heap_node.toVertexID = move->data.vertexID;
+				insertMinHeapAH(minheap, heap_node);
+			}
+		}
+	}
+	return (minheap);
+}
 
-    if (pGraph == NULL) {
-        return pReturn;
-    }
+int checkCycle(Graph* pGraph, int fromVertexID, int toVertexID)
+{
+	int			is_linked = 0;
+	ListNode	*move;
 
-    pStack = createStack();
-    if (pStack == NULL) {
-        return pReturn;
-    }
-
-    pVisited = (int*) malloc(sizeof(int) * pGraph->maxVertexCount);
-    if (pVisited == NULL) {
-        printf("Error, malloc() in traversalDFS()\n");
-        deleteStack(pStack);
-        return pReturn;
-    }
-
-    for(i = 0; i < pGraph->maxVertexCount; i++) {
-        pVisited[i] = FALSE;
-    }
-
-    pVisited[fromVertexID] = TRUE;
-    pushLSForDFS(pStack, fromVertexID);
-
-    while(isStackEmpty(pStack) == FALSE) {
-        pStackNode = pop(pStack);
-        if (pStackNode != NULL) {
-            vertextID = pStackNode->data;
-            if (vertextID == toVertexID) {
-                printf("(%d,%d)-������ ���ΰ� �����մϴ�.\n",
-                       fromVertexID, toVertexID);
-                pReturn = TRUE;
-                break;
-            }
-
-            pListNode = pGraph->ppEdge[vertextID]->headerNode.pLink;
-            while(pListNode != NULL) {
-                int vertexID = pListNode->data.vertexID;
-                if (pVisited[vertexID] == FALSE) {
-                    pVisited[vertexID] = TRUE;
-                    pushLSForDFS(pStack, vertexID);
-                }
-
-                pListNode = pListNode->pLink;
-            }
-        }
-    }
-
-    free(pVisited);
-    deleteStack(pStack);
-
-    return pReturn;
+	//방문했다면 0 리턴
+	if (pGraph->pVertex[fromVertexID] == NOT_USED)
+		return (0);
+	//도착했다면 1 리턴
+	if (fromVertexID == toVertexID)
+		return (1);
+	//방문 했다고 표시
+	pGraph->pVertex[fromVertexID] = NOT_USED;
+	move = pGraph->ppEdge[fromVertexID]->headerNode.pLink;
+	while (move)
+	{
+		is_linked = checkCycle(pGraph, move->data.vertexID, toVertexID);
+		if (is_linked)
+			break ;
+		move = move->pLink;
+	}
+	//이거는 원래대로 복구
+	pGraph->pVertex[fromVertexID] = USED;
+	return (is_linked);
 }

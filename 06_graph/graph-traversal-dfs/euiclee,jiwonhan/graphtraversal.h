@@ -7,4 +7,6 @@
 
 void traversalDFS(LinkedGraph* pGraph, int startVertexID);
 
+#define NOTVISITED 0
+#define VISITED 1
 #endif //GRAPH_TRAVERSAL_GRAPHTRAVERSAL_H

@@ -24,7 +24,7 @@ LinkedGraph *createLinkedGraph(int maxVertexCount) {
         return NULL;
     }
     memset(pReturn->pVertex, NOT_USED, sizeof(int) * maxVertexCount);
-    pReturn->ppAdjEdge = (LinkedGraph **) malloc(sizeof(LinkedGraph *) * maxVertexCount);
+    pReturn->ppAdjEdge = (LinkedList **) malloc(sizeof(LinkedList *) * maxVertexCount);
     if (pReturn->ppAdjEdge == NULL) {
         free(pReturn->pVertex);
         free(pReturn);
