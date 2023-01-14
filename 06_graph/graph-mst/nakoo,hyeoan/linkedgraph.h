@@ -1,7 +1,3 @@
-//
-// Created by sanguk on 11/08/2017.
-//
-
 #ifndef GRAPH_MST_LINKEDGRAPH_H
 #define GRAPH_MST_LINKEDGRAPH_H
 
@@ -24,7 +20,7 @@ typedef struct GraphType {
     int graphType;
     int *pVertex;
     LinkedList **ppEdge;
-} Graph;
+} Graph, LinkedGraph;
 
 Graph *createGraph(int maxVertexCount);
 
