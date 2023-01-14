@@ -23,7 +23,7 @@ typedef struct GraphType {
     int currentEdgeCount;
     int graphType;
     int *pVertex;
-    List **ppEdge;
+    LinkedList **ppEdge;
 } Graph;
 
 Graph *createGraph(int maxVertexCount);

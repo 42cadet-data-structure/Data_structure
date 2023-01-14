@@ -1,7 +1,3 @@
-//
-// Created by sanguk on 11/08/2017.
-//
-
 #ifndef GRAPH_MST_GRAPHLINKEDLIST_H
 #define GRAPH_MST_GRAPHLINKEDLIST_H
 
@@ -21,7 +17,7 @@ typedef struct ListNodeType {
 typedef struct ListType {
     int currentElementCount;
     ListNode headerNode;
-} List;
+} List, LinkedList;
 
 List *createList();
 
