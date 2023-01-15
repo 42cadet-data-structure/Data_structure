@@ -32,4 +32,4 @@ int checkEdge(LinkedGraph *pGraph, int fromVertexID, int toVertexID);
 /* 순환 검사 */
 int checkCycle(Graph* pGraph, int fromVertexID, int toVertexID);
 
-#endif //GRAPH_MST_GRAPHMST_H
+#endif
