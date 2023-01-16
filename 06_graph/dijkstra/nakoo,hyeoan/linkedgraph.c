@@ -199,3 +199,12 @@ void displayLinkedGraph(LinkedGraph *pGraph)
         printf("\n");
     }
 }
+int getMaxVertexCountLG(LinkedGraph *pGraph) {
+    if (pGraph == NULL) return 0;
+    return pGraph->maxVertexCount;
+}
+
+int getVertexCountLG(LinkedGraph *pGraph) {
+    if (pGraph == NULL) return 0;
+    return pGraph->currentVertexCount;
+}
