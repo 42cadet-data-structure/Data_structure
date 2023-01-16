@@ -14,16 +14,15 @@ Graph *mstPrim(Graph *pGraph, int vertexID)
 {
 	Graph	*ret;
 	GraphEdge	minWeightEdge;
-	int			nodeCount = 0, mstNodeCount = 0, maxNodeCount = 0, fromVertexID = 0;
+	int			mstNodeCount = 0, maxNodeCount = 0, fromVertexID = 0;
 
 	if (!pGraph)
 		return (NULL);
 	if (!(ret = createGraph(pGraph->maxVertexCount)))
 		return (NULL);
-	nodeCount = pGraph->currentVertexCount;
 	maxNodeCount = pGraph->maxVertexCount;
 	addVertex(ret, vertexID);
-	while (ret->currentVertexCount < pGraph->currentEdgeCount)
+	while (ret->currentEdgeCount < pGraph->currentVertexCount)
 	{
 		minWeightEdge.vertexIDFrom = 0;
 		minWeightEdge.vertexIDTo = 0;
@@ -38,7 +37,6 @@ Graph *mstPrim(Graph *pGraph, int vertexID)
 		printf("[%d] %d->%d (%d)\n", mstNodeCount, minWeightEdge.vertexIDFrom, minWeightEdge.vertexIDTo, minWeightEdge.weight);
 		addVertex(ret, minWeightEdge.vertexIDTo);
 		addEdgeWithWeight(ret, minWeightEdge.vertexIDFrom, minWeightEdge.vertexIDTo, minWeightEdge.weight);
-		mstNodeCount++;
 	}
 	return (ret);
 }
