@@ -19,7 +19,9 @@ int enqueue(PriorityQueue *pq, QueueNode node)
 	if (!pq)
 		return (FALSE);
 	newNode = malloc(sizeof(QueueNode));
-	*newNode = node;
+	memset(newNode, 0, sizeof(QueueNode));
+	newNode->cost = node.cost;
+	newNode->toVertex = node.toVertex;
 	if (pq->currentElementCount == 0)
 	{
 		pq->pFrontNode = newNode;
@@ -28,17 +30,22 @@ int enqueue(PriorityQueue *pq, QueueNode node)
 	else
 	{
 		search = pq->pFrontNode;
-		while (search && (search->cost < newNode->cost || \
+		while (search && ((search->cost < newNode->cost) || \
 		(search->cost == newNode->cost && search->toVertex < newNode->toVertex)))
 		{
 			searchPrev = search;
 			search = search->pNext;
 		}
-		newNode->pNext = search;
-		if (searchPrev)
-			searchPrev->pNext = newNode;
-		else
+		if (searchPrev == NULL)
+		{
+			newNode->pNext = pq->pFrontNode;
 			pq->pFrontNode = newNode;
+		}
+		else
+		{
+			newNode->pNext = search;
+			searchPrev->pNext = newNode;
+		}
 		if (newNode->pNext == NULL)
 			pq->pRearNode = newNode;
 	}
@@ -46,15 +53,37 @@ int enqueue(PriorityQueue *pq, QueueNode node)
 	return (TRUE);
 }
 
-/*QueueNode *dequeue(PriorityQueue *pq);
-
-QueueNode *peek(PriorityQueue *pq);
-
-void deleteQueue(PriorityQueue *pq);
-
-int isQueueFull(PriorityQueue *pq);
-
-int isQueueEmpty(PriorityQueue *pq);
+QueueNode *dequeue(PriorityQueue *pq)
 {
-	return (!size);
-}*/
+	QueueNode *retNode;
+
+	if (!pq || isQueueEmpty(pq))
+		return (NULL);
+	retNode = pq->pFrontNode;
+	pq->pFrontNode = pq->pFrontNode->pNext;
+	retNode->pNext = NULL;
+	pq->currentElementCount--;
+	return (retNode);
+}
+
+QueueNode *peek(PriorityQueue *pq)
+{
+	if (!pq || isQueueEmpty(pq))
+		return (NULL);
+	return (pq->pFrontNode);
+}
+
+void deleteQueue(PriorityQueue *pq)
+{
+	if (!pq || isQueueEmpty(pq))
+		return ;
+	while (pq->pFrontNode)
+		free(dequeue(pq));
+	free(pq);
+}
+
+
+int isQueueEmpty(PriorityQueue *pq)
+{
+	return (!pq->currentElementCount);
+}

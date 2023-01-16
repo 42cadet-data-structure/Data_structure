@@ -28,6 +28,4 @@ QueueNode *peek(PriorityQueue *pq);
 
 void deleteQueue(PriorityQueue *pq);
 
-int isQueueFull(PriorityQueue *pq);
-
 int isQueueEmpty(PriorityQueue *pq);

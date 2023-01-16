@@ -30,17 +30,20 @@ int main(void)
     }*/
     PriorityQueue *pq;
     pq = createQueuPriorityQueue(MAX);
-    QueueNode node1;node1.cost=2;node1.toVertex=1;
-    QueueNode node2;node2.cost=2;node2.toVertex=3;
-    QueueNode node3;node3.cost=1;node3.toVertex=5;
+    QueueNode node1;node1.cost=3;node1.toVertex=1;
+    QueueNode node2;node2.cost=3;node2.toVertex=3;
+    QueueNode node3;node3.cost=2;node3.toVertex=5;
+    QueueNode node4;node4.cost=1;node4.toVertex=2;
     enqueue(pq, node2);
     enqueue(pq, node1);
     enqueue(pq, node3);
-    QueueNode *tmp = pq->pFrontNode;
-    while (tmp)
+    enqueue(pq, node4);
+    
+    QueueNode *tmp = NULL;
+    while (!isQueueEmpty(pq))
     {
+        tmp = dequeue(pq);
         printf("%d(%d)\n", tmp->cost, tmp->toVertex);
-        tmp = tmp->pNext;
     }
     
     return 0;
