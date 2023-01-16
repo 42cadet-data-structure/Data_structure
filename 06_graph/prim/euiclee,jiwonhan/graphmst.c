@@ -10,74 +10,103 @@
 #include "graphmst.h"
 
 /* Prim Algorithm */
-LinkedGraph *mstPrim(LinkedGraph *pGraph, int vertexID)
+Graph *mstPrim(Graph *pGraph, int vertexID)
 {
+	Graph	*ret;
+	GraphEdge	minWeightEdge;
+	int			nodeCount = 0, mstNodeCount = 0, maxNodeCount = 0, fromVertexID = 0;
+
+	if (!pGraph)
+		return (NULL);
+	if (!(ret = createGraph(pGraph->maxVertexCount)))
+		return (NULL);
+	nodeCount = pGraph->currentVertexCount;
+	maxNodeCount = pGraph->maxVertexCount;
+	addVertex(ret, vertexID);
+	while (ret->currentVertexCount < pGraph->currentEdgeCount)
+	{
+		minWeightEdge.vertexIDFrom = 0;
+		minWeightEdge.vertexIDTo = 0;
+		for (int i = 0; i < pGraph->maxVertexCount; i++)
+		{
+			if (ret->pVertex[i] == TRUE)
+			{
+				fromVertexID = i;
+				getMinWeightEdge(pGraph, ret, fromVertexID, &minWeightEdge);
+			}
+		}
+		printf("[%d] %d->%d (%d)\n", mstNodeCount, minWeightEdge.vertexIDFrom, minWeightEdge.vertexIDTo, minWeightEdge.weight);
+		addVertex(ret, minWeightEdge.vertexIDTo);
+		addEdgeWithWeight(ret, minWeightEdge.vertexIDFrom, minWeightEdge.vertexIDTo, minWeightEdge.weight);
+		mstNodeCount++;
+	}
+	return (ret);
 }
 
 /* mstVertexID와 부속된 간선 중 가중치가 가장 작으면서 순환을 발생시키지 않는 간선을 선택 */
-void getMinWeightEdge(LinkedGraph *pGraph, LinkedGraph *pMST, int mstVertexID, GraphEdge *pMinWeightEdge)
+void getMinWeightEdge(Graph *pGraph, Graph *pMST, int mstVertexID, GraphEdge *pMinWeightEdge)
 {
+	ListNode	*node;
+	int			isCycle;
+	int			isAlready;
+
+	for (node = pGraph->ppEdge[mstVertexID]->headerNode.pLink; node; node = node->pLink)
+	{
+		if (node->data.weight < pMinWeightEdge->weight)
+		{
+			isAlready = checkEdge(pMST, mstVertexID, node->data.vertexID);
+			if (isAlready)
+				isCycle = checkCycle(pMST, mstVertexID, node->data.vertexID);
+			if (isAlready && isCycle)
+			{
+				pMinWeightEdge->vertexIDFrom = mstVertexID;
+				pMinWeightEdge->vertexIDTo = node->data.vertexID;
+				pMinWeightEdge->weight = node->data.weight;
+			}
+		}
+	}
 }
 
 /* 기존의 신장 트리에 특정 간선이 존재하는지를 점검하는 함수로 getMinWeightEdge()에서 호출한다. */
-int checkEdge(LinkedGraph *pGraph, int fromVertexID, int toVertexID)
+int checkEdge(Graph *pGraph, int fromVertexID, int toVertexID)
 {
+	return (findGraphNodePosition(pGraph->ppEdge[fromVertexID], toVertexID));
 }
 
-int checkCycle(LinkedGraph *pGraph, int fromVertexID, int toVertexID) {
-    int pReturn = FALSE;
+int checkCycle(Graph *pGraph, int fromVertexID, int toVertexID)
+{
+	Stack *stack;
+	StackNode *stackNode;
+	StackNode newStackNode;
+	ListNode *listNode;
 
-    int i = 0;
-    int vertextID = 0;
-    Stack* pStack = NULL;
-    StackNode* pStackNode = NULL;
-    LinkedListNode *pListNode = NULL;
-    int *pVisited = NULL;
+	stack = createStack();
+	if (!stack)
+		return (FALSE);
+	int	visited[pGraph->maxVertexCount];
+	for(int i=0;i<pGraph->maxVertexCount;i++)
+		visited[i] = NOT_USED;
 
-    if (pGraph == NULL)
-        return pReturn;
-    pStack = createStack();
-    if (pStack == NULL) 
-        return pReturn;
-    pVisited = (int*) malloc(sizeof(int) * pGraph->maxVertexCount);
-    if (pVisited == NULL) 
-    {
-        printf("Error, malloc() in traversalDFS()\n");
-        deleteStack(pStack);
-        return pReturn;
-    }
-    for(i = 0; i < pGraph->maxVertexCount; i++)
-        pVisited[i] = FALSE;
-    pVisited[fromVertexID] = TRUE;
-
-    pushLSForDFS(pStack, fromVertexID);
-
-    while(isStackEmpty(pStack) == FALSE) 
-    {
-        pStackNode = pop(pStack);
-        if (pStackNode != NULL) 
-        {
-            vertextID = pStackNode->data;
-            if (vertextID == toVertexID) {
-                printf("(%d, %d)-순환되는 구조\n",
-                       fromVertexID, toVertexID);
-                pReturn = TRUE;
-                break;
-            }
-            pListNode = pGraph->ppEdge[vertextID]->headerNode.pLink;
-            while(pListNode != NULL) 
-            {
-                int vertexID = pListNode->data.vertexID;
-                if (pVisited[vertexID] == FALSE)
-                {
-                    pVisited[vertexID] = TRUE;
-                    pushLSForDFS(pStack, vertexID);
-                }
-                pListNode = pListNode->pLink;
-            }
-        }
-    }
-    free(pVisited);
-    deleteStack(pStack);
-    return pReturn;
+	newStackNode.data = fromVertexID;
+	newStackNode.pLink = NULL;
+	push(stack, newStackNode);
+	visited[fromVertexID] = USED;
+	while (!isStackEmpty(stack))
+	{
+		stackNode = pop(stack);
+		if (stackNode && stackNode->data == toVertexID)
+			return (TRUE);
+		for (listNode = pGraph->ppEdge[stackNode->data]->headerNode.pLink; listNode; listNode = listNode->pLink)
+		{
+			if (!visited[listNode->data.vertexID])
+			{
+				visited[listNode->data.vertexID] = USED;
+				newStackNode.data = listNode->data.vertexID;
+				push(stack, newStackNode);
+			}
+		}
+		free(stackNode);
+	}
+	deleteStack(stack);
+	return (FALSE);
 }
