@@ -91,14 +91,14 @@ int addEdgeWithWeight(Graph *pGraph, int fromVertexID, int toVertexID, int weigh
     toVertex.vertexID = toVertexID;
     toVertex.weight = weight;
     addElementForVertex(pGraph->ppEdge[fromVertexID], toVertex);
-    pGraph->currentEdgeCount++;
     if (pGraph->graphType == GRAPH_UNDIRECTED) {
         GraphNode fromVertex = {0,};
         fromVertex.vertexID = fromVertexID;
         fromVertex.weight = weight;
         addElementForVertex(pGraph->ppEdge[toVertexID], fromVertex);
-        pGraph->currentEdgeCount++;
-    }
+        // pGraph->currentEdgeCount++;
+    }   
+    pGraph->currentEdgeCount++;
     return SUCCESS;
 }
 
