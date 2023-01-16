@@ -70,7 +70,7 @@ int *shortestPathDijkstra(LinkedGraph *pGraph, int startVertexID)
 			pListNode = pListNode->pLink;
 		}
 		for (j = 0; j < maxNodeCount; j++)
-			printf("\t(%d,%d)->%d\n", startVertexID, j, pReturn);
+			printf("\t(%d,%d)->%d\n", startVertexID, j, pReturn[j]);
 	}
 	free(pSelected);
 
@@ -93,6 +93,7 @@ int getMinDistance(int *distance, int *pSelected, int maxNodeCount)
 			pReturn = i;
 		}
 	}
+	return (pReturn);
 }
 
 /* 간선의 가중치를 반환하는 함수 */

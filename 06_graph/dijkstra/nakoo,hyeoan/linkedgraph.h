@@ -46,4 +46,8 @@ void deleteGraph(LinkedGraph *pGraph);
 
 void displayLinkedGraph(LinkedGraph *pGraph);
 
+int getMaxVertexCountLG(LinkedGraph *pGraph);
+
+int getVertexCountLG(LinkedGraph *pGraph);
+
 #endif
