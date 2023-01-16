@@ -1,6 +1,8 @@
 #ifndef GRAPH_MST_LINKEDGRAPH_H
 #define GRAPH_MST_LINKEDGRAPH_H
 
+#include "graphlinkedlist.h"
+
 #define TRUE 1
 #define FALSE 0
 
@@ -42,7 +44,7 @@ int deleteGraphNode(LinkedList *pList, int delVertexID);
 
 int findGraphNodePosition(LinkedList *pList, int vertexID);
 
-void deleteGraph(LinkedGraph *pGraph);
+void deleteLinkedGraph(LinkedGraph *pGraph);
 
 void displayLinkedGraph(LinkedGraph *pGraph);
 
