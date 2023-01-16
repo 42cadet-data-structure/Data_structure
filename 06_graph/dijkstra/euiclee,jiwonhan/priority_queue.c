@@ -1,6 +1,6 @@
 #include "priority_queue.h"
 
-PriorityQueue *createQueuPriorityQueue(int maxElementCount)
+PriorityQueue *createQueuPriorityQueue()
 {
 	PriorityQueue *pq;
 	pq = malloc(sizeof(PriorityQueue));

@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_SIZE 100
 #define FALSE 0
 #define TRUE 1
 
@@ -18,7 +17,7 @@ typedef struct PriorityQueue {
     QueueNode *pRearNode;
 } PriorityQueue;
 
-PriorityQueue *createQueuPriorityQueue(int maxElementCount);
+PriorityQueue *createQueuPriorityQueue();
 
 int enqueue(PriorityQueue *pq, QueueNode node);
 
