@@ -12,16 +12,77 @@
 /* Prim Algorithm */
 LinkedGraph *mstPrim(LinkedGraph *pGraph, int vertexID)
 {
+	LinkedGraph	*mst;
+	GraphEdge	min_edge;
+
+	if (pGraph == NULL || vertexID < 0)
+		return (NULL);
+	mst = createLinkedGraph(pGraph->maxVertexCount);
+	if (mst == NULL)
+		return (NULL);
+
+	addVertex(mst, vertexID);
+	while (mst->currentVertexCount < pGraph->maxVertexCount)
+	{
+		min_edge.vertexIDFrom = 0;
+		min_edge.vertexIDTo = 0;
+		min_edge.weight = INT_MAX;
+		for (int v = 0; v < pGraph->maxVertexCount; v++)
+		{
+			if (mst->pVertex[v] == TRUE)
+				getMinWeightEdge(pGraph, mst, v, &min_edge);
+		}
+		printf("%d, min weight: (%d, %d) -> %d\n", mst->currentVertexCount, min_edge.vertexIDFrom, min_edge.vertexIDTo, min_edge.weight);
+		addVertex(mst, min_edge.vertexIDTo);
+		addEdgeWithWeight(mst, min_edge.vertexIDFrom, min_edge.vertexIDTo, min_edge.weight);
+	}
+	return (mst);
 }
 
-/* mstVertexID와 부속된 간선 중 가중치가 가장 작으면서 순환을 발생시키지 않는 간선을 선택 */
-void getMinWeightEdge(LinkedGraph *pGraph, LinkedGraph *pMST, int mstVertexID, GraphEdge *pMinWeightEdge)
+/* mstVertexID와  부 속 된   간 선  중  가 중 치 가   가 장 작 으 면 서  순 환  을  발 생  시 키 지   않 는 간 선   을 선 택 */
+void getMinWeightEdge(LinkedGraph *pGraph, LinkedGraph *pMST, int fromVertexID, GraphEdge *pMinWeightEdge)
 {
+	LinkedList		*edge_list = pGraph->ppEdge[fromVertexID];
+	LinkedListNode	*edge_node = NULL;
+
+	edge_node = edge_list->headerNode.pLink;
+	while (edge_node != NULL)
+	{
+		if (edge_node->data.weight < pMinWeightEdge->weight)
+		{
+			if (checkEdge(pMST, fromVertexID, edge_node->data.vertexID) == NOT_FOUND && \
+				checkCycle(pMST, fromVertexID, edge_node->data.vertexID) == FALSE)
+			{
+				pMinWeightEdge->vertexIDFrom = fromVertexID;
+				pMinWeightEdge->vertexIDTo = edge_node->data.vertexID;
+				pMinWeightEdge->weight = edge_node->data.weight;
+			}
+		}
+		edge_node = edge_node->pLink;
+	}
 }
 
-/* 기존의 신장 트리에 특정 간선이 존재하는지를 점검하는 함수로 getMinWeightEdge()에서 호출한다. */
+/* 기 존 의 신 장  트 리 에   특 정 간 선 이 존 재 하 는 지를  점 검 하는   함 수 로   getMinWeightEdge()에 서  호 출 한  다. */
 int checkEdge(LinkedGraph *pGraph, int fromVertexID, int toVertexID)
 {
+	LinkedList	*edge_list = NULL;	
+	int			position = 0;
+
+	if (pGraph != NULL)
+	{
+		edge_list = pGraph->ppEdge[fromVertexID];
+		position = findGraphNodePosition(edge_list, toVertexID);
+		if (position != NOT_FOUND)
+			return (TRUE);
+	}
+	return (NOT_FOUND);
+}
+
+int pushLSForDFS(Stack* pStack, int nodeID)
+{
+    StackNode node = {0,};
+    node.data = nodeID;
+    return push(pStack, node);
 }
 
 int checkCycle(LinkedGraph *pGraph, int fromVertexID, int toVertexID) {
