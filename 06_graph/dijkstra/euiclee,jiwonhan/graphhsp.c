@@ -1,18 +1,56 @@
 #include "graphhsp.h"
+#include "priority_queue.h"
 
-/* Dijkstra Algorithm에 의해 최단 경로를 찾는 함수,
-입력 인자로 받은 startVertexID부터 다른 모든 노드 사이들의 최단 거리를 구한 다음에 반환한다. */
-int *shortestPathDijkstra(LinkedGraph *pGraph, int startVertexID)
+static void dijkstra(int *costTable, int **graph, int start, int max)
 {
+    PriorityQueue *pq;
+	pq = createQueuPriorityQueue();
+
+    QueueNode node;
+    node.cost = 0; node.toVertex = start;
+    enqueue(pq, node);
+    costTable[start] = 0;
+
+    int dist, now, cost;
+    while (!isQueueEmpty(pq))
+    {
+        dist = -pq->pFrontNode->cost;
+        now = pq->pFrontNode->toVertex;
+        dequeue(pq);
+
+        if (costTable[now] < dist)
+            continue;
+        for(int i = 0;i < max;i++)
+        {
+            if (graph[now][i] == 0)
+                continue;
+            cost = dist + graph[now][i];
+            if (cost < costTable[i])
+            {
+                costTable[i] = cost;
+                node.cost = -cost;node.toVertex = i;
+                enqueue(pq, node);
+            }
+        }
+    }
 }
 
-/* 특정 노드가 집합 S에 포함되었는지 저장하는 배열 변수 == isSelected,
-현재 노드 집합 S 중에서 최단 거리를 가지는 노드 ID인 vertexID를 구한 다음 집합 S에서 지워준다. */
-int getMinDistance(int *distance, int *isSelected, int maxNodeCount)
+void    shortestPathDijkstra(ArrayGraph *pGraph, int startVertexID)
 {
-}
-
-/* 간선의 가중치를 반환하는 함수 */
-int getEdgeWeight(LinkedGraph *pGraph, int fromVertexID, int toVertexID)
-{
+    int *costTable;
+    costTable = malloc(sizeof(int) * pGraph->maxVertexCount);
+    for(int i=0;i<pGraph->maxVertexCount;i++)costTable[i] = INF;
+    //memset(costTable, INF, sizeof(int) * pGraph->maxVertexCount);
+    int **graph;
+    graph = malloc(sizeof(int *) * pGraph->maxVertexCount);
+    memcpy(graph, pGraph->ppAdjEdge, sizeof(int) * pGraph->maxVertexCount * pGraph->maxVertexCount);
+    dijkstra(costTable, graph, startVertexID, pGraph->maxVertexCount);
+    for (int i = 0;i<pGraph->maxVertexCount;i++)
+    {
+        if (costTable[i] != INF)
+            printf("%-4d ", costTable[i]);
+        else 
+            printf("INF  ");
+    }
+    printf("\n");
 }
