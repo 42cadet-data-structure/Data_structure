@@ -53,9 +53,9 @@ void getMinWeightEdge(Graph *pGraph, Graph *pMST, int mstVertexID, GraphEdge *pM
 		if (node->data.weight < pMinWeightEdge->weight)
 		{
 			isAlready = checkEdge(pMST, mstVertexID, node->data.vertexID);
-			if (isAlready)
+			if (isAlready == -1)
 				isCycle = checkCycle(pMST, mstVertexID, node->data.vertexID);
-			if (isAlready && isCycle)
+			if (isAlready == -1 && isCycle == FALSE)
 			{
 				pMinWeightEdge->vertexIDFrom = mstVertexID;
 				pMinWeightEdge->vertexIDTo = node->data.vertexID;
