@@ -37,33 +37,41 @@ Graph *mstPrim(Graph *pGraph, int vertexID)
 	// 	mstNodeCount++;
 	// }
 	// return (ret);
-	Graph	*ret = createGraph(pGraph->maxVertexCount);
+	Graph	*ret;
 	int		selected[pGraph->maxVertexCount];
 	ListNode	*node;
 	int			i = 0;
 	int			min;
 	int			id;
 	int			INF = 1e9;
+
+	ret = createGraph(pGraph->maxVertexCount);
 	for (int j = 0; j < pGraph->maxVertexCount; j++)
-		selected[j] = TRUE;
+		selected[j] = FALSE;
 	while (i < pGraph->maxVertexCount)
 	{
 		min = INF;
+		node = pGraph->ppEdge[i]->headerNode.pLink;
 		id = node->data.vertexID;
 		for (node = pGraph->ppEdge[i]->headerNode.pLink; node; node = node->pLink)
 		{
-			if (selected[i] && min > node->data.weight)
+			if (!selected[i] && min > node->data.weight)
 			{
 				min = node->data.weight;
 				id = node->data.vertexID;
 			}
 		}
-		if (selected[i] && min != INF)
+		if (!selected[i] && min != INF)
 		{
-			addVertex(ret, id);
-			addVertex(ret, i);
+			if (!checkVertexValid(ret, id))
+				addVertex(ret, id);
+			if (!checkVertexValid(ret, i))
+				addVertex(ret, i);
+			int tmp = ret->currentEdgeCount;
 			addEdgeWithWeight(ret, i, id, min);
-			selected[i] = FALSE;
+			if (tmp  ret->currentEdgeCount)
+				printf("[%d] %d->%d (%d)\n", ret->currentVertexCount, i, id, min);
+			selected[i] = TRUE;
 		}
 		i++;
 	}

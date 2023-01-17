@@ -10,7 +10,6 @@
 #include "linkedstack.h"
 #include "linkedgraph.h"
 #include "grapharrayheap.h"
-#include "graphmst.h"
 
 /* Prim 알고리즘 구현에 필요한 구조체 */
 typedef struct GraphEdgeType

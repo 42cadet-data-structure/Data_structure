@@ -31,7 +31,7 @@ int main()
         displayGraph(pG1);
         printf("\n");
 
-        printf("\nPrim MST:\n");
+        printf("\nPrimMST:\n");
         pMST1 = mstPrim(pG1, 0);
         displayGraph(pMST1);
 
