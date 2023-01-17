@@ -9,8 +9,8 @@ int main()
 {
 
     int i = 0;
-    LinkedGraph *pG1 = NULL;
-    LinkedGraph *pMST1 = NULL;
+    Graph *pG1 = NULL;
+    Graph *pMST1 = NULL;
 
     pG1 = createGraph(6);
     if (pG1 != NULL) {
@@ -31,12 +31,12 @@ int main()
         displayGraph(pG1);
         printf("\n");
 
-        printf("\nPrim MST:\n");
+        printf("\nPrimMST:\n");
         pMST1 = mstPrim(pG1, 0);
-        displayLinkedGraph(pMST1);
+        displayGraph(pMST1);
 
-        deleteLinekdGraph(pG1);
-        deleteLinkedGraph(pMST1);
+        deleteGraph(pG1);
+        deleteGraph(pMST1);
     }
     return 0;
 }

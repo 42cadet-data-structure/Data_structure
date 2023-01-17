@@ -20,30 +20,31 @@ typedef struct GraphType {
     int graphType;
     int *pVertex;
     List **ppEdge;
-} Graph, LinkedGraph;
+} Graph;
 
-LinkedGraph *createLinkedGraph(int maxVertexCount);
+Graph *createGraph(int maxVertexCount);
 
-LinkedGraph *createDirectedLinkedGraph(int maxVertexCount);
+Graph *createDirectedGraph(int maxVertexCount);
 
-int addVertex(LinkedGraph *pGraph, int vertexID);
+int addVertex(Graph *pGraph, int vertexID);
 
-int removeVertex(LinkedGraph *pGraph, int vertexID);
+int removeVertex(Graph *pGraph, int vertexID);
 
-int addEdge(LinkedGraph *pGraph, int fromVertexID, int toVertexID);
+int addEdge(Graph *pGraph, int fromVertexID, int toVertexID);
 
-int addEdgeWithWeight(LinkedGraph *pGraph, int fromVertexID, int toVertexID, int weight);
+int addEdgeWithWeight(Graph *pGraph, int fromVertexID, int toVertexID, int weight);
 
-int removeEdge(LinkedGraph *pGraph, int fromVertexID, int toVertexID);
+int removeEdge(Graph *pGraph, int fromVertexID, int toVertexID);
 
-int checkVertexValid(LinkedGraph *pGraph, int vertexID);
+int checkVertexValid(Graph *pGraph, int vertexID);
 
-int deleteGraphNode(LinkedList *pList, int delVertexID);
+int deleteGraphNode(List *pList, int delVertexID);
 
-int findGraphNodePosition(LinkedList *pList, int vertexID);
+int findGraphNodePosition(List *pList, int vertexID);
 
-void deleteGraph(LinkedGraph *pGraph);
+void deleteGraph(Graph *pGraph);
 
-void displayLinkedGraph(LinkedGraph *pGraph);
+void displayGraph(Graph *pGraph);
 
-#endif
+
+#endif //GRAPH_MST_LINKEDGRAPH_H
