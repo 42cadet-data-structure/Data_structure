@@ -8,7 +8,7 @@
 #include <limits.h>
 #include "arraygraph.h"
 
-#define INF 1e9 //10억
+#define INF INT_MAX
 
 // 1. 출발노드 설정
 // 2. 출발노드를 기준으로 각 노드의 최소비용을 저장
