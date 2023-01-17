@@ -12,31 +12,60 @@
 /* Prim Algorithm */
 Graph *mstPrim(Graph *pGraph, int vertexID)
 {
-	Graph	*ret;
-	GraphEdge	minWeightEdge;
-	int			mstNodeCount = 0, maxNodeCount = 0, fromVertexID = 0;
+	// Graph	*ret;
+	// GraphEdge	minWeightEdge;
+	// int			mstNodeCount = 0;
 
-	if (!pGraph)
-		return (NULL);
-	if (!(ret = createGraph(pGraph->maxVertexCount)))
-		return (NULL);
-	maxNodeCount = pGraph->maxVertexCount;
-	addVertex(ret, vertexID);
-	while (ret->currentEdgeCount < pGraph->currentVertexCount)
+	// if (!pGraph)
+	// 	return (NULL);
+	// if (!(ret = createGraph(pGraph->maxVertexCount)))
+	// 	return (NULL);
+	// addVertex(ret, vertexID);
+	// while (ret->currentEdgeCount < pGraph->currentVertexCount)
+	// {
+	// 	minWeightEdge.vertexIDFrom = 0;
+	// 	minWeightEdge.vertexIDTo = 0;
+	// 	minWeightEdge.weight = INT_MAX;
+	// 	for (int i = 0; i < pGraph->maxVertexCount; i++)
+	// 	{
+	// 		if (ret->pVertex[i] == TRUE)
+	// 			getMinWeightEdge(pGraph, ret, i, &minWeightEdge);
+	// 	}
+	// 	printf("[%d] %d->%d (%d)\n", mstNodeCount, minWeightEdge.vertexIDFrom, minWeightEdge.vertexIDTo, minWeightEdge.weight);
+	// 	addVertex(ret, minWeightEdge.vertexIDTo);
+	// 	addEdgeWithWeight(ret, minWeightEdge.vertexIDFrom, minWeightEdge.vertexIDTo, minWeightEdge.weight);
+	// 	mstNodeCount++;
+	// }
+	// return (ret);
+	Graph	*ret = createGraph(pGraph->maxVertexCount);
+	int		selected[pGraph->maxVertexCount];
+	ListNode	*node;
+	int			i = 0;
+	int			min;
+	int			id;
+	int			INF = 1e9;
+	for (int j = 0; j < pGraph->maxVertexCount; j++)
+		selected[j] = TRUE;
+	while (i < pGraph->maxVertexCount)
 	{
-		minWeightEdge.vertexIDFrom = 0;
-		minWeightEdge.vertexIDTo = 0;
-		for (int i = 0; i < pGraph->maxVertexCount; i++)
+		min = INF;
+		id = node->data.vertexID;
+		for (node = pGraph->ppEdge[i]->headerNode.pLink; node; node = node->pLink)
 		{
-			if (ret->pVertex[i] == TRUE)
+			if (selected[i] && min > node->data.weight)
 			{
-				fromVertexID = i;
-				getMinWeightEdge(pGraph, ret, fromVertexID, &minWeightEdge);
+				min = node->data.weight;
+				id = node->data.vertexID;
 			}
 		}
-		printf("[%d] %d->%d (%d)\n", mstNodeCount, minWeightEdge.vertexIDFrom, minWeightEdge.vertexIDTo, minWeightEdge.weight);
-		addVertex(ret, minWeightEdge.vertexIDTo);
-		addEdgeWithWeight(ret, minWeightEdge.vertexIDFrom, minWeightEdge.vertexIDTo, minWeightEdge.weight);
+		if (selected[i] && min != INF)
+		{
+			addVertex(ret, id);
+			addVertex(ret, i);
+			addEdgeWithWeight(ret, i, id, min);
+			selected[i] = FALSE;
+		}
+		i++;
 	}
 	return (ret);
 }
@@ -55,7 +84,7 @@ void getMinWeightEdge(Graph *pGraph, Graph *pMST, int mstVertexID, GraphEdge *pM
 			isAlready = checkEdge(pMST, mstVertexID, node->data.vertexID);
 			if (isAlready == -1)
 				isCycle = checkCycle(pMST, mstVertexID, node->data.vertexID);
-			if (isAlready == -1 && isCycle == FALSE)
+			if (isAlready == -1 && isCycle != TRUE)
 			{
 				pMinWeightEdge->vertexIDFrom = mstVertexID;
 				pMinWeightEdge->vertexIDTo = node->data.vertexID;
