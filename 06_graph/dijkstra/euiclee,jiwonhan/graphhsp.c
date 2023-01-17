@@ -41,10 +41,10 @@ void    shortestPathDijkstra(ArrayGraph *pGraph, int startVertexID)
     costTable = malloc(sizeof(int) * pGraph->maxVertexCount);
     for(int i=0;i<pGraph->maxVertexCount;i++)costTable[i] = INF;
     //memset(costTable, INF, sizeof(int) * pGraph->maxVertexCount);
-    int **graph;
+    /*int **graph;
     graph = malloc(sizeof(int *) * pGraph->maxVertexCount);
     memcpy(graph, pGraph->ppAdjEdge, sizeof(int) * pGraph->maxVertexCount * pGraph->maxVertexCount);
-    dijkstra(costTable, graph, startVertexID, pGraph->maxVertexCount);
+    */dijkstra(costTable, pGraph->ppAdjEdge, startVertexID, pGraph->maxVertexCount);
     for (int i = 0;i<pGraph->maxVertexCount;i++)
     {
         if (costTable[i] != INF)
