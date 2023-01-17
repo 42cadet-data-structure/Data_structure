@@ -69,7 +69,7 @@ Graph *mstPrim(Graph *pGraph, int vertexID)
 				addVertex(ret, i);
 			int tmp = ret->currentEdgeCount;
 			addEdgeWithWeight(ret, i, id, min);
-			if (tmp  ret->currentEdgeCount)
+			if (tmp != ret->currentEdgeCount)
 				printf("[%d] %d->%d (%d)\n", ret->currentVertexCount, i, id, min);
 			selected[i] = TRUE;
 		}
