@@ -54,7 +54,7 @@ int getEdgeWeight(LinkedGraph *pGraph, int fromVertexID, int toVertexID)
 {
 	ListNode	*move;
 
-	move = pGraph->ppEdge[fromVertexID];
+	move = pGraph->ppEdge[fromVertexID]->headerNode.pLink;
 	while (move)
 	{
 		if (move->data.vertexID == toVertexID)
