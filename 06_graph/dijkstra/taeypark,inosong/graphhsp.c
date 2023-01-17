@@ -12,6 +12,7 @@ static void	make_dijkstra(LinkedGraph *pGraph, int *dist, int startID)
 	for (int i = 0; i < pGraph->maxVertexCount; i++)
 		dist[i] = INT_MAX, visited[i] = 0;
 	dist[startID] = 0;
+	visited[startID] = 1;
 	q = createQueue();
 	to_enqueue.data = startID;
 	enqueue(q, to_enqueue);
@@ -26,14 +27,14 @@ static void	make_dijkstra(LinkedGraph *pGraph, int *dist, int startID)
 			{
 				enqueue(q, to_enqueue);
 				visited[to_enqueue.data] = 1;
-				if (dist[to_enqueue.data] >= dist[curID->data] + move->data.weight)
-					dist[to_enqueue.data] = dist[curID->data] + move->data.weight;
 			}
+			if (dist[to_enqueue.data] >= dist[curID->data] + move->data.weight)
+				dist[to_enqueue.data] = dist[curID->data] + move->data.weight;
 			move = move->pLink;
 		}
-		free(curID);
+		// free(curID);
 	}
-	deleteQueue(q);
+	// deleteQueue(q);
 }
 
 /* Dijkstra Algorithm에 의해 최단 경로를 찾는 함수,
@@ -46,6 +47,8 @@ int *shortestPathDijkstra(LinkedGraph *pGraph, int startVertexID)
 	if (dist == NULL)
 		return (NULL);
 	make_dijkstra(pGraph, dist, startVertexID);
+	for (int i = 0; i < pGraph->maxVertexCount; i++)
+		printf("%d-%d : %d\n", startVertexID, i, dist[i]);
 	return (dist);
 }
 
