@@ -120,7 +120,7 @@ int checkCycle(LinkedGraph *pGraph, int fromVertexID, int toVertexID) {
         {
             vertextID = pStackNode->data;
             if (vertextID == toVertexID) {
-                printf("(%d, %d)-순환되는 구조\n",
+                printf("(%d, %d) - 순환되는 구조\n",
                        fromVertexID, toVertexID);
                 pReturn = TRUE;
                 break;
