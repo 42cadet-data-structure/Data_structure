@@ -8,22 +8,6 @@
 #include "linkedgraph.h"
 #include "graphmst.h"
 
-/* Prim 알고리즘 */
-Graph *mstPrim(Graph *pGraph, int vertexID)
-{
-}
-
-/* mstVertexID와 부속된 간선 중 가중치가 가장 작으면서 순환을 발생시키지 않는 간선을 선택 */
-void getMinWeightEdge(Graph *pGraph, Graph *pMST, \
-					int mstVertexID, GraphEdge *pMinWeightEdge)
-{
-}
-
-/* 기존의 신장 트리에 특정 간선이 존재하는지를 점검하는 함수로 getMinWeightEdge()에서 호출한다. */
-int checkEdge(Graph *pGraph, int fromVertexID, int toVertexID)
-{
-}
-
 Graph *mstKruskal(Graph* pGraph)
 {
 	Graph			*mst_graph = NULL;
@@ -38,10 +22,7 @@ Graph *mstKruskal(Graph* pGraph)
 	sorted_heap = orderEdges(pGraph);
 	if (sorted_heap == NULL)
 		return (free(mst_graph), NULL);
-	/* 왜 pGraph->currentEdgeCount로 했을 땐, 안됐는지 ? 
-	-> 교재의 예시에 의하면, <pGraph->maxVertexCount == 6>  <pGraph->currentEdgeCount == 7> 즉 한번 더 참조를 해서
-	segmentation fault가 발생한다. checkcycle에서 visited를 maxVertexCount만큼 만들었기 때문에 간선이 더 많은 경우 
-	에러가 발생하는게 아닌지 ? - x */
+
 	for (int i = 0; i < pGraph->maxVertexCount; i++)
 	{
 		min_node = deleteMinHeapAH(sorted_heap);
@@ -56,7 +37,7 @@ Graph *mstKruskal(Graph* pGraph)
 		min_node = NULL;
 	}
 	return (mst_graph);
-}
+} 
 
 ArrayMinHeap *orderEdges(Graph* pGraph)
 {

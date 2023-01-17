@@ -33,7 +33,7 @@ LinkedGraph *createLinkedGraph(int maxVertexCount)
         pReturn->ppEdge[i] = createLinkedList();
         if (pReturn->ppEdge[i] == NULL) 
         {
-            for (j = 0; j < i - 1; j++) 
+            for (j = 0; j < i; j++) 
                 free(pReturn->ppEdge[j]);
             free(pReturn->ppEdge);
             free(pReturn->pVertex);
