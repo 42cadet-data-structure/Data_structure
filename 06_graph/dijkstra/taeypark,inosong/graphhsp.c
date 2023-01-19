@@ -19,15 +19,14 @@ static void	make_dijkstra(LinkedGraph *pGraph, int *dist, int startID)
 	while (!isQueueEmpty(q))
 	{
 		curID = dequeue(q);
+		visited[curID->data] = 1;
 		move = pGraph->ppEdge[curID->data]->headerNode.pLink;
 		while (move)
 		{
 			to_enqueue.data = move->data.vertexID;
-			if (visited[to_enqueue.data] == 0)
-			{
-				enqueue(q, to_enqueue);
-				visited[to_enqueue.data] = 1;
-			}
+			if (visited[to_enqueue.data] == 1)
+				continue ;
+			enqueue(to_enqueue);
 			if (dist[to_enqueue.data] >= dist[curID->data] + move->data.weight)
 				dist[to_enqueue.data] = dist[curID->data] + move->data.weight;
 			move = move->pLink;
