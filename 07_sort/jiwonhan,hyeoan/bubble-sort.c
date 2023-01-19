@@ -16,23 +16,28 @@ void print_array(int *array, int n)
     printf("\n");
 }
 
+void bubble_sort(int *array, int n)
+{
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < (n - i - 1); j++)
+		{
+			if (array[j] > array[j + 1])
+				swap(&array[j], &array[j + 1]);
+		}
+		print_array(array, n);
+	}
+}
+
 int main()
 {
     int n;
     int array[50];
-    // 값 입력
     scanf("%d", &n);
 
     for (int i = 0; i < n; i++)
         scanf("%d", &array[i]);
-    // 정렬
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < (n - i - 1); j++)
-        {
-            if (array[j] > array[j + 1])
-                swap(&array[j], &array[j + 1]);
-        }
-        print_array(array, n);
-    }
+    bubble_sort(array, n);
+
+	return (0);
 }
