@@ -1,140 +1,154 @@
-//
-// Created by sanguk on 09/08/2017.
-//
-
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "bintree.h"
 #include "bintreelinkedstack.h"
 #include "bintreelinkedqueue.h"
 #include "bintreetraversal.h"
 
-int pushLSBinTreeNode(LinkedStack *pStack, BinTreeNode *pNode) {
-    StackNode node = {0,};
-    node.data = pNode;
-    return pushLS(pStack, node);
+int pushLSBinTreeNode(LinkedStack *linked_stack, BinTreeNode *rootnode)
+{
+	StackNode node;
+	memset(&node, 0, sizeof(StackNode));
+	node.data = rootnode;
+	return (pushLS(linked_stack, node));
 }
 
-int enqueueLQBinTreeNode(LinkedQueue *pQueue, BinTreeNode *pNode) {
-    QueueNode node = {0,};
-    node.data = pNode;
-    return enqueueLQ(pQueue, node);
+int enqueueLQBinTreeNode(LinkedQueue *pQueue, BinTreeNode *rootnode)
+{
+	QueueNode node;
+	memset(&node, 0, sizeof(QueueNode));
+	node.data = rootnode;
+	return (enqueueLQ(pQueue, node));
 }
 
-void preorderTraversalBinTree(BinTree *pBinTree) {
-    LinkedStack *pStack = NULL;
-    StackNode *pStackNode = NULL;
-    BinTreeNode *pRootNode = NULL, *pLeftNode = NULL, *pRightNode = NULL;
-    int isEmpty = FALSE;
+void preorderTraversalBinTree(BinTree *pBinTree)
+{
+	LinkedStack *linked_stack;
+	StackNode *stack_node;
+	BinTreeNode *rootnode = NULL, *leftnode = NULL, *rightnode = NULL;
 
-    if (pBinTree == NULL) return;
-    pStack = createLinkedStack();
-    if (pStack == NULL) return;
-    pushLSBinTreeNode(pStack, getRootNodeBT(pBinTree));
-
-    while (isEmpty == FALSE) {
-        pStackNode = popLS(pStack);
-        pRootNode = pStackNode->data;
-        printf("%c ", pRootNode->data);
-        pLeftNode = getLeftChildNodeBT(pRootNode);
-        pRightNode = getRightChildNodeBT(pRootNode);
-        if (pRightNode != NULL) {
-            pushLSBinTreeNode(pStack, pRightNode);
-        }
-        if (pLeftNode != NULL) {
-            pushLSBinTreeNode(pStack, pLeftNode);
-        }
-        free(pStackNode);
-        isEmpty = isLinkedStackEmpty(pStack);
-    }
-    deleteLinkedStack(pStack);
+	if (!pBinTree)
+		return ;
+	linked_stack = createLinkedStack();
+	if (!linked_stack)
+		return ;
+	pushLSBinTreeNode(linked_stack, getRootNodeBT(pBinTree));
+	while (isLinkedStackEmpty(linked_stack) == FALSE)
+	{
+		stack_node = popLS(linked_stack);
+		rootnode = stack_node->data;
+		printf("%c ",rootnode->data);
+		leftnode =  getLeftChildNodeBT(rootnode);
+		rightnode = getRightChildNodeBT(rootnode);
+		if (rightnode != NULL)
+			pushLSBinTreeNode(linked_stack, rightnode);
+		if (leftnode != NULL)
+			pushLSBinTreeNode(linked_stack, leftnode);
+		free(stack_node);
+	}
+	deleteLinkedStack(linked_stack);
 }
 
-void inorderTraversalBinTree(BinTree *pBinTree) {
-    LinkedStack *pStack = NULL;
-    StackNode *pStackNode = NULL;
-    BinTreeNode *pNode = NULL;
-    if (pBinTree == NULL) return;
-    pStack = createLinkedStack();
-    if (pStack == NULL) return;
-    pNode = getRootNodeBT(pBinTree);
-    while (1) {
-        for (; pNode != NULL; pNode = getLeftChildNodeBT(pNode)) {
-            pushLSBinTreeNode(pStack, pNode);
-        }
-        if (isLinkedStackEmpty(pStack) == TRUE) {
-            break;
-        } else {
-            pStackNode = popLS(pStack);
-            if (pStackNode != NULL) {
-                pNode = pStackNode->data;
-                printf("%c ", pNode->data);
-                pNode = getRightChildNodeBT(pNode);
-                free(pStackNode);
-            }
-        }
-    }
-    deleteLinkedStack(pStack);
+void inorderTraversalBinTree(BinTree *pBinTree)
+{
+	LinkedStack *linked_stack;
+	StackNode *stack_node = NULL;
+	BinTreeNode *pnode = NULL;
+
+	if (!pBinTree)
+		return ;
+	linked_stack = createLinkedStack();
+	if (!linked_stack)
+		return ;
+	pnode = getRootNodeBT(pBinTree);
+	while (TRUE)
+	{
+		/* 무조건 왼쪽 아래까지 내려간다 */
+		while (pnode != NULL)
+		{
+			pushLSBinTreeNode(linked_stack, pnode);
+			pnode = getLeftChildNodeBT(pnode);
+		}
+		if (isLinkedStackEmpty(linked_stack) == TRUE)
+			break ;
+		else
+		{
+			stack_node = popLS(linked_stack);
+			if (stack_node != NULL)
+			{
+				pnode = stack_node->data;
+				printf("%c ", pnode->data);
+				pnode = getRightChildNodeBT(pnode);
+				free(stack_node);
+			}
+		}
+	}
+	deleteLinkedStack(linked_stack);
 }
 
-void postorderTraversalBinTree(BinTree *pBinTree) {
-    LinkedStack *pStack = NULL;
-    StackNode *pStackNode = NULL;
-    BinTreeNode *pRootNode = NULL, *pLeftChildNode = NULL, *pRightChildNode = NULL;
-    int isEmpty = FALSE;
-    if (pBinTree == NULL) return;
-    pStack = createLinkedStack();
-    if (pStack == NULL) return;
-    pushLSBinTreeNode(pStack, getRootNodeBT(pBinTree));
-    while (isEmpty == FALSE) {
-        pStackNode = peekLS(pStack);
-        if (pStackNode != NULL) {
-            pRootNode = pStackNode->data;
-            pLeftChildNode = getLeftChildNodeBT(pRootNode);
-            if (pLeftChildNode != NULL && pLeftChildNode->visited == FALSE) {
-                pushLSBinTreeNode(pStack, pLeftChildNode);
-            } else {
-                pRightChildNode = getRightChildNodeBT(pRootNode);
-                if (pRightChildNode != NULL && pRightChildNode->visited == FALSE) {
-                    pushLSBinTreeNode(pStack, pRightChildNode);
-                } else {
-                    pRootNode->visited = TRUE;
-                    printf("%c ", pRootNode->data);
-                    free(popLS(pStack));
-                }
-            }
-        }
-        isEmpty = isLinkedStackEmpty(pStack);
-    }
-    deleteLinkedStack(pStack);
+void postorderTraversalBinTree(BinTree *pBinTree)
+{
+	LinkedStack *linked_stack;
+	StackNode *stack_node = NULL;
+	BinTreeNode *rootnode = NULL, *leftnode = NULL, *rightnode = NULL;
+
+	if (!pBinTree)
+		return ;
+	linked_stack = createLinkedStack();
+	if (!linked_stack)
+		return ;
+	pushLSBinTreeNode(linked_stack, getRootNodeBT(pBinTree));
+	while (isLinkedStackEmpty(linked_stack) == FALSE)
+	{
+		stack_node = peekLS(linked_stack);
+		if (stack_node != NULL)
+		{
+			rootnode = stack_node->data;
+			leftnode = getLeftChildNodeBT(rootnode);
+			if (leftnode != NULL && leftnode->visited == NOT_VISITED)
+				pushLSBinTreeNode(linked_stack, leftnode);
+			else
+			{
+				rightnode = getRightChildNodeBT(rootnode);
+				if (rightnode != NULL && rightnode->visited == NOT_VISITED)
+					pushLSBinTreeNode(linked_stack, rightnode);
+				else
+				{
+					rootnode->visited = VISITED;
+					printf("%c ", rootnode->data);
+					free(popLS(linked_stack));
+				}
+			}
+		}
+	}
+	deleteLinkedStack(linked_stack);
 }
 
-void levelOrderTraversalBinTree(BinTree *pBinTree) {
-    LinkedQueue *pQueue = NULL;
-    QueueNode *pQueueNode = NULL;
-    BinTreeNode *pRootNode = NULL, *pLeftChildNode = NULL, *pRightChildNode = NULL;
-    int isEmpty = FALSE;
+void levelOrderTraversalBinTree(BinTree *pBinTree)
+{
+	LinkedQueue *linked_queue = NULL;
+	QueueNode *queue_node = NULL;
+	BinTreeNode *rootnode = NULL, *leftnode = NULL, *rightnode = NULL;
 
-    if (pBinTree == NULL) return;
-    pQueue = createLinkedQueue();
-    pRootNode = getRootNodeBT(pBinTree);
+	if (!pBinTree)
+		return ;
+	linked_queue = createLinkedQueue();
+	rootnode = getRootNodeBT(pBinTree);
+	enqueueLQBinTreeNode(linked_queue, rootnode);
 
-    enqueueLQBinTreeNode(pQueue, pRootNode);
-
-    while (isEmpty == FALSE) {
-        pQueueNode = dequeueLQ(pQueue);
-        pRootNode = pQueueNode->data;
-        printf("%c ", pRootNode->data);
-        pLeftChildNode = getLeftChildNodeBT(pRootNode);
-        pRightChildNode = getRightChildNodeBT(pRootNode);
-        if (pLeftChildNode != NULL) {
-            enqueueLQBinTreeNode(pQueue, pLeftChildNode);
-        }
-        if (pRightChildNode != NULL) {
-            enqueueLQBinTreeNode(pQueue, pRightChildNode);
-        }
-        free(pQueueNode);
-        isEmpty = isLinkedQueueEmpty(pQueue);
-    }
-    deleteLinkedQueue(pQueue);
+	while (isLinkedQueueEmpty(linked_queue) == FALSE)
+	{
+		queue_node = dequeueLQ(linked_queue);
+		rootnode = queue_node->data;
+		printf("%c ", rootnode->data);
+		leftnode = getLeftChildNodeBT(rootnode);
+		rightnode = getRightChildNodeBT(rootnode);
+		if (leftnode != NULL)
+			enqueueLQBinTreeNode(linked_queue, leftnode);
+		if (rightnode != NULL)
+			enqueueLQBinTreeNode(linked_queue, rightnode);
+		free(queue_node);
+	}
+	deleteLinkedQueue(linked_queue);
 }

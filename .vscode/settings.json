@@ -1,9 +1,0 @@
-{
-	"files.associations": {
-		"mapdef.h": "c",
-		"stdio.h": "c",
-		"arrayqueue.h": "c",
-		"__node_handle": "c",
-		"stdlib.h": "c"
-	}
-}

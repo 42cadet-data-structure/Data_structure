@@ -107,4 +107,8 @@ int getListLength(List *pList)
 	if (pList == NULL)
 		return (FALSE);
 	return (pList->currentElementCount);
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> f1ae0af914060f6e5e3c39fea5847ec22e2888b1
