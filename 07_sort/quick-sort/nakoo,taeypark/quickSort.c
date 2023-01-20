@@ -6,7 +6,7 @@
 /*   By: nakoo <nakoo@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 12:39:48 by nakoo             #+#    #+#             */
-/*   Updated: 2023/01/20 13:00:32 by nakoo            ###   ########.fr       */
+/*   Updated: 2023/01/20 14:10:08 by nakoo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void	print_arr(char *msg, int *arr, int size)
 
 void	swap(int * restrict a, int * restrict b)
 {
+	if (a == b)
+		return ;
 	*a ^= *b;
 	*b ^= *a;
 	*a ^= *b;
@@ -50,7 +52,7 @@ void	quick_sort(int *arr, int start, int end)
 			swap(&arr[l], &arr[r]);
 	}
 	quick_sort(arr, start, r - 1);
-	quick_sort(arr, l + 1, end);
+	quick_sort(arr, r + 1, end);
 }
 
 int	main(void)
