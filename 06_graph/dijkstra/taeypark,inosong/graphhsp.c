@@ -5,35 +5,31 @@ static void	make_dijkstra(LinkedGraph *pGraph, int *dist, int startID)
 {
 	Queue		*q;
 	QueueNode	to_enqueue, *curID;
-	ListNode	*move;
-	int			*visited;
+	ListNode	*linked_node;
 
-	visited = (int *)malloc(sizeof(int) * pGraph->maxVertexCount);
 	for (int i = 0; i < pGraph->maxVertexCount; i++)
-		dist[i] = INT_MAX, visited[i] = 0;
+		dist[i] = INT_MAX;
 	dist[startID] = 0;
-	visited[startID] = 1;
 	q = createQueue();
 	to_enqueue.data = startID;
 	enqueue(q, to_enqueue);
 	while (!isQueueEmpty(q))
 	{
 		curID = dequeue(q);
-		visited[curID->data] = 1;
-		move = pGraph->ppEdge[curID->data]->headerNode.pLink;
-		while (move)
+		linked_node = pGraph->ppEdge[curID->data]->headerNode.pLink;
+		while (linked_node)
 		{
-			to_enqueue.data = move->data.vertexID;
-			if (visited[to_enqueue.data] == 1)
-				continue ;
-			enqueue(to_enqueue);
-			if (dist[to_enqueue.data] >= dist[curID->data] + move->data.weight)
-				dist[to_enqueue.data] = dist[curID->data] + move->data.weight;
-			move = move->pLink;
+			to_enqueue.data = linked_node->data.vertexID;
+			if (dist[to_enqueue.data] >= dist[curID->data] + linked_node->data.weight)
+			{
+				dist[to_enqueue.data] = dist[curID->data] + linked_node->data.weight;
+				enqueue(q, to_enqueue);
+			}
+			linked_node = linked_node->pLink;
 		}
-		// free(curID);
+		free(curID);
 	}
-	// deleteQueue(q);
+	deleteQueue(q);
 }
 
 /* Dijkstra Algorithm에 의해 최단 경로를 찾는 함수,
