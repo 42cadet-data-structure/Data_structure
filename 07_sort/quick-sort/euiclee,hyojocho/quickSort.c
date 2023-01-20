@@ -49,13 +49,13 @@ void	init_values(int *values, char **av, int num)
 	}
 }
 
-int compare(const void *a, const void *b)
-{
-	int x = *(int *)a;
-	int y = *(int *)b;
+// int compare(const void *a, const void *b)
+// {
+// 	int x = *(int *)a;
+// 	int y = *(int *)b;
 
-	return (x - y);
-}
+// 	return (x - y);
+// }
 
 int main(int ac, char **av)
 {
