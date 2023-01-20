@@ -13,10 +13,8 @@ int *shortestPathDijkstra(LinkedGraph *pGraph, int startVertexID)
 	LinkedList	*pEdgeList = NULL;
 
 	if (pGraph == NULL)
-	{
-		printf("Graph is NULL\n");
-		return (pReturn);
-	}
+		return (NULL);
+
 	maxNodeCount = getMaxVertexCountLG(pGraph);
 	nodeCount = getVertexCountLG(pGraph);
 	pReturn = (int *)malloc(sizeof(int) * maxNodeCount);
@@ -25,9 +23,7 @@ int *shortestPathDijkstra(LinkedGraph *pGraph, int startVertexID)
 	if (pReturn == NULL || pSelected == NULL)
 	{
 		if (pReturn != NULL)
-			free(pReturn);
-		printf("error\n");
-		return (NULL);
+			return (free(pReturn), NULL);
 	}
 	for (i = 0; i < maxNodeCount; i++)
 	{
@@ -48,10 +44,10 @@ int *shortestPathDijkstra(LinkedGraph *pGraph, int startVertexID)
 		}
 	}
 	for (i = 0; i < maxNodeCount; i++)
-		printf(" (%d, %d)->%d\n", startVertexID, i, pReturn[i]);
+		printf(" (%d, %d) -> %d\n", startVertexID, i, pReturn[i]);
 	for (i = 0; i < nodeCount - 1; i++)
 	{
-		printf("[%d]-Iteration\n", i+1);
+		printf("[%d] - Iteration\n", i+1);
 		// Step-1
 		vertexID = getMinDistance(pReturn, pSelected, maxNodeCount);
 		pSelected[vertexID] = FALSE;
@@ -70,10 +66,9 @@ int *shortestPathDijkstra(LinkedGraph *pGraph, int startVertexID)
 			pListNode = pListNode->pLink;
 		}
 		for (j = 0; j < maxNodeCount; j++)
-			printf("\t(%d,%d)->%d\n", startVertexID, j, pReturn[j]);
+			printf("\t(%d, %d) -> %d\n", startVertexID, j, pReturn[j]);
 	}
 	free(pSelected);
-
 	return (pReturn);
 }
 
