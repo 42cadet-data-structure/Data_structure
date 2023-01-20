@@ -46,20 +46,3 @@ int *shortestPathDijkstra(LinkedGraph *pGraph, int startVertexID)
 		printf("%d-%d : %d\n", startVertexID, i, dist[i]);
 	return (dist);
 }
-
-/* 간선의 가중치를 반환하는 함수 */
-int getEdgeWeight(LinkedGraph *pGraph, int fromVertexID, int toVertexID)
-{
-	ListNode	*move;
-
-	move = pGraph->ppEdge[fromVertexID]->headerNode.pLink;
-	while (move)
-	{
-		if (move->data.vertexID == toVertexID)
-			break ;
-		move = move->pLink;
-	}
-	if (move == NULL)
-		return (-1);
-	return (move->data.weight);
-}
