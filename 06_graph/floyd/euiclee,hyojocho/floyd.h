@@ -1,5 +1,5 @@
-#ifndef GRAPHHSP_H
-#define GRAPHHSP_H
+#ifndef FLOYD_H
+#define FLOYD_H
 
 #include <stdio.h>
 #include <unistd.h>
@@ -8,8 +8,8 @@
 #include <limits.h>
 #include "arraygraph.h"
 
-#define INF 1e9
+#define INF 1000000
 
-void floydWarshall(int **graph, int max_size);
+void floyd(int **graph, int max_size);
 
 #endif
