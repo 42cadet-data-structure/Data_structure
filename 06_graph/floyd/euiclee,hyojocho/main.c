@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "arraygraph.h"
-#include "graphhsp.h"
+#include "floyd.h"
 
 #define MAX_SIZE 6
 
@@ -25,8 +25,8 @@ int main(void)
 		printf("G1:\n");
 		displayArrayGraph(pG1);
 
-		printf("\nFloyd-Warshall\n");
-		floydWarshall(pG1->ppAdjEdge, pG1->currentVertexCount);
+		printf("\nFloyd\n");
+		floyd(pG1->ppAdjEdge, pG1->currentVertexCount);
 		deleteArrayGraph(pG1);
 	}
 	return 0;
