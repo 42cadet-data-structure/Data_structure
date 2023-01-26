@@ -13,10 +13,9 @@ int	main(void)
 	fprintf(stdout, "arr : ");
 	for (i = 0; i < size; i++)
 		fscanf(stdin, "%d", &arr[i]);
-	print_arr("Before Bubble sort", arr, size);
-	bubble_sort(arr, size);
-	print_arr("After Bubble sort", arr, size);
+	print_arr("Before Heap sort", arr, size);
+	heap_sort(arr, size);
+	print_arr("After Heap sort", arr, size);
 	free(arr);
 	return (0);
 }
-
