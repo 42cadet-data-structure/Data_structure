@@ -1,34 +1,36 @@
-#ifndef GRAPH_MST_GRAPHLINKEDLIST_H
-#define GRAPH_MST_GRAPHLINKEDLIST_H
+#ifndef LINKED_GRAPH_GRAPHLINKEDLIST_H
+#define LINKED_GRAPH_GRAPHLINKEDLIST_H
 
-#define TRUE 1
-#define FALSE 0
+#define TRUE        1
+#define FALSE        0
 
-typedef struct GraphNodeType {
+typedef struct GraphVertexType {
     int vertexID;
     int weight;
-} GraphNode;
+} GraphVertex;
 
 typedef struct ListNodeType {
-    GraphNode data;
-    struct LinkedListNode *pLink;
-} ListNode, LinkedListNode;
+    GraphVertex data;
+    struct ListNodeType *pLink;
+} ListNode;
 
-typedef struct ListType {
+typedef struct LinkedListType {
     int currentElementCount;
     ListNode headerNode;
-} List, LinkedList;
+} LinkedList;
 
 LinkedList *createLinkedList();
 
-int addElement(LinkedList *pList, int position, LinkedListNode node);
+int addLLElement(LinkedList *pList, int position, ListNode element);
 
-int removeElement(LinkedList *pList, int position);
+int removeLLElement(LinkedList *pList, int position);
 
-LinkedListNode *getElement(LinkedList *pList, int position);
+ListNode *getLLElement(LinkedList *pList, int position);
 
-int isListEmpty(LinkedList *pList);
+void clearLinkedList(LinkedList *pList);
+
+int getLinkedListLength(LinkedList *pList);
 
 void deleteLinkedList(LinkedList *pList);
 
-#endif
+#endif //LINKED_GRAPH_GRAPHLINKEDLIST_H

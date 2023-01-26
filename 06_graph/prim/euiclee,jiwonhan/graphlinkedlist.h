@@ -1,3 +1,7 @@
+//
+// Created by sanguk on 11/08/2017.
+//
+
 #ifndef GRAPH_MST_GRAPHLINKEDLIST_H
 #define GRAPH_MST_GRAPHLINKEDLIST_H
 
@@ -11,24 +15,24 @@ typedef struct GraphNodeType {
 
 typedef struct ListNodeType {
     GraphNode data;
-    struct LinkedListNode *pLink;
-} ListNode, LinkedListNode;
+    struct ListNodeType *pLink;
+} ListNode;
 
 typedef struct ListType {
     int currentElementCount;
     ListNode headerNode;
-} List, LinkedList;
+} List;
 
-LinkedList *createLinkedList();
+List *createList();
 
-int addElement(LinkedList *pList, int position, LinkedListNode node);
+int addElement(List *pList, int position, ListNode node);
 
-int removeElement(LinkedList *pList, int position);
+int removeElement(List *pList, int position);
 
-LinkedListNode *getElement(LinkedList *pList, int position);
+ListNode *getElement(List *pList, int position);
 
-int isListEmpty(LinkedList *pList);
+int isListEmpty(List *pList);
 
-void deleteLinkedList(LinkedList *pList);
+void deleteList(List *pList);
 
-#endif
+#endif //GRAPH_MST_GRAPHLINKEDLIST_H

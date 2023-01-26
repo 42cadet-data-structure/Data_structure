@@ -39,7 +39,7 @@ LinkedGraph *mstPrim(LinkedGraph *pGraph, int vertexID)
 	return (mst);
 }
 
-/* mstVertexID와  부 속 된   간 선  중  가 중 치 가   가 장 작 으 면 서  순 환  을  발 생  시 키 지   않 는 간 선   을 선 택 */
+/* mstVertexID와  부속된 간선 중 가중치가 가장 작으면서 순환을 발생 시키지 않는 간선을 선택 */
 void getMinWeightEdge(LinkedGraph *pGraph, LinkedGraph *pMST, int fromVertexID, GraphEdge *pMinWeightEdge)
 {
 	LinkedList		*edge_list = pGraph->ppEdge[fromVertexID];
@@ -62,7 +62,7 @@ void getMinWeightEdge(LinkedGraph *pGraph, LinkedGraph *pMST, int fromVertexID, 
 	}
 }
 
-/* 기 존 의 신 장  트 리 에   특 정 간 선 이 존 재 하 는 지를  점 검 하는   함 수 로   getMinWeightEdge()에 서  호 출 한  다. */
+/* 기존의 신장트리에 특정간선이 존재하는지를 점검하는 함수로 getMinWeightEdge()에서 호출한다. */
 int checkEdge(LinkedGraph *pGraph, int fromVertexID, int toVertexID)
 {
 	LinkedList	*edge_list = NULL;	
@@ -120,7 +120,7 @@ int checkCycle(LinkedGraph *pGraph, int fromVertexID, int toVertexID) {
         {
             vertextID = pStackNode->data;
             if (vertextID == toVertexID) {
-                printf("(%d, %d)-순환되는 구조\n",
+                printf("(%d, %d) - 순환되는 구조\n",
                        fromVertexID, toVertexID);
                 pReturn = TRUE;
                 break;

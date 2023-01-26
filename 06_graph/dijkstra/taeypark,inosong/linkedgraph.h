@@ -42,7 +42,7 @@ int deleteGraphNode(LinkedList *pList, int delVertexID);
 
 int findGraphNodePosition(LinkedList *pList, int vertexID);
 
-void deleteGraph(LinkedGraph *pGraph);
+void deleteLinkedGraph(LinkedGraph *pGraph);
 
 void displayLinkedGraph(LinkedGraph *pGraph);
 

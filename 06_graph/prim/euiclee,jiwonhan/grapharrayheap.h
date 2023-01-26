@@ -36,4 +36,4 @@ HeapNode* deleteMinHeapAH(ArrayMinHeap* pArrayHeap);
 
 void displayArrayHeap(ArrayMaxHeap* pList);
 
-#endif
+#endif //GRAPH_MST_GRAPHARRAYHEAP_H

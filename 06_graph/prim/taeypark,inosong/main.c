@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include "graphlinkedlist.h"
 #include "linkedgraph.h"
-#include "grapharrayheap.h"
 #include "graphmst.h"
 
 int main() 
@@ -12,7 +11,7 @@ int main()
     LinkedGraph *pG1 = NULL;
     LinkedGraph *pMST1 = NULL;
 
-    pG1 = createGraph(6);
+    pG1 = createLinkedGraph(6);
     if (pG1 != NULL) {
 
         for(i = 0; i < 6; i++) {
@@ -28,14 +27,14 @@ int main()
         addEdgeWithWeight(pG1, 4, 5, 6);
 
         printf("G1:\n");
-        displayGraph(pG1);
+        displayLinkedGraph(pG1);
         printf("\n");
 
         printf("\nPrim MST:\n");
         pMST1 = mstPrim(pG1, 0);
         displayLinkedGraph(pMST1);
 
-        deleteLinekdGraph(pG1);
+        deleteLinkedGraph(pG1);
         deleteLinkedGraph(pMST1);
     }
     return 0;

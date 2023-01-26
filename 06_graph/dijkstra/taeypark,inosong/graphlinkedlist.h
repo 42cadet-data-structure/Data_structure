@@ -11,7 +11,7 @@ typedef struct GraphNodeType {
 
 typedef struct ListNodeType {
     GraphNode data;
-    struct LinkedListNode *pLink;
+    struct ListNodeType *pLink;
 } ListNode, LinkedListNode;
 
 typedef struct ListType {

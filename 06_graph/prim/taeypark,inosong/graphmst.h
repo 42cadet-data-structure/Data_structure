@@ -9,7 +9,6 @@
 #include "graphlinkedlist.h"
 #include "linkedstack.h"
 #include "linkedgraph.h"
-#include "grapharrayheap.h"
 #include "graphmst.h"
 
 /* Prim 알고리즘 구현에 필요한 구조체 */
@@ -30,6 +29,6 @@ void getMinWeightEdge(LinkedGraph *pGraph, LinkedGraph *pMST, int mstVertexID, G
 int checkEdge(LinkedGraph *pGraph, int fromVertexID, int toVertexID);
 
 /* 순환 검사 */
-int checkCycle(Graph* pGraph, int fromVertexID, int toVertexID);
+int checkCycle(LinkedGraph* pGraph, int fromVertexID, int toVertexID);
 
 #endif
