@@ -2,34 +2,40 @@
 #include <stdlib.h>
 #include "linkedqueue.h"
 
-
-void printArray(int a[], int count) {
-    for (int i = 0; i < count; i++) {
-        printf("%d ", a[i]);
-    }
-    printf("\n");
+void	printArray(int *value, int num)
+{
+	for (int i = 0; i < num; i++)
+		printf("%d ", value[i]);
+	printf("\n");
 }
 
-void radixSort(int a[], int count, int radix, int digit) {
+void radixSort(int *values, int count, int radix, int digit)
+{
     int i = 0, bucket = 0, d = 0, factor = 1;
     Queue **ppQueue = NULL;
     QueueNode node = {0,};
+
     ppQueue = (Queue **) malloc(sizeof(Queue *) * radix);
-    if (ppQueue == NULL) return;
-    for (bucket = 0; bucket < radix; bucket++) {
+    if (!ppQueue)
+        return;
+    for (bucket = 0; bucket < radix; bucket++)
         ppQueue[bucket] = createQueue();
-    }
-    for (d = 0; d < digit; d++) {
-        for (i = 0; i < count; i++) {
-            node.data = a[i];
-            enqueue(ppQueue[(a[i] / factor) % radix], node);
+    for (d = 0; d < digit; d++)
+    {
+        for (i = 0; i < count; i++)
+        {
+            node.data = values[i];
+            enqueue(ppQueue[(values[i] / factor) % radix], node);
         }
         i = 0;
-        for (bucket = 0; bucket < radix; bucket++){
-            while(isQueueEmpty(ppQueue[bucket]) == FALSE){
+        for (bucket = 0; bucket < radix; bucket++)
+        {
+            while(isQueueEmpty(ppQueue[bucket]) == FALSE)
+            {
                 QueueNode *pNode = dequeue(ppQueue[bucket]);
-                if (pNode != NULL){
-                    a[i] = pNode->data;
+                if (pNode != NULL)
+                {
+                    values[i] = pNode->data;
                     i++;
                     free(pNode);
                 }
@@ -37,17 +43,33 @@ void radixSort(int a[], int count, int radix, int digit) {
         }
         factor = factor * radix;
     }
-    for (bucket = 0; bucket < radix; bucket++){
+    for (bucket = 0; bucket < radix; bucket++)
         deleteQueue(ppQueue[bucket]);
-    };
     free(ppQueue);
 }
 
-int main() {
-    int a[] = {42, 60, 75, 81, 10, 23, 12, 18};
-    printArray(a, 8);
-    radixSort(a, 8, 10, 2);
-    printArray(a, 8);
+void	init_values(int *values, char **av, int num)
+{
+	int	i = -1;
 
-    return 0;
+	while (++i < num)
+		values[i] = atoi(av[i + 1]);
+}
+
+int	main(int ac, char **av)
+{
+	int	*values;
+
+	if (!(values = malloc(sizeof(int) * (ac - 1))))
+		return (0);
+	init_values(values, av, ac - 1);
+	printf("Before sort\n");
+	printArray(values, ac - 1);
+
+	radixSort(values, ac - 1, 10, 2);
+
+	printf("After sort\n");
+	printArray(values, ac - 1);
+
+	return (0);
 }
