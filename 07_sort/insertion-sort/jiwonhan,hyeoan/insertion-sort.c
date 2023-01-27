@@ -16,20 +16,31 @@ void print_array(int *array, int n)
     printf("\n");
 }
 
-void    insertion_sort(int *array, int n)
+void insertion_sort(int *array, int n)
 {
-
-    print_array(array, n);
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = i; j >= 1; j--)
+        {
+            if (array[j - 1] > array[j])
+                swap(&array[j - 1], &array[j]);
+            else
+                break;
+        }
+        print_array(array, n);
+    }
 }
 
 int main()
 {
-    int n;
-    int array[50];
+
+    int n, array[50];
+
     scanf("%d", &n);
 
     for (int i = 0; i < n; i++)
         scanf("%d", &array[i]);
     insertion_sort(array, n);
+
     return (0);
 }
