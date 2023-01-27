@@ -26,6 +26,7 @@ int	get_max_digit(int *array, int size)
 	}
 	return (max_radix);
 }
+
 void radix_sort(int *array, int n, int radix)
 {
 	int i = 0, num = 0, d = 0, factor = 1, digit = 0;
@@ -42,7 +43,6 @@ void radix_sort(int *array, int n, int radix)
 	{
 		for (i = 0; i < n; i++)
 		{
-
 			node.data = array[i];
 			if (array[i] >= factor)
 				enqueue(queue[(array[i] / factor) % radix], node);
