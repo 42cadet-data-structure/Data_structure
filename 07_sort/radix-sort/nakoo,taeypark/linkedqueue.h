@@ -9,7 +9,7 @@
 #include <string.h>
 
 typedef struct QueueNodeType {
-    char data;
+    int data;
     struct QueueNodeType *pLink;
 } QueueNode;
 

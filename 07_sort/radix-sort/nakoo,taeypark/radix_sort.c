@@ -59,7 +59,7 @@ void	radix_sort(int *arr, int size, int radix)
 		}
 		factor *= radix;
 	}
-	for (i = 0; i < size; i++)
+	for (i = 0; i < radix; i++)
 		deleteQueue(queue[i]);
 	free(queue);
 }
