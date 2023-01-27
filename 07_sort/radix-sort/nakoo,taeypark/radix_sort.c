@@ -1,4 +1,61 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include "linkedqueue.h"
+
+void	radix_sort(int *arr, int size, int radix, int digit)
+{
+	int			i, j, factor = 1;
+	QueueNode	node, *del_node;
+	Queue		**queue;
+
+	queue = (Queue **)malloc(sizeof(Queue *) * radix);
+	if (queue == NULL)
+		return (perror("malloc error "));
+	for (i = 0; i < radix; i++)
+	{
+		queue[i] = createQueue();
+		if (queue[i] == NULL)
+		{
+			for (j = 0; j < i; j++)
+				deleteQueue(queue[j]);
+			return (perror("malloc error "),free(queue));
+		}
+	}
+	for (i = 0; i < digit; i++)
+	{
+		for (j = 0; j < size; j++)
+		{
+			node.data = arr[j];
+			enqueue(queue[(arr[j] / factor) % radix], node);
+		}
+		for (i = 0; i < radix; i++)
+		{
+			while (isQueueEmpty(queue[i]) == FALSE)
+			{
+				del_node = dequeue(queue[i]);
+				if (del_node != NULL)
+				{
+					arr[i] = del_node->data;
+					free(del_node);
+					i++;
+				}
+			}
+		}
+		factor *= radix;
+	}
+	for (i = 0; i < size; i++)
+		deleteQueue(queue[i]);
+	free(queue);
+}
+
+void	print_arr(char *msg, int *arr, int size)
+{
+	fprintf(stdout, "%s", msg);
+	fprintf(stdout, "\n--------------\n");
+	for (int i = 0; i < size; i++)
+		fprintf(stdout, "%d ", arr[i]);
+	fprintf(stdout, "\n--------------\n");
+}
 
 int	main(void)
 {
@@ -14,9 +71,8 @@ int	main(void)
 	for (i = 0; i < size; i++)
 		fscanf(stdin, "%d", &arr[i]);
 	print_arr("Before Radix sort", arr, size);
-	radix_sort(arr, size);
+	radix_sort(arr, size, 10, 2);
 	print_arr("After Radix sort", arr, size);
 	free(arr);
 	return (0);
 }
-
