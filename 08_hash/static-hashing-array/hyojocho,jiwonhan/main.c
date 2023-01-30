@@ -4,6 +4,7 @@
 
 int main() {
     HashTable *pHashTable = NULL;
+
     HashElement element1 = {"january", 1};
     HashElement element2 = {"february", 2};
     HashElement element3 = {"march", 3};
@@ -18,6 +19,7 @@ int main() {
     HashElement element12 = {"december", 12};
     HashElement *pElement = NULL;
     HashElement *pElement2 = NULL;
+    
     pHashTable = createHashTable(13);
     if (pHashTable != NULL) {
 
