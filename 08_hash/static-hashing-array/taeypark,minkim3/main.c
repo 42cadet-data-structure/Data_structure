@@ -1,7 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "hashingdef.h"
-#include "hashinglinkedlist.h"
 #include "statichashing.h"
 
 int main() {
@@ -18,25 +16,23 @@ int main() {
     HashElement element10 = {"october", 10};
     HashElement element11 = {"november", 11};
     HashElement element12 = {"december", 12};
-    HashElement element13 = {"may", 13};
     HashElement *pElement = NULL;
     HashElement *pElement2 = NULL;
-
     pHashTable = createHashTable(13);
     if (pHashTable != NULL) {
-        addSHT(pHashTable, element1);
-        addSHT(pHashTable, element2);
-        addSHT(pHashTable, element3);
-        addSHT(pHashTable, element4);
-        addSHT(pHashTable, element5);
-        addSHT(pHashTable, element6);
-        addSHT(pHashTable, element7);
-        addSHT(pHashTable, element8);
-        addSHT(pHashTable, element9);
-        addSHT(pHashTable, element10);
-        addSHT(pHashTable, element11);
-        addSHT(pHashTable, element12);
-        addSHT(pHashTable, element13);
+
+        addElementSHT(pHashTable, element1);
+        addElementSHT(pHashTable, element2);
+        addElementSHT(pHashTable, element3);
+        addElementSHT(pHashTable, element4);
+        addElementSHT(pHashTable, element5);
+        addElementSHT(pHashTable, element6);
+        addElementSHT(pHashTable, element7);
+        addElementSHT(pHashTable, element8);
+        addElementSHT(pHashTable, element9);
+        addElementSHT(pHashTable, element10);
+        addElementSHT(pHashTable, element11);
+        addElementSHT(pHashTable, element12);
 
         displayHashTable(pHashTable);
 
@@ -45,22 +41,9 @@ int main() {
             printf("key = %s, value = %d\n", pElement->key, pElement->value);
             deleteElementHT(pHashTable, "april");
             displayHashTable(pHashTable);
-
-            pElement2 = searchHT(pHashTable, "june");
-            if (pElement2 != NULL) {
-                printf("key = %s, value = %d\n", pElement->key, pElement->value);
-            }
         }
 
         deleteHashTable(pHashTable);
     }
     return 0;
 }
-
-// HashTable
-
-// [0] "abc" -> "xcv" -> "ert"
-// [1] "sd"
-// [2] "vds"
-// [3] "svdv" -> "sfa"
-// [4] "fqw"

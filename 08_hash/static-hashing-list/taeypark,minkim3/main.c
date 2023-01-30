@@ -23,6 +23,7 @@ int main() {
     HashElement *pElement2 = NULL;
 
     pHashTable = createHashTable(13);
+    printf("created\n");
     if (pHashTable != NULL) {
         addSHT(pHashTable, element1);
         addSHT(pHashTable, element2);

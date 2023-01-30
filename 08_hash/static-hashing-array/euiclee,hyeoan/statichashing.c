@@ -83,7 +83,7 @@ unsigned int stringToInt(char *pKey) {
     int ret = 0;
     while (*pKey != '\0') {
         ret = (ret * 31) + (*pKey);
-        *pKey++;
+        pKey++;
     }
     if (ret < 0) {
         ret = ret * (-1);
