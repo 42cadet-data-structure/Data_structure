@@ -2,19 +2,20 @@
 #include <stdlib.h>
 #include "seqindexsearch.h"
 
-void showArray(int value[], int size) {
+void showArray(int *value, int size)
+{
     int i = 0;
 
     printf("showArray\n");
     printf("------------\n");
-    for (i = 0; i < size; i++) {
+    for (i = 0; i < size; i++)
         printf("[%d] %d\n", i, value[i]);
-    }
+    printf("------------\n");
 }
 
 
-int main() {
-
+int main()
+{
     IndexTable *pIndexTable = NULL;
     int indexSize = 3;
     int index = 0;

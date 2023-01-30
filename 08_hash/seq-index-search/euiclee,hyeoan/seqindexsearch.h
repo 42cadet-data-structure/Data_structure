@@ -1,7 +1,3 @@
-//
-// Created by sanguk on 14/08/2017.
-//
-
 #ifndef SEQ_INDEX_SEARCH_SEQINDEXSEARCH_H
 #define SEQ_INDEX_SEARCH_SEQINDEXSEARCH_H
 
