@@ -1,7 +1,3 @@
-//
-// Created by sanguk on 16/08/2017.
-//
-
 #ifndef STATIC_HASHING_STATICHASHING_H
 #define STATIC_HASHING_STATICHASHING_H
 
