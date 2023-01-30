@@ -22,12 +22,47 @@ HashTable* createHashTable(int bucketSize)
 
 int addElementSHT(HashTable* pHashTable, HashElement element)
 {
+    int i, tmp;
+
     if (!pHashTable)
         return (FALSE);
-    
+    i = hashFunction(element.key, pHashTable->bucketSize);
+    if (i < 0 || i >= pHashTable->bucketSize)
+        return (FALSE);
+    tmp = i;
+    do
+    {
+        if (isEmptyOrDeletedBucket(&(pHashTable->pElement[tmp])))
+        {
+            pHashTable->pElement[tmp] = element;
+            pHashTable->pElement[tmp].status = USED;
+            pHashTable->currentElementCount++;
+            return (TRUE);
+        }
+        else
+            tmp = (tmp + 1) % pHashTable->bucketSize;
+
+    } while (tmp != i);
+    return (FALSE);
 }
 
-int deleteElementHT(HashTable* pHashTable, char* key);
+int deleteElementHT(HashTable* pHashTable, char* key)
+{
+    HashElement *del = NULL;
+
+    if (!pHashTable)
+        return (FALSE);
+    del = searchHT(pHashTable, key);
+    if (del)
+    {
+        del->status = DELETED;
+        del->key[0] = '\0';
+        del->value = 0;
+        pHashTable->currentElementCount--;
+        return (TRUE);
+    }
+    return (FALSE);
+}
 
 int hashFunction(char *pKey, int bucketSize)
 {
@@ -65,13 +100,34 @@ int isEmptyOrDeletedBucket(HashElement* pElement)
     return (pElement->status == EMPTY || pElement->status == DELETED);
 }
 
-HashElement* searchHT(HashTable* pHashTable, char* key);
+HashElement* searchHT(HashTable* pHashTable, char* key)
+{
+    int i, tmp;
+
+    if (!pHashTable)
+        return (NULL);
+    i = hashFunction(key, pHashTable->bucketSize);
+    if (i < 0)
+        return (NULL);
+    tmp = i;
+    do
+    {
+        if (isEmptyBucket(&(pHashTable->pElement[tmp])))
+            return (NULL);
+        if (pHashTable->pElement[tmp].status == USED && \
+            strcmp(pHashTable->pElement[tmp].key, key) == 0)
+            return (&(pHashTable->pElement[tmp]));
+        else
+            tmp = (tmp + 1) % pHashTable->bucketSize;
+    } while (tmp != i);
+    return (NULL);
+}
 
 void displayHashTable(HashTable *pHashTable)
 {
     if (!pHashTable)
         return ;
-    
+    printf("-----------------------------------------\n");
     for (int i=0;i<pHashTable->bucketSize;i++)
     {
         printf("[%d] ", i);
