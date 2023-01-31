@@ -19,6 +19,8 @@ int sequentialIndexSearch(int value[], int size, IndexTable index[], int indexSi
 
 int sequentialRangeSearchAsendingSorted(int value[], int start, int end, int key)
 {
+	if (start < 0)
+		return (FAIL);
 	for (int i = start; i < end; i++)
 	{
 		if (value[i] == key)

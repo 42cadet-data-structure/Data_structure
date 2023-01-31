@@ -28,7 +28,7 @@ int main()
     if (pIndexTable != NULL) {
         showIndexTable(pIndexTable, indexSize);
 
-        key = 60;
+        key = 5;
         index = sequentialIndexSearch(ascSortedArray, arraySize, pIndexTable, indexSize, key);
         printf("key = %d, index = %d\n", key, index);
 
