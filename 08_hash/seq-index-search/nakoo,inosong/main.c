@@ -25,7 +25,6 @@ int main()
 
     showArray(ascSortedArray, arraySize);
     pIndexTable = createIndexTable(ascSortedArray, arraySize, indexSize);
-
     if (pIndexTable != NULL) {
         showIndexTable(pIndexTable, indexSize);
 
