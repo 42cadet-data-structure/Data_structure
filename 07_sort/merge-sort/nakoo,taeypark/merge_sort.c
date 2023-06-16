@@ -8,7 +8,7 @@ void	merge_sort(int *arr, int start, int end, int *merge_arr)
 
 	if (start == end)
 		return ;
-	merge_sort(arr, 0, mid, merge_arr);
+	merge_sort(arr, start, mid, merge_arr);
 	merge_sort(arr, mid + 1, end, merge_arr);
 	L = start, R = mid + 1, cur_idx = start;
 	while (L <= mid && R <= end)
